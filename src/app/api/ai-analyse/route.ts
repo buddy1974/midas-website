@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { getOpenAI, hasOpenAI } from '@/lib/openai'
 
 const DEMO_RESPONSE = {
   score: 78,
@@ -14,19 +14,22 @@ const DEMO_RESPONSE = {
 export async function POST(req: NextRequest) {
   const { address, guidePrice, type, bedrooms, arv } = await req.json()
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!hasOpenAI()) {
     return NextResponse.json(DEMO_RESPONSE)
   }
 
   try {
-    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+    const openai = getOpenAI()
 
-    const message = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
       max_tokens: 400,
-      system: `You are a UK property investment analyst at Midas Property Auctions. Analyse deals for investors. Return ONLY valid JSON with no markdown:
-{"score":number 0-100,"verdict":"Strong Buy"|"Worth Considering"|"Proceed with Caution","yield":"string e.g. 6.2%","roi":"string e.g. 34%","risk":"Low"|"Medium"|"High","summary":"2 sentences max, plain English, actionable"}`,
       messages: [
+        {
+          role: 'system',
+          content: `You are a UK property investment analyst at Midas Property Auctions. Analyse deals for investors. Return ONLY valid JSON with no markdown:
+{"score":number 0-100,"verdict":"Strong Buy"|"Worth Considering"|"Proceed with Caution","yield":"string e.g. 6.2%","roi":"string e.g. 34%","risk":"Low"|"Medium"|"High","summary":"2 sentences max, plain English, actionable"}`,
+        },
         {
           role: 'user',
           content: `Property: ${address}, ${type}
@@ -39,7 +42,7 @@ Analyse as an investment opportunity.`,
       ],
     })
 
-    const text = message.content[0].type === 'text' ? message.content[0].text : ''
+    const text = completion.choices[0].message.content ?? ''
     const parsed = JSON.parse(text.trim())
     return NextResponse.json(parsed)
   } catch (err) {
