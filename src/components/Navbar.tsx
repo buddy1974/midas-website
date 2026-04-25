@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ChevronDown } from 'lucide-react'
+import { Menu, X, ChevronDown, Heart } from 'lucide-react'
+
+// ── Nav structure ─────────────────────────────────────────────────────────────
 
 interface NavItem {
   label: string
@@ -14,13 +16,21 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: 'Auctions',
+    label: 'Livestream Auction',
     dropdown: [
-      { label: 'Current Auction Lots', href: '/properties' },
+      { label: 'Current Auction — 14th May', href: '/current-auction' },
       { label: 'Future Auction Dates', href: '/auction-dates' },
+      { label: 'Lots Still Available', href: '/lots-still-available' },
       { label: 'Previous Auction Results', href: '/past-auctions' },
-      { label: 'Lots Still Available', href: '/properties?status=unsold' },
       { label: 'Register to Bid', href: '/register' },
+    ],
+  },
+  {
+    label: 'Timed Auction',
+    dropdown: [
+      { label: 'Current Timed Lots', href: '/timed-auction' },
+      { label: 'Guide to Buying at Timed Auction', href: '/guide/buying-timed' },
+      { label: 'Guide to Selling at Timed Auction', href: '/guide/selling-timed' },
     ],
   },
   {
@@ -28,8 +38,10 @@ const navItems: NavItem[] = [
     dropdown: [
       { label: 'Buying a Property With Us', href: '/buy' },
       { label: 'Guide to Buying at Auction', href: '/guide/buying' },
+      { label: 'Future Auction Dates', href: '/auction-dates' },
       { label: 'Finance Your Property', href: '/finance' },
       { label: 'Private Treaty Services', href: '/private-treaty' },
+      { label: 'General Conditions of Sale', href: '/conditions' },
     ],
   },
   {
@@ -40,8 +52,10 @@ const navItems: NavItem[] = [
       { label: 'Guide to Selling at Auction', href: '/guide/selling' },
       { label: 'Corporate & Probate Services', href: '/probate' },
       { label: 'Get an Instant Offer', href: '/instant-offer' },
+      { label: 'Private Treaty Services', href: '/private-treaty' },
     ],
   },
+  { label: 'Instant Cash Offer', href: '/instant-offer' },
   {
     label: 'About',
     dropdown: [
@@ -53,28 +67,30 @@ const navItems: NavItem[] = [
       { label: 'FAQs', href: '/faqs' },
     ],
   },
-  { label: 'Finance', href: '/finance' },
 ]
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 function isActive(item: NavItem, pathname: string): boolean {
-  if (item.href) {
-    return pathname === item.href
-  }
+  if (item.href) return pathname === item.href
   return (item.dropdown ?? []).some(sub => {
     const path = sub.href.split('?')[0]
     return pathname === path || (path !== '/' && pathname.startsWith(path))
   })
 }
 
+// ── Component ─────────────────────────────────────────────────────────────────
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
+  const [wishlistCount, setWishlistCount] = useState(0)
   const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60)
+    const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -84,30 +100,47 @@ export default function Navbar() {
     setMobileExpanded(null)
   }, [pathname])
 
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('midas_wishlist')
+      const items: unknown = stored ? JSON.parse(stored) : []
+      setWishlistCount(Array.isArray(items) ? items.length : 0)
+    } catch {
+      setWishlistCount(0)
+    }
+  }, [pathname])
+
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 bg-[#080809] transition-all duration-300 ${
           scrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-[#E5E2DC]'
-            : 'bg-white border-b border-[#E5E2DC]'
+            ? 'border-b border-[rgba(201,168,76,0.2)] shadow-lg shadow-black/40'
+            : 'border-b border-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+
           {/* Logo */}
-          <Link href="/">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <Image
               src="/logo.png"
-              alt="Midas Property Group"
-              width={140}
-              height={48}
-              className="h-10 w-auto"
+              alt="Midas Property Auctions"
+              width={120}
+              height={40}
+              className="h-9 w-auto"
               priority
             />
+            <span className="hidden sm:block">
+              <span className="text-[#C9A84C] font-black text-sm tracking-widest">MIDAS</span>
+              <span className="text-[rgba(232,228,220,0.6)] text-xs ml-1.5 tracking-wide hidden lg:inline">
+                PROPERTY AUCTIONS
+              </span>
+            </span>
           </Link>
 
           {/* Desktop nav */}
-          <ul className="hidden lg:flex items-center">
+          <ul className="hidden xl:flex items-center flex-1 justify-center">
             {navItems.map(item => {
               const active = isActive(item, pathname)
               return (
@@ -120,8 +153,8 @@ export default function Navbar() {
                   {item.href ? (
                     <Link
                       href={item.href}
-                      className={`flex items-center px-3 py-5 text-sm transition-colors relative ${
-                        active ? 'text-[#C9A84C]' : 'text-[#444] hover:text-[#1A1A1A]'
+                      className={`flex items-center px-3 py-5 text-[13px] font-medium transition-colors relative ${
+                        active ? 'text-[#C9A84C]' : 'text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C]'
                       }`}
                     >
                       {item.label}
@@ -131,13 +164,13 @@ export default function Navbar() {
                     </Link>
                   ) : (
                     <button
-                      className={`flex items-center gap-1 px-3 py-5 text-sm transition-colors relative ${
-                        active ? 'text-[#C9A84C]' : 'text-[#444] hover:text-[#1A1A1A]'
+                      className={`flex items-center gap-1 px-3 py-5 text-[13px] font-medium transition-colors relative ${
+                        active ? 'text-[#C9A84C]' : 'text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C]'
                       }`}
                     >
                       {item.label}
                       <ChevronDown
-                        size={13}
+                        size={12}
                         className={`transition-transform duration-200 ${
                           openDropdown === item.label ? 'rotate-180' : ''
                         }`}
@@ -148,15 +181,24 @@ export default function Navbar() {
                     </button>
                   )}
 
-                  {/* Dropdown panel */}
+                  {/* Dropdown */}
                   {item.dropdown && openDropdown === item.label && (
-                    <div className="absolute top-full left-0 w-64 z-50">
-                      <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.25)] rounded-lg shadow-2xl py-1.5">
+                    <div className="absolute top-full left-0 w-72 z-50">
+                      <div
+                        className="rounded-b-xl shadow-2xl shadow-black/60 py-2"
+                        style={{
+                          backgroundColor: '#0D0D14',
+                          borderTop: '2px solid #C9A84C',
+                          border: '1px solid rgba(201,168,76,0.2)',
+                          borderTopColor: '#C9A84C',
+                          borderTopWidth: '2px',
+                        }}
+                      >
                         {item.dropdown.map(sub => (
                           <Link
                             key={sub.href}
                             href={sub.href}
-                            className="block px-4 py-2.5 text-sm text-[rgba(232,228,220,0.7)] hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-colors"
+                            className="block px-6 py-3 text-sm text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-all duration-150"
                           >
                             {sub.label}
                           </Link>
@@ -169,11 +211,30 @@ export default function Navbar() {
             })}
           </ul>
 
-          {/* Right side — Free Valuation CTA */}
-          <div className="hidden lg:flex items-center">
+          {/* Right side */}
+          <div className="hidden xl:flex items-center gap-4 flex-shrink-0">
+            {/* Wishlist */}
+            <Link href="/wishlist" className="relative text-[rgba(232,228,220,0.6)] hover:text-[#C9A84C] transition-colors">
+              <Heart size={18} />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#C9A84C] text-[#080809] text-[9px] font-black flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Phone */}
+            <a
+              href="tel:07454753318"
+              className="text-[rgba(232,228,220,0.5)] text-sm hover:text-[#C9A84C] transition-colors"
+            >
+              📞 07454 753318
+            </a>
+
+            {/* CTA */}
             <Link
               href="/valuation"
-              className="bg-[#C9A84C] text-[#080809] text-sm font-semibold px-4 py-2 rounded hover:bg-[#E8C96A] transition-all hover:scale-[1.02]"
+              className="bg-[#C9A84C] text-[#080809] text-sm font-bold px-4 py-2 rounded hover:bg-[#E8C96A] transition-all hover:scale-[1.02]"
             >
               Free Valuation
             </Link>
@@ -181,7 +242,7 @@ export default function Navbar() {
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden text-[#1A1A1A] p-2"
+            className="xl:hidden text-[rgba(232,228,220,0.75)] p-2 hover:text-[#C9A84C] transition-colors"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >
@@ -192,27 +253,24 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-[100] bg-white flex flex-col">
-          <div className="flex items-center justify-between px-6 h-16 border-b border-[#E8E5DE]">
-            <Link href="/">
-              <Image
-                src="/logo.png"
-                alt="Midas Property Group"
-                width={140}
-                height={48}
-                className="h-10 w-auto"
-              />
+        <div className="fixed inset-0 z-[100] bg-[#080809] flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 h-16 border-b border-[rgba(201,168,76,0.15)]">
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/logo.png" alt="Midas" width={100} height={34} className="h-8 w-auto" />
+              <span className="text-[#C9A84C] font-black text-sm tracking-widest">MIDAS</span>
             </Link>
             <button
               onClick={() => setMobileOpen(false)}
-              className="text-[#1A1A1A] p-2"
+              className="text-[rgba(232,228,220,0.75)] p-2 hover:text-[#C9A84C] transition-colors"
               aria-label="Close menu"
             >
               <X size={22} />
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto px-6 py-2">
+          {/* Nav items */}
+          <nav className="flex-1 overflow-y-auto px-6 py-4">
             <ul>
               {navItems.map(item => (
                 <li key={item.label}>
@@ -222,7 +280,7 @@ export default function Navbar() {
                         onClick={() =>
                           setMobileExpanded(mobileExpanded === item.label ? null : item.label)
                         }
-                        className="w-full flex items-center justify-between py-3.5 text-base font-medium text-[#333] border-b border-[#E8E5DE] hover:text-[#C9A84C] transition-colors"
+                        className="w-full flex items-center justify-between py-4 text-base font-medium text-[rgba(232,228,220,0.85)] border-b border-[rgba(201,168,76,0.1)] hover:text-[#C9A84C] transition-colors"
                       >
                         {item.label}
                         <ChevronDown
@@ -233,12 +291,12 @@ export default function Navbar() {
                         />
                       </button>
                       {mobileExpanded === item.label && (
-                        <ul className="bg-[#F8F7F4] border-b border-[#E8E5DE]">
+                        <ul className="border-l-2 border-[#C9A84C] ml-4 border-b border-[rgba(201,168,76,0.1)]">
                           {item.dropdown.map(sub => (
                             <li key={sub.href}>
                               <Link
                                 href={sub.href}
-                                className="block px-4 py-3 text-sm text-[#555] hover:text-[#C9A84C] border-b border-[#EDEBE5] last:border-0 transition-colors"
+                                className="block px-4 py-3 text-sm text-[rgba(232,228,220,0.6)] hover:text-[#C9A84C] transition-colors"
                               >
                                 {sub.label}
                               </Link>
@@ -250,7 +308,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       href={item.href ?? '/'}
-                      className="block py-3.5 text-base font-medium text-[#333] border-b border-[#E8E5DE] hover:text-[#C9A84C] transition-colors"
+                      className="block py-4 text-base font-medium text-[rgba(232,228,220,0.85)] border-b border-[rgba(201,168,76,0.1)] hover:text-[#C9A84C] transition-colors"
                     >
                       {item.label}
                     </Link>
@@ -258,7 +316,15 @@ export default function Navbar() {
                 </li>
               ))}
             </ul>
-            <div className="mt-6 space-y-3 pb-6">
+
+            {/* Bottom CTAs */}
+            <div className="mt-8 space-y-3 pb-8">
+              <a
+                href="tel:07454753318"
+                className="flex items-center justify-center gap-2 w-full border border-[rgba(201,168,76,0.3)] text-[#C9A84C] text-base font-medium px-6 py-4 rounded hover:bg-[rgba(201,168,76,0.06)] transition-colors"
+              >
+                📞 07454 753318
+              </a>
               <Link
                 href="/valuation"
                 className="block w-full text-center bg-[#C9A84C] text-[#080809] text-base font-bold px-6 py-4 rounded hover:bg-[#E8C96A] transition-colors"
@@ -267,9 +333,21 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/register"
-                className="block w-full text-center border border-[#C9A84C] text-[#C9A84C] text-base font-semibold px-6 py-4 rounded hover:bg-[rgba(201,168,76,0.05)] transition-colors"
+                className="block w-full text-center border border-[rgba(201,168,76,0.4)] text-[rgba(232,228,220,0.8)] text-base font-semibold px-6 py-4 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors"
               >
                 Register to Bid
+              </Link>
+              <Link
+                href="/wishlist"
+                className="flex items-center justify-center gap-2 w-full text-[rgba(232,228,220,0.5)] text-sm py-3 hover:text-[#C9A84C] transition-colors"
+              >
+                <Heart size={16} />
+                Saved Properties
+                {wishlistCount > 0 && (
+                  <span className="bg-[#C9A84C] text-[#080809] text-xs font-black px-2 py-0.5 rounded-full">
+                    {wishlistCount}
+                  </span>
+                )}
               </Link>
             </div>
           </nav>

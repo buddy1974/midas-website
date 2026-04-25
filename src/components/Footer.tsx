@@ -3,70 +3,100 @@ import Image from 'next/image'
 import { Phone, Smartphone, Mail } from 'lucide-react'
 import { company } from '@/lib/data'
 
-const footerNav = [
+// ── Navigation columns ────────────────────────────────────────────────────────
+
+interface FooterLink {
+  label: string
+  href: string
+}
+
+interface FooterColumn {
+  heading: string
+  links: FooterLink[]
+}
+
+const footerNav: FooterColumn[] = [
   {
-    heading: 'Auctions',
+    heading: 'AUCTIONS',
     links: [
-      { label: 'Current Lots', href: '/properties' },
+      { label: 'Current Auction Lots', href: '/current-auction' },
       { label: 'Future Auction Dates', href: '/auction-dates' },
+      { label: 'Timed Auction', href: '/timed-auction' },
+      { label: 'Lots Still Available', href: '/lots-still-available' },
       { label: 'Previous Results', href: '/past-auctions' },
       { label: 'Register to Bid', href: '/register' },
     ],
   },
   {
-    heading: 'Buy Property',
+    heading: 'BUY PROPERTY',
     links: [
       { label: 'Buying With Us', href: '/buy' },
       { label: 'Guide to Buying', href: '/guide/buying' },
-      { label: 'Finance', href: '/finance' },
+      { label: 'Finance Your Property', href: '/finance' },
+      { label: 'AML Requirements', href: '/aml' },
       { label: 'FAQs', href: '/faqs' },
     ],
   },
   {
-    heading: 'Sell Property',
+    heading: 'SELL PROPERTY',
     links: [
       { label: 'Sell With Us', href: '/sell' },
       { label: 'Guide to Selling', href: '/guide/selling' },
       { label: 'Free Valuation', href: '/valuation' },
-      { label: 'Probate Services', href: '/probate' },
-      { label: 'Instant Offer', href: '/instant-offer' },
+      { label: 'Corporate & Probate', href: '/probate' },
+      { label: 'Instant Cash Offer', href: '/instant-offer' },
+      { label: 'Private Treaty', href: '/private-treaty' },
     ],
   },
   {
-    heading: 'About',
+    heading: 'ABOUT',
     links: [
       { label: 'About Us', href: '/about' },
-      { label: 'Our Team', href: '/about#team' },
+      { label: 'Meet the Team', href: '/about#team' },
       { label: 'Blog', href: '/blog' },
       { label: 'Testimonials', href: '/testimonials' },
       { label: 'Contact Us', href: '/contact' },
+      { label: 'Complaints', href: '/complaints' },
     ],
   },
 ]
 
+// ── Component ─────────────────────────────────────────────────────────────────
+
 export default function Footer() {
   return (
-    <footer className="bg-[#0F0F14] border-t border-[rgba(201,168,76,0.15)] pt-16 pb-8">
+    <footer className="bg-[#080809] border-t border-[rgba(201,168,76,0.15)] pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
-          {/* Col 1 — Brand + Contact */}
+
+        {/* 5-column grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+
+          {/* Col 1 — Brand */}
           <div>
-            <div className="mb-5">
+            {/* Logo */}
+            <div className="mb-4">
               <Link href="/">
                 <Image
                   src="/logo.png"
                   alt="Midas Property Group"
                   width={160}
-                  height={56}
-                  className="h-14 w-auto"
+                  height={48}
+                  className="h-12 w-auto"
                 />
               </Link>
             </div>
-            <p className="text-[rgba(232,228,220,0.5)] text-sm leading-relaxed mb-6">
-              {company.tagline}
-            </p>
+
+            {/* Fallback wordmark */}
+            <div className="mb-4">
+              <span className="text-[#C9A84C] font-black text-sm tracking-widest">MIDAS</span>
+              <span className="text-[#E8E4DC] text-xs ml-1 tracking-wide">PROPERTY AUCTIONS</span>
+            </div>
+
+            {/* Tagline */}
+            <p className="text-[#C9A84C] text-sm italic mb-5">{company.tagline}</p>
+
             {/* Social icons */}
-            <div className="flex gap-3 mb-6">
+            <div className="flex gap-3 mb-5">
               <a
                 href={company.social.facebook}
                 target="_blank"
@@ -105,23 +135,24 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
+
             {/* Contact */}
-            <ul className="space-y-2">
+            <ul className="space-y-2 mb-5">
               <li>
                 <a
                   href={`tel:${company.phone.replace(/\s/g, '')}`}
                   className="flex items-center gap-2 text-[rgba(232,228,220,0.5)] text-xs hover:text-[#C9A84C] transition-colors"
                 >
-                  <Phone size={12} className="text-[#C9A84C]" />
+                  <Phone size={12} className="text-[#C9A84C] shrink-0" />
                   {company.phone}
                 </a>
               </li>
               <li>
                 <a
-                  href={`tel:${company.mobile}`}
+                  href={`tel:${company.mobile.replace(/\s/g, '')}`}
                   className="flex items-center gap-2 text-[rgba(232,228,220,0.5)] text-xs hover:text-[#C9A84C] transition-colors"
                 >
-                  <Smartphone size={12} className="text-[#C9A84C]" />
+                  <Smartphone size={12} className="text-[#C9A84C] shrink-0" />
                   {company.mobile}
                 </a>
               </li>
@@ -130,17 +161,22 @@ export default function Footer() {
                   href={`mailto:${company.email}`}
                   className="flex items-center gap-2 text-[rgba(232,228,220,0.5)] text-xs hover:text-[#C9A84C] transition-colors"
                 >
-                  <Mail size={12} className="text-[#C9A84C]" />
+                  <Mail size={12} className="text-[#C9A84C] shrink-0" />
                   {company.email}
                 </a>
               </li>
             </ul>
+
+            {/* Accreditations */}
+            <p className="text-[rgba(232,228,220,0.25)] text-xs leading-relaxed">
+              Member: The Property Ombudsman · TSI Code Compliant
+            </p>
           </div>
 
-          {/* Link columns */}
+          {/* Cols 2-5 — Navigation */}
           {footerNav.map(col => (
             <div key={col.heading}>
-              <h4 className="text-[#E8E4DC] font-semibold text-sm uppercase tracking-wider mb-5">
+              <h4 className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.2em] mb-5">
                 {col.heading}
               </h4>
               <ul className="space-y-3">
@@ -157,29 +193,54 @@ export default function Footer() {
               </ul>
             </div>
           ))}
+
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-[rgba(201,168,76,0.1)] pt-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-            <p className="text-[rgba(232,228,220,0.3)] text-xs">
-              © 2026 {company.fullName} · Company No: {company.companyNo} · VAT: {company.vatNo}
-            </p>
-            <div className="flex flex-wrap items-center gap-3 text-[rgba(232,228,220,0.3)] text-xs">
-              <Link href="/privacy" className="hover:text-[#C9A84C] transition-colors">
+        <div className="border-t border-[rgba(201,168,76,0.1)] pt-8">
+          <div className="flex flex-col md:flex-row justify-between gap-4">
+
+            {/* Left — legal */}
+            <div className="space-y-1">
+              <p className="text-[rgba(232,228,220,0.25)] text-xs">
+                &copy; 2026 {company.fullName} &middot; Company No: {company.companyNo} &middot; VAT: {company.vatNo}
+              </p>
+              <p className="text-[rgba(232,228,220,0.25)] text-xs">
+                Registered: Stanmore Business Centre, Stanmore Place, Honeypot Lane, London HA7 1BT
+              </p>
+            </div>
+
+            {/* Right — policy links */}
+            <div className="flex flex-wrap gap-3 items-center">
+              <Link
+                href="/privacy"
+                className="text-[rgba(232,228,220,0.3)] text-xs hover:text-[#C9A84C] transition-colors"
+              >
                 Privacy Policy
               </Link>
-              <span>·</span>
-              <Link href="/complaints" className="hover:text-[#C9A84C] transition-colors">
-                Complaints Procedure
+              <span className="text-[rgba(232,228,220,0.2)] text-xs">&middot;</span>
+              <Link
+                href="/complaints"
+                className="text-[rgba(232,228,220,0.3)] text-xs hover:text-[#C9A84C] transition-colors"
+              >
+                Complaints
               </Link>
-              <span>·</span>
-              <span>The Property Ombudsman</span>
-              <span>·</span>
-              <span>TSI Approved Code</span>
+              <span className="text-[rgba(232,228,220,0.2)] text-xs">&middot;</span>
+              <Link
+                href="/conditions"
+                className="text-[rgba(232,228,220,0.3)] text-xs hover:text-[#C9A84C] transition-colors"
+              >
+                General Conditions
+              </Link>
+              <span className="text-[rgba(232,228,220,0.2)] text-xs">&middot;</span>
+              <span className="text-[rgba(201,168,76,0.35)] text-xs">
+                Site powered by ARIA — Midas Property Intelligence Platform
+              </span>
             </div>
+
           </div>
         </div>
+
       </div>
     </footer>
   )

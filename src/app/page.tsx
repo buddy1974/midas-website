@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import LotCard from '@/components/LotCard'
-import SectionHeader from '@/components/SectionHeader'
-import StatCard from '@/components/StatCard'
-import GoldButton from '@/components/GoldButton'
 import Link from 'next/link'
-import { lots, stats, team, upcomingAuctions, testimonials, blogPosts, type Lot, type LotStatus } from '@/lib/data'
+import LotCard from '@/components/LotCard'
+import GoldButton from '@/components/GoldButton'
+import AuctionCountdown from '@/components/AuctionCountdown'
+import { lots, stats, upcomingAuctions, testimonials, blogPosts, type Lot, type LotStatus } from '@/lib/data'
 import WhatsAppSignup from '@/components/WhatsAppSignup'
+
+// ── OS Integration ────────────────────────────────────────────────────────────
 
 interface OsLot {
   id: string; address: string; guidePrice: number; arv: number | null
@@ -30,50 +31,45 @@ function mapOsLot(l: OsLot): Lot {
   }
 }
 
-function useCountdown(targetDate: string) {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+// ── Why Midas card data ───────────────────────────────────────────────────────
 
-  useEffect(() => {
-    const target = new Date(targetDate).getTime()
-    const tick = () => {
-      const diff = target - Date.now()
-      if (diff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-        return
-      }
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((diff % (1000 * 60)) / 1000),
-      })
-    }
-    tick()
-    const interval = setInterval(tick, 1000)
-    return () => clearInterval(interval)
-  }, [targetDate])
-
-  return timeLeft
+interface WhyCard {
+  icon: string
+  title: string
+  body: string
 }
 
-function CountdownBox({ value, label }: { value: number; label: string }) {
-  return (
-    <div className="bg-white border border-[#E8E5DE] rounded-lg px-5 py-4 min-w-[72px] text-center shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-      <div className="text-3xl font-bold text-[#C9A84C]">{String(value).padStart(2, '0')}</div>
-      <div className="text-[#666] text-xs uppercase tracking-wider mt-1">{label}</div>
-    </div>
-  )
+const whyCards: WhyCard[] = [
+  { icon: '🤖', title: 'AI Deal Analysis', body: 'Every lot scored instantly by ARIA, our AI assistant. Know the ROI before you bid.' },
+  { icon: '🔐', title: 'Off-Market Portal', body: 'Properties never listed publicly. Password-protected access for pre-qualified investors only.' },
+  { icon: '🏦', title: 'Private Lending', body: 'Fast bridging finance through our network of private lenders. Terms within 24 hours.' },
+  { icon: '📱', title: 'WhatsApp Alerts', body: 'New lots sent to your WhatsApp before they go public. Register once, never miss a deal.' },
+  { icon: '💰', title: 'Finance Calculator', body: 'Live bridging finance calculations on every property page. Know your numbers before you bid.' },
+  { icon: '⚖️', title: 'Solicitor Network', body: 'Trusted solicitors experienced in 28-day auction completions — recommended by Midas.' },
+  { icon: '🌍', title: 'Nationwide Coverage', body: 'London, Essex and nationwide. Residential, HMO, commercial and development sites.' },
+  { icon: '📊', title: 'Investment Intelligence', body: 'ARIA analyses market data, yields and comparable sales to help you make informed decisions.' },
+]
+
+// ── Stat data (override with data.ts values) ──────────────────────────────────
+
+interface StatItem {
+  value: string
+  label: string
 }
+
+const heroStats: StatItem[] = [
+  { value: stats[0]?.value ?? '340+', label: stats[0]?.label ?? 'Properties Sold' },
+  { value: stats[1]?.value ?? '2,847', label: stats[1]?.label ?? 'Active Investors' },
+  { value: stats[2]?.value ?? '15+', label: stats[2]?.label ?? 'Years Experience' },
+  { value: '28 Days', label: 'To Completion' },
+]
+
+// ── Page component ────────────────────────────────────────────────────────────
 
 export default function HomePage() {
-  const countdown = useCountdown('2026-05-14T12:00:00Z')
   const [email, setEmail] = useState('')
-  const [offEmail, setOffEmail] = useState('')
-  const [offName, setOffName] = useState('')
   const [subscribed, setSubscribed] = useState(false)
-  const [offRequested, setOffRequested] = useState(false)
   const [liveLots, setLiveLots] = useState<Lot[] | null>(null)
-  const [liveStats, setLiveStats] = useState<typeof stats | null>(null)
 
   useEffect(() => {
     const osUrl = process.env.NEXT_PUBLIC_OS_URL
@@ -84,332 +80,319 @@ export default function HomePage() {
         if (Array.isArray(data?.lots)) setLiveLots(data.lots.map(mapOsLot))
       })
       .catch(() => {})
-    fetch(`${osUrl}/api/public/stats`)
-      .then(r => r.ok ? r.json() : Promise.reject())
-      .then((data: { propertiesSold: number; activeInvestors: number; activeLots: number }) => {
-        if (data && typeof data === 'object') {
-          setLiveStats([
-            { label: 'Properties Sold', value: `${data.propertiesSold}+` },
-            { label: 'Active Investors', value: data.activeInvestors.toLocaleString() },
-            { label: 'Years in Auctions', value: '15+' },
-            { label: 'Avg. Days to Sold', value: '28' },
-          ])
-        }
-      })
-      .catch(() => {})
   }, [])
 
   const publicLots = (liveLots ?? lots.filter(l => l.showOnWebsite)).filter(l => !l.isOffMarket)
-  const displayStats = liveStats ?? stats
+
+  async function handleSubscribe(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    try {
+      await fetch('/api/whatsapp-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'mailing_list' }),
+      })
+    } catch {
+      // silent fail — still mark subscribed
+    }
+    setSubscribed(true)
+  }
 
   return (
-    <>
-      {/* HERO */}
-      <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[#080809]" />
-        <div className="absolute inset-0 bg-gradient-to-br from-[rgba(201,168,76,0.07)] via-transparent to-transparent" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-[rgba(201,168,76,0.04)] blur-3xl" />
+    <main>
 
-        <div className="relative max-w-7xl mx-auto px-6 pt-28 pb-20">
-          <div className="max-w-3xl">
-            <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-6">
-              London &amp; Essex Premier Auction House
+      {/* ── SECTION 1 — HERO ───────────────────────────────────────────────── */}
+      <section className="relative bg-[#080809] min-h-screen overflow-hidden">
+        {/* Gold radial glow — top right */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-[rgba(201,168,76,0.06)] blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-6 pt-28 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+          {/* Left column */}
+          <div>
+            <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
+              London &amp; Essex Property Auctions
             </p>
+
             <h1 className="text-4xl md:text-6xl font-black leading-tight mb-6">
-              Where Committed Buyers
-              <br />
-              Meet{' '}
-              <span className="text-[#C9A84C]">Committed Sellers</span>
+              <span className="text-[#E8E4DC] block">Where Committed Buyers</span>
+              <span className="text-[#C9A84C] block">Meet Committed Sellers</span>
             </h1>
-            <p className="text-[rgba(232,228,220,0.65)] text-lg md:text-xl mb-10 leading-relaxed max-w-xl">
-              Midas Property Auctions connects buyers, sellers, investors, solicitors and finance
-              partners — making the process simple and smooth from start to finish.
+
+            <p className="text-[rgba(232,228,220,0.65)] text-lg max-w-xl leading-relaxed">
+              Standing in the middle — connecting buyers to sellers, investors to opportunities,
+              and clients to the solicitors, lenders and partners they need.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <GoldButton href="/properties" variant="filled" size="lg">
-                View Current Lots
-              </GoldButton>
-              <GoldButton href="/buy#register" variant="outline" size="lg">
+
+            {/* Primary CTAs */}
+            <div className="flex flex-wrap gap-3 mt-8">
+              <Link
+                href="/current-auction"
+                className="bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all"
+              >
+                View Current Lots →
+              </Link>
+              <Link
+                href="/register"
+                className="border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
+              >
                 Register to Bid
-              </GoldButton>
+              </Link>
+              <Link
+                href="/valuation"
+                className="border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
+              >
+                Get Free Valuation
+              </Link>
             </div>
-            <p className="mt-6 text-[#C9A84C] text-sm text-center">
-              📱 Speak to Sam directly: 07454 753318
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              {[
-                { label: 'View Current Lots', href: '/properties' },
-                { label: 'Register to Bid', href: '/register' },
-                { label: 'Get Free Valuation', href: '/valuation' },
-              ].map(({ label, href }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="border border-[rgba(201,168,76,0.4)] text-[rgba(232,228,220,0.7)] text-sm px-4 py-2 rounded-full hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors"
+
+            {/* Phone */}
+            <p className="mt-6 text-[#C9A84C] text-sm">📱 Call Sam: 07454 753318</p>
+
+            {/* Quick-link pills */}
+            <div className="flex flex-wrap gap-3 mt-4">
+              {['View Current Lots', 'Register to Bid', 'Get Free Valuation'].map(label => (
+                <span
+                  key={label}
+                  className="border border-[rgba(201,168,76,0.35)] text-[rgba(232,228,220,0.6)] text-sm px-4 py-1.5 rounded-full hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors cursor-default"
                 >
-                  {label} →
-                </Link>
+                  {label}
+                </span>
               ))}
             </div>
           </div>
 
-          <div className="mt-20 border-t border-[rgba(201,168,76,0.15)] pt-10">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {displayStats.map((s) => (
-                <StatCard key={s.label} value={s.value} label={s.label} />
-              ))}
+          {/* Right column — countdown card */}
+          <div>
+            <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.25)] rounded-2xl p-8">
+              <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-6">
+                Next Auction
+              </p>
+              <AuctionCountdown
+                targetDate="2026-05-14T12:00:00"
+                auctionName={upcomingAuctions[0].title}
+                lotCount={upcomingAuctions[0].lots}
+              />
             </div>
           </div>
 
-          <div className="mt-8 h-px bg-[#C9A84C] animate-gold-line origin-left" />
         </div>
       </section>
 
-      {/* COUNTDOWN */}
-      <section className="bg-[#F8F7F4] border-y border-[#E8E5DE] py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-            Next Auction
-          </p>
-          <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A1A] mb-8">
-            {upcomingAuctions[0].title} — {upcomingAuctions[0].date}
-          </h2>
-          <div className="flex justify-center gap-4 mb-8">
-            <CountdownBox value={countdown.days} label="Days" />
-            <CountdownBox value={countdown.hours} label="Hours" />
-            <CountdownBox value={countdown.minutes} label="Mins" />
-            <CountdownBox value={countdown.seconds} label="Secs" />
-          </div>
-          <p className="text-[#666] text-sm mb-8">
-            {upcomingAuctions[0].lots} Lots · {upcomingAuctions[0].format} · Free to Register
-          </p>
-          <GoldButton href="/buy#register" variant="filled" size="md">
-            Register Now →
-          </GoldButton>
-        </div>
-      </section>
-
-      {/* CURRENT LOTS */}
-      <section className="py-20 bg-white">
+      {/* ── SECTION 2 — AUCTION TYPE CARDS ────────────────────────────────── */}
+      <section className="bg-[#080809] py-16 border-t border-[rgba(201,168,76,0.1)]">
         <div className="max-w-7xl mx-auto px-6">
-          <SectionHeader
-            eyebrow="Available Now"
-            title="Current Lots"
-            subtitle="Active properties across London and Essex. Legal packs available on request."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {publicLots.map((lot) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* Card 1 — Livestream */}
+            <div className="bg-[#0F0F14] border-t-2 border-t-[#C9A84C] border border-[rgba(201,168,76,0.2)] rounded-xl p-8">
+              <h2 className="font-black text-[#E8E4DC] text-2xl">Livestream Auction</h2>
+              <p className="text-[#C9A84C] font-semibold text-lg mt-2">14th May 2026 — 12:00pm</p>
+              <p className="text-[rgba(232,228,220,0.5)] text-sm mt-1">12 Lots · Live Online Stream</p>
+              <p className="text-[rgba(232,228,220,0.65)] text-sm mt-4 leading-relaxed">
+                Telephone, Proxy and Online Bidding. Register once to bid on any lot in this auction.
+              </p>
+              <div className="flex flex-wrap gap-3 mt-6">
+                <Link
+                  href="/current-auction"
+                  className="bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all"
+                >
+                  View Lots →
+                </Link>
+                <Link
+                  href="/register"
+                  className="border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
+                >
+                  Register to Bid
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 2 — Timed */}
+            <div className="bg-[#0F0F14] border-t-2 border-t-[rgba(201,168,76,0.4)] border border-[rgba(201,168,76,0.2)] rounded-xl p-8">
+              <h2 className="font-black text-[#E8E4DC] text-2xl">Timed Online Auction</h2>
+              <p className="text-[#C9A84C] font-semibold text-lg mt-2">Weekly Online Auctions</p>
+              <p className="text-[rgba(232,228,220,0.5)] text-sm mt-1">Rolling, open 24/7</p>
+              <p className="text-[rgba(232,228,220,0.65)] text-sm mt-4 leading-relaxed">
+                View properties in our rolling online timed auction — bid from anywhere, any time, without attending an event.
+              </p>
+              <div className="mt-6">
+                <button
+                  disabled
+                  className="border border-[rgba(201,168,76,0.5)] text-[rgba(232,228,220,0.4)] px-6 py-3 rounded cursor-not-allowed opacity-60"
+                >
+                  Coming Soon
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 3 — STATS BAR ─────────────────────────────────────────── */}
+      <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.15)] py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {heroStats.map(stat => (
+              <div key={stat.label} className="text-center">
+                <div className="text-3xl md:text-4xl font-black text-[#C9A84C]">{stat.value}</div>
+                <div className="text-sm text-[rgba(232,228,220,0.5)] mt-1 uppercase tracking-wider">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 4 — FEATURED LOTS ─────────────────────────────────────── */}
+      <section className="bg-[#080809] py-20">
+        <div className="max-w-7xl mx-auto px-6">
+
+          <div className="flex justify-between items-center mb-10">
+            <h2 className="text-[#E8E4DC] text-2xl font-black">Current Auction Lots</h2>
+            <Link href="/current-auction" className="text-[#C9A84C] text-sm font-semibold hover:text-[#E8C96A] transition-colors">
+              View All Lots →
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {publicLots.slice(0, 4).map(lot => (
               <LotCard key={lot.id} lot={lot} />
             ))}
           </div>
+
           <div className="text-center mt-10">
-            <GoldButton href="/properties" variant="outline">
+            <Link
+              href="/current-auction"
+              className="inline-block border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
+            >
               View All Properties →
-            </GoldButton>
+            </Link>
           </div>
+
         </div>
       </section>
 
-      {/* WHATSAPP ALERTS */}
-      <WhatsAppSignup />
+      {/* ── SECTION 5 — WHY MIDAS ─────────────────────────────────────────── */}
+      <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.1)] py-20">
+        <div className="max-w-7xl mx-auto px-6">
 
-      {/* OFF-MARKET TEASER */}
-      <section className="py-16 bg-[#F8F7F4]">
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="border border-[#E0DDD4] rounded-2xl p-8 md:p-12 text-center bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-            <div className="text-5xl mb-6">🔐</div>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A1A] mb-4">
-              Off-Market Properties
-            </h2>
-            <p className="text-[#666] mb-8 leading-relaxed">
-              Selected investment opportunities shared only with pre-qualified investors. Not
-              advertised publicly. Apply for off-market access below.
+          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
+            Why Midas
+          </p>
+          <h2 className="text-[#E8E4DC] text-3xl font-black mb-3">What Makes Midas Different</h2>
+          <p className="text-[rgba(232,228,220,0.65)] text-base mb-12 max-w-xl">
+            Technology and expertise no other London auction house offers.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {whyCards.map(card => (
+              <div
+                key={card.title}
+                className="bg-[#15151C] border border-[rgba(201,168,76,0.15)] rounded-xl p-6 hover:border-[rgba(201,168,76,0.35)] transition-all"
+              >
+                <div className="text-2xl mb-3">{card.icon}</div>
+                <h3 className="text-[#E8E4DC] font-bold text-sm mb-2">{card.title}</h3>
+                <p className="text-[rgba(232,228,220,0.55)] text-sm leading-relaxed">{card.body}</p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── SECTION 6 — MIDAS OS TEASER ───────────────────────────────────── */}
+      <section className="bg-[#080809] py-20">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.35)] rounded-2xl p-10 text-center">
+
+            <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
+              The Midas Intelligence Platform
             </p>
-            {offRequested ? (
-              <div className="bg-[rgba(201,168,76,0.1)] border border-[rgba(201,168,76,0.3)] rounded-lg p-4 text-[#C9A84C]">
-                ✓ Request received. Sam&apos;s team will be in touch within 24 hours.
-              </div>
-            ) : (
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault()
-                  await fetch('/api/offmarket-request', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: offName, email: offEmail }),
-                  })
-                  setOffRequested(true)
-                }}
-                className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-              >
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={offName}
-                  onChange={(e) => setOffName(e.target.value)}
-                  required
-                  className="flex-1 bg-[#F8F7F4] border border-[#E0DDD4] rounded px-4 py-3 text-[#1A1A1A] placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] text-sm"
-                />
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  value={offEmail}
-                  onChange={(e) => setOffEmail(e.target.value)}
-                  required
-                  className="flex-1 bg-[#F8F7F4] border border-[#E0DDD4] rounded px-4 py-3 text-[#1A1A1A] placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] text-sm"
-                />
-                <GoldButton variant="filled" type="submit">
-                  Request Access
-                </GoldButton>
-              </form>
-            )}
+            <h2 className="text-[#E8E4DC] text-2xl font-black mb-4">
+              AI-Powered Auction Management
+            </h2>
+            <p className="text-[rgba(232,228,220,0.65)] text-base leading-relaxed max-w-2xl mx-auto">
+              Behind every lot on this website is a live AI-powered dashboard. Our team manages the pipeline,
+              analyses deals and monitors your investment in real time — technology no other London auction house has.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-3 mt-6">
+              {['AI Deal Scoring', 'Live Pipeline', 'Instant Facility Letters'].map(pill => (
+                <span
+                  key={pill}
+                  className="border border-[rgba(201,168,76,0.3)] text-[#C9A84C] text-sm px-4 py-2 rounded-full"
+                >
+                  {pill}
+                </span>
+              ))}
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* WHAT WE DO */}
-      <section className="py-20 bg-white">
+      {/* ── SECTION 7 — TESTIMONIALS ──────────────────────────────────────── */}
+      <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.1)] py-20">
         <div className="max-w-7xl mx-auto px-6">
-          <SectionHeader
-            eyebrow="What We Do"
-            title="What we do"
-            subtitle="We stand in the middle — connecting buyers to sellers, investors to opportunities, and clients to the trusted professionals they need."
-          />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                icon: '📉',
-                title: 'BMV Property Deals',
-                desc: 'Our most requested service. We source below-market-value properties across the UK for investors ready to act quickly.',
-              },
-              {
-                icon: '🏛',
-                title: 'Auction Acquisitions & Disposals',
-                desc: 'We help buyers acquire and sellers dispose of properties through established UK auction houses. Fast, certain, professionally managed.',
-              },
-              {
-                icon: '🔐',
-                title: 'Off-Market Properties',
-                desc: 'Selected opportunities that never reach the open market — shared only with our registered investor network.',
-              },
-              {
-                icon: '🏦',
-                title: 'Private Lending Connections',
-                desc: 'We connect buyers who need short-term finance with our trusted private lenders. Terms typically arranged within 48 hours.',
-              },
-              {
-                icon: '⚖️',
-                title: 'Legal & Professional Network',
-                desc: 'We work with trusted solicitors and construction partners — you can use your own or we recommend professionals from our network.',
-              },
-              {
-                icon: '🎙',
-                title: 'Monthly Events & Webinars',
-                desc: 'Regular property events featuring councils, legal experts, lenders and investors. Open to our full network.',
-              },
-            ].map(({ icon, title, desc }) => (
-              <div
-                key={title}
-                className="bg-white border border-[#E8E5DE] rounded-xl p-7 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
-              >
-                <div className="text-3xl mb-4">{icon}</div>
-                <h3 className="text-[#1A1A1A] font-bold text-lg mb-3">{title}</h3>
-                <p className="text-[#666] text-sm leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-10 flex flex-wrap justify-center gap-4">
-            <GoldButton href="/buy" variant="filled">
-              Buy a Property
-            </GoldButton>
-            <GoldButton href="/sell" variant="outline">
-              Sell Your Property
-            </GoldButton>
-          </div>
-        </div>
-      </section>
 
-      {/* TESTIMONIALS */}
-      <section className="py-20 bg-[#F8F7F4]">
-        <div className="max-w-7xl mx-auto px-6">
-          <SectionHeader eyebrow="What Clients Say" title="Trusted by Investors Across London" />
+          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
+            Testimonials
+          </p>
+          <h2 className="text-[#E8E4DC] text-3xl font-black mb-12">
+            Trusted by Investors Across London
+          </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map(({ text, name, location }) => (
+            {testimonials.map(t => (
               <div
-                key={name}
-                className="bg-white border border-[#E8E5DE] rounded-xl p-7 flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
+                key={t.name}
+                className="bg-[#15151C] border border-[rgba(201,168,76,0.15)] rounded-xl p-7 flex flex-col"
               >
-                <div className="text-[#C9A84C] text-3xl mb-4 font-serif">&ldquo;</div>
-                <p className="text-[#444] text-sm leading-relaxed mb-6 flex-1">{text}</p>
+                <div className="text-[#C9A84C] text-4xl font-serif mb-4">&ldquo;</div>
+                <p className="text-[rgba(232,228,220,0.75)] text-sm leading-relaxed mb-6 flex-1 italic">
+                  {t.text}
+                </p>
                 <div>
-                  <div className="text-[#1A1A1A] font-semibold text-sm">{name}</div>
-                  <div className="text-[#888] text-xs">{location}</div>
+                  <div className="text-[#E8E4DC] font-semibold text-sm">{t.name}</div>
+                  <div className="text-[rgba(232,228,220,0.4)] text-xs">{t.location}</div>
                 </div>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* TEAM PREVIEW */}
-      <section className="py-20 bg-white">
+      {/* ── SECTION 8 — LATEST NEWS ───────────────────────────────────────── */}
+      <section className="bg-[#080809] py-20">
         <div className="max-w-7xl mx-auto px-6">
-          <SectionHeader
-            eyebrow="The Team"
-            title="Meet the People Behind Midas"
-            subtitle="Experienced professionals dedicated to getting you the best result."
-          />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member) => (
-              <div
-                key={member.name}
-                className="bg-white border border-[#E8E5DE] rounded-xl p-6 text-center shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
-              >
-                <div className="w-16 h-16 rounded-full bg-[#C9A84C] flex items-center justify-center text-[#080809] font-black text-lg mx-auto mb-4">
-                  {member.initials}
-                </div>
-                <h3 className="text-[#1A1A1A] font-bold mb-1">{member.name}</h3>
-                <p className="text-[#C9A84C] text-xs uppercase tracking-wider mb-3">{member.role}</p>
-                <p className="text-[#666] text-xs leading-relaxed">{member.bio}</p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <GoldButton href="/about" variant="outline">
-              Learn More About Us
-            </GoldButton>
-          </div>
-        </div>
-      </section>
 
-      {/* LATEST NEWS */}
-      <section className="py-20 bg-[#F8F7F4]">
-        <div className="max-w-7xl mx-auto px-6">
-          <SectionHeader
-            eyebrow="Latest Articles"
-            title="From the Midas Blog"
-            subtitle="Market insights and auction guides from the Midas team."
-          />
+          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
+            Blog
+          </p>
+          <h2 className="text-[#E8E4DC] text-3xl font-black mb-12">From the Midas Blog</h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {blogPosts.slice(0, 2).map(post => (
               <div
                 key={post.slug}
-                className="bg-white border border-[#E8E5DE] rounded-xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
+                className="bg-[#0F0F14] border border-[rgba(201,168,76,0.15)] rounded-xl overflow-hidden"
               >
-                <div className="bg-gradient-to-br from-[#0F0F14] to-[#1a1a2e] h-36 flex items-center justify-center">
-                  <span className="bg-[rgba(201,168,76,0.15)] text-[#C9A84C] text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                {/* Image placeholder */}
+                <div className="bg-gradient-to-br from-[#15151C] to-[#080809] h-36 flex items-center justify-center">
+                  <span className="bg-[rgba(201,168,76,0.15)] text-[#C9A84C] text-xs px-3 py-1 rounded-full uppercase tracking-wider">
                     {post.category}
                   </span>
                 </div>
+                {/* Body */}
                 <div className="p-6">
-                  <p className="text-[#888] text-xs mb-2">{post.date}</p>
-                  <h3 className="font-bold text-[#1A1A1A] text-base mb-3 leading-snug">
-                    {post.title}
-                  </h3>
-                  <p className="text-[#666] text-sm leading-relaxed mb-4">{post.excerpt}</p>
+                  <p className="text-[rgba(232,228,220,0.4)] text-xs mb-2">{post.date}</p>
+                  <h3 className="text-[#E8E4DC] font-bold text-base mb-2 leading-snug">{post.title}</h3>
+                  <p className="text-[rgba(232,228,220,0.55)] text-sm leading-relaxed mb-4">{post.excerpt}</p>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="text-[#C9A84C] text-sm font-semibold hover:text-[#E8C96A] transition-colors"
+                    className="text-[#C9A84C] font-semibold text-sm hover:text-[#E8C96A] transition-colors"
                   >
                     Read More →
                   </Link>
@@ -417,64 +400,68 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+
           <div className="text-center mt-10">
-            <GoldButton href="/blog" variant="outline">
+            <Link
+              href="/blog"
+              className="inline-block border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
+            >
               View All Articles →
-            </GoldButton>
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── SECTION 9 — MAILING LIST ──────────────────────────────────────── */}
+      <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.1)] py-20">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+            {/* Left — Email */}
+            <div>
+              <h3 className="text-[#E8E4DC] font-bold text-xl mb-3">Stay in the Know</h3>
+              <p className="text-[rgba(232,228,220,0.55)] text-sm mb-6">
+                New lots, auction dates and market insights.
+              </p>
+
+              {subscribed ? (
+                <p className="text-[#C9A84C] font-semibold">
+                  You&apos;re subscribed. We&apos;ll be in touch.
+                </p>
+              ) : (
+                <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    className="flex-1 bg-[#15151C] border border-[rgba(201,168,76,0.2)] text-[#E8E4DC] placeholder-[rgba(232,228,220,0.3)] px-4 py-3 rounded text-sm focus:outline-none focus:border-[rgba(201,168,76,0.5)] transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all whitespace-nowrap"
+                  >
+                    Subscribe
+                  </button>
+                </form>
+              )}
+            </div>
+
+            {/* Right — WhatsApp */}
+            <div>
+              <h3 className="text-[#E8E4DC] font-bold text-xl mb-3">WhatsApp Alerts</h3>
+              <p className="text-[rgba(232,228,220,0.55)] text-sm mb-6">
+                Get new lots on WhatsApp before they go public.
+              </p>
+              <WhatsAppSignup />
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* MAILING LIST */}
-      <section className="py-20 bg-[#080809]">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-            Stay in the Know
-          </p>
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-            Join 2,847 Investors
-          </h2>
-          <p className="text-[rgba(232,228,220,0.65)] mb-8">
-            Enter your email to be the first to hear about new lots, auction dates and off-market
-            opportunities.
-          </p>
-          {subscribed ? (
-            <div className="bg-[rgba(201,168,76,0.1)] border border-[rgba(201,168,76,0.3)] rounded-lg p-4 text-[#C9A84C] max-w-sm mx-auto">
-              ✓ You&apos;re subscribed. Welcome to the Midas investor network.
-            </div>
-          ) : (
-            <>
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault()
-                  await fetch('/api/whatsapp-signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, source: 'mailing_list' }),
-                  })
-                  setSubscribed(true)
-                }}
-                className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto"
-              >
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="flex-1 bg-[rgba(255,255,255,0.05)] border border-[rgba(201,168,76,0.3)] rounded px-4 py-3 text-white placeholder-[rgba(232,228,220,0.4)] focus:outline-none focus:border-[#C9A84C] text-sm"
-                />
-                <GoldButton variant="filled" type="submit">
-                  Subscribe
-                </GoldButton>
-              </form>
-              <p className="text-[rgba(232,228,220,0.3)] text-xs mt-4">
-                No spam. Unsubscribe anytime.
-              </p>
-            </>
-          )}
-        </div>
-      </section>
-    </>
+    </main>
   )
 }
