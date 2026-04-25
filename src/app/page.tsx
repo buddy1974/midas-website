@@ -2,11 +2,21 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { Phone, Smartphone, Mail, Clock } from 'lucide-react'
 import LotCard from '@/components/LotCard'
-import GoldButton from '@/components/GoldButton'
 import AuctionCountdown from '@/components/AuctionCountdown'
-import { lots, stats, upcomingAuctions, testimonials, blogPosts, type Lot, type LotStatus } from '@/lib/data'
-import WhatsAppSignup from '@/components/WhatsAppSignup'
+import NewsletterForm from '@/components/NewsletterForm'
+import {
+  lots,
+  testimonials,
+  blogPosts,
+  principles,
+  serviceNames,
+  accreditations,
+  staticEvents,
+  type Lot,
+  type LotStatus,
+} from '@/lib/data'
 
 // ── OS Integration ────────────────────────────────────────────────────────────
 
@@ -31,44 +41,9 @@ function mapOsLot(l: OsLot): Lot {
   }
 }
 
-// ── Why Midas card data ───────────────────────────────────────────────────────
-
-interface WhyCard {
-  icon: string
-  title: string
-  body: string
-}
-
-const whyCards: WhyCard[] = [
-  { icon: '🤖', title: 'AI Deal Analysis', body: 'Every lot scored instantly by ARIA, our AI assistant. Know the ROI before you bid.' },
-  { icon: '🔐', title: 'Off-Market Portal', body: 'Properties never listed publicly. Password-protected access for pre-qualified investors only.' },
-  { icon: '🏦', title: 'Private Lending', body: 'Fast bridging finance through our network of private lenders. Terms within 24 hours.' },
-  { icon: '📱', title: 'WhatsApp Alerts', body: 'New lots sent to your WhatsApp before they go public. Register once, never miss a deal.' },
-  { icon: '💰', title: 'Finance Calculator', body: 'Live bridging finance calculations on every property page. Know your numbers before you bid.' },
-  { icon: '⚖️', title: 'Solicitor Network', body: 'Trusted solicitors experienced in 28-day auction completions — recommended by Midas.' },
-  { icon: '🌍', title: 'Nationwide Coverage', body: 'London, Essex and nationwide. Residential, HMO, commercial and development sites.' },
-  { icon: '📊', title: 'Investment Intelligence', body: 'ARIA analyses market data, yields and comparable sales to help you make informed decisions.' },
-]
-
-// ── Stat data (override with data.ts values) ──────────────────────────────────
-
-interface StatItem {
-  value: string
-  label: string
-}
-
-const heroStats: StatItem[] = [
-  { value: stats[0]?.value ?? '340+', label: stats[0]?.label ?? 'Properties Sold' },
-  { value: stats[1]?.value ?? '2,847', label: stats[1]?.label ?? 'Active Investors' },
-  { value: stats[2]?.value ?? '15+', label: stats[2]?.label ?? 'Years Experience' },
-  { value: '28 Days', label: 'To Completion' },
-]
-
 // ── Page component ────────────────────────────────────────────────────────────
 
 export default function HomePage() {
-  const [email, setEmail] = useState('')
-  const [subscribed, setSubscribed] = useState(false)
   const [liveLots, setLiveLots] = useState<Lot[] | null>(null)
 
   useEffect(() => {
@@ -84,383 +59,576 @@ export default function HomePage() {
 
   const publicLots = (liveLots ?? lots.filter(l => l.showOnWebsite)).filter(l => !l.isOffMarket)
 
-  async function handleSubscribe(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    try {
-      await fetch('/api/whatsapp-signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source: 'mailing_list' }),
-      })
-    } catch {
-      // silent fail — still mark subscribed
-    }
-    setSubscribed(true)
-  }
+  // ── Inline data for three-column section ─────────────────────────────────
+
+  const eventsData = staticEvents
+
+  const principlesData = principles
+
+  const servicesData = serviceNames
+
+  const accreditationsData = accreditations
 
   return (
     <main>
 
-      {/* ── SECTION 1 — HERO ───────────────────────────────────────────────── */}
-      <section className="relative bg-[#080809] min-h-screen overflow-hidden">
-        {/* Gold radial glow — top right */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-[rgba(201,168,76,0.06)] blur-3xl pointer-events-none" />
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 1 — HERO                                                      */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section
+        className="relative min-h-screen flex items-center justify-center"
+        style={{
+          backgroundImage: "linear-gradient(to bottom, rgba(8,8,9,0.75) 0%, rgba(8,8,9,0.9) 100%), url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1920&q=80')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className="relative max-w-4xl mx-auto px-6 text-center">
+          {/* Eyebrow */}
+          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.3em] mb-4">
+            PROPERTY ACQUISITION — LONDON &amp; ESSEX
+          </p>
 
-        <div className="relative max-w-7xl mx-auto px-6 pt-28 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* H1 */}
+          <h1 className="text-4xl md:text-6xl font-black mb-6">
+            <span className="text-white">Midas </span>
+            <span className="text-[#C9A84C]">Property Auctions</span>
+          </h1>
 
-          {/* Left column */}
-          <div>
-            <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-              London &amp; Essex Property Auctions
+          {/* Gold-bordered intro box */}
+          <div className="bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.5)] rounded-lg px-8 py-6 max-w-2xl mx-auto mb-8">
+            <p className="text-[rgba(232,228,220,0.85)] text-lg leading-relaxed">
+              Midas Property Auctions specialises in sourcing, selling and investing in top-performing
+              properties across London, Essex and nationwide — connecting buyers, sellers and investors
+              through professional auction and off-market services.
             </p>
+          </div>
 
-            <h1 className="text-4xl md:text-6xl font-black leading-tight mb-6">
-              <span className="text-[#E8E4DC] block">Where Committed Buyers</span>
-              <span className="text-[#C9A84C] block">Meet Committed Sellers</span>
-            </h1>
+          {/* CTA buttons */}
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/current-auction"
+              className="bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-colors"
+            >
+              View Current Lots →
+            </Link>
+            <Link
+              href="/register"
+              className="border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors"
+            >
+              Register to Bid
+            </Link>
+            <Link
+              href="/valuation"
+              className="border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors"
+            >
+              Free Valuation
+            </Link>
+          </div>
 
-            <p className="text-[rgba(232,228,220,0.65)] text-lg max-w-xl leading-relaxed">
-              Standing in the middle — connecting buyers to sellers, investors to opportunities,
-              and clients to the solicitors, lenders and partners they need.
+          {/* Phone */}
+          <p className="mt-6 text-[#C9A84C] text-sm">
+            📱 Sam Fongho: +44 (0) 7413041372
+          </p>
+
+          {/* Next auction countdown */}
+          <div className="mt-8 max-w-sm mx-auto bg-[rgba(8,8,9,0.6)] border border-[rgba(201,168,76,0.3)] rounded-xl p-5">
+            <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.2em] font-semibold mb-3">
+              Next Auction
             </p>
+            <AuctionCountdown
+              targetDate="2026-05-14T12:00:00"
+              auctionName="Midas Spring Auction 2026"
+              lotCount={12}
+            />
+          </div>
+        </div>
+      </section>
 
-            {/* Primary CTAs */}
-            <div className="flex flex-wrap gap-3 mt-8">
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 2 — CONTACT BAR                                               */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#0D0D14] border-t-2 border-t-[#C9A84C] border-b border-b-[rgba(201,168,76,0.15)] py-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
+          {/* Phone */}
+          <div className="flex items-center gap-3 px-6 py-2 border-r border-[rgba(201,168,76,0.15)]">
+            <Phone className="text-[#C9A84C] flex-shrink-0" size={18} />
+            <div>
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.15em] font-semibold">PHONE NUMBER</p>
+              <p className="text-[#E8E4DC] text-sm font-medium">+44 (0) 2072062691</p>
+            </div>
+          </div>
+          {/* Mobile */}
+          <div className="flex items-center gap-3 px-6 py-2 border-r border-[rgba(201,168,76,0.15)]">
+            <Smartphone className="text-[#C9A84C] flex-shrink-0" size={18} />
+            <div>
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.15em] font-semibold">MOBILE NUMBER</p>
+              <p className="text-[#E8E4DC] text-sm font-medium">+44 (0) 7413041372</p>
+            </div>
+          </div>
+          {/* Email */}
+          <div className="flex items-center gap-3 px-6 py-2 border-r border-[rgba(201,168,76,0.15)]">
+            <Mail className="text-[#C9A84C] flex-shrink-0" size={18} />
+            <div>
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.15em] font-semibold">EMAIL</p>
+              <p className="text-[#E8E4DC] text-sm font-medium">info@midaspropertygroup.co.uk</p>
+            </div>
+          </div>
+          {/* Hours */}
+          <div className="flex items-center gap-3 px-6 py-2">
+            <Clock className="text-[#C9A84C] flex-shrink-0" size={18} />
+            <div>
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.15em] font-semibold">OPENING TIMES</p>
+              <p className="text-[#E8E4DC] text-sm font-medium">Mon - Fri: 9.00 - 18:00</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 3 — FOUR AUCTION CARDS                                        */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#080809] py-10 px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+
+          {/* Card 1 — Livestream Auction */}
+          <div className="bg-gradient-to-b from-[#1a1a2e] to-[#0d0d14] border border-[rgba(201,168,76,0.3)] rounded-xl p-7 flex flex-col justify-between min-h-[260px]">
+            <div>
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-widest font-bold mb-2">UPCOMING</p>
+              <h2 className="text-[#E8E4DC] font-black text-xl mb-1">Livestream Auction</h2>
+              <p className="text-[#C9A84C] font-semibold text-sm mb-3">14th May 2026 — 12:00pm</p>
+              <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-6">
+                View properties in our upcoming Livestream Auction with Telephone, Proxy and Online Bidding
+              </p>
+            </div>
+            <div className="flex gap-2">
               <Link
                 href="/current-auction"
-                className="bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all"
+                className="bg-[#C9A84C] text-[#080809] text-xs font-bold px-4 py-2 rounded hover:bg-[#E8C96A] transition-colors"
               >
-                View Current Lots →
+                View Lots →
               </Link>
               <Link
                 href="/register"
-                className="border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
+                className="border border-[rgba(201,168,76,0.4)] text-[rgba(232,228,220,0.7)] text-xs px-4 py-2 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors"
               >
-                Register to Bid
+                Register
               </Link>
+            </div>
+          </div>
+
+          {/* Card 2 — Timed Auction */}
+          <div className="bg-gradient-to-b from-[#1a1a2e] to-[#0d0d14] border border-[rgba(201,168,76,0.3)] rounded-xl p-7 flex flex-col justify-between min-h-[260px]">
+            <div>
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-widest font-bold mb-2">ONLINE</p>
+              <h2 className="text-[#E8E4DC] font-black text-xl mb-1">Timed Auction</h2>
+              <p className="text-[rgba(232,228,220,0.5)] text-xs mb-3">Weekly Online Auctions</p>
+              <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-6">
+                View all properties in our upcoming online weekly auction — bid from anywhere, any time.
+              </p>
+            </div>
+            <div>
+              <Link
+                href="/timed-auction"
+                className="bg-[#C9A84C] text-[#080809] text-xs font-bold px-4 py-2 rounded hover:bg-[#E8C96A] transition-colors inline-block"
+              >
+                View Lots →
+              </Link>
+            </div>
+          </div>
+
+          {/* Card 3 — Off-Market */}
+          <div className="bg-gradient-to-b from-[#1a1a2e] to-[#0d0d14] border border-[rgba(201,168,76,0.3)] rounded-xl p-7 flex flex-col justify-between min-h-[260px]">
+            <div>
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-widest font-bold mb-2">EXCLUSIVE</p>
+              <h2 className="text-[#E8E4DC] font-black text-xl mb-1">Off-Market Properties</h2>
+              <p className="text-[rgba(232,228,220,0.5)] text-xs mb-3">Password-Protected Access</p>
+              <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-6">
+                Pre-qualified investors only. Properties never listed publicly. Access by application.
+              </p>
+            </div>
+            <div>
+              <Link
+                href="/off-market"
+                className="bg-[#C9A84C] text-[#080809] text-xs font-bold px-4 py-2 rounded hover:bg-[#E8C96A] transition-colors inline-block"
+              >
+                Request Access →
+              </Link>
+            </div>
+          </div>
+
+          {/* Card 4 — Free Valuation */}
+          <div className="bg-gradient-to-b from-[#1a1a2e] to-[#0d0d14] border border-[rgba(201,168,76,0.3)] rounded-xl p-7 flex flex-col justify-between min-h-[260px]">
+            <div>
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-widest font-bold mb-2">FREE</p>
+              <h2 className="text-[#E8E4DC] font-black text-xl mb-1">Auction Valuation</h2>
+              <p className="text-[rgba(232,228,220,0.5)] text-xs mb-3">No Obligation Appraisal</p>
+              <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-6">
+                Request a free auction appraisal for your land or property. Response within 24 hours.
+              </p>
+            </div>
+            <div>
               <Link
                 href="/valuation"
-                className="border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
+                className="bg-[#C9A84C] text-[#080809] text-xs font-bold px-4 py-2 rounded hover:bg-[#E8C96A] transition-colors inline-block"
               >
-                Get Free Valuation
+                Request A Valuation →
               </Link>
             </div>
-
-            {/* Phone */}
-            <p className="mt-6 text-[#C9A84C] text-sm">📱 Call Sam: 07454 753318</p>
-
-            {/* Quick-link pills */}
-            <div className="flex flex-wrap gap-3 mt-4">
-              {['View Current Lots', 'Register to Bid', 'Get Free Valuation'].map(label => (
-                <span
-                  key={label}
-                  className="border border-[rgba(201,168,76,0.35)] text-[rgba(232,228,220,0.6)] text-sm px-4 py-1.5 rounded-full hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors cursor-default"
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Right column — countdown card */}
-          <div>
-            <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.25)] rounded-2xl p-8">
-              <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-6">
-                Next Auction
-              </p>
-              <AuctionCountdown
-                targetDate="2026-05-14T12:00:00"
-                auctionName={upcomingAuctions[0].title}
-                lotCount={upcomingAuctions[0].lots}
-              />
-            </div>
           </div>
 
         </div>
       </section>
 
-      {/* ── SECTION 2 — AUCTION TYPE CARDS ────────────────────────────────── */}
-      <section className="bg-[#080809] py-16 border-t border-[rgba(201,168,76,0.1)]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            {/* Card 1 — Livestream */}
-            <div className="bg-[#0F0F14] border-t-2 border-t-[#C9A84C] border border-[rgba(201,168,76,0.2)] rounded-xl p-8">
-              <h2 className="font-black text-[#E8E4DC] text-2xl">Livestream Auction</h2>
-              <p className="text-[#C9A84C] font-semibold text-lg mt-2">14th May 2026 — 12:00pm</p>
-              <p className="text-[rgba(232,228,220,0.5)] text-sm mt-1">12 Lots · Live Online Stream</p>
-              <p className="text-[rgba(232,228,220,0.65)] text-sm mt-4 leading-relaxed">
-                Telephone, Proxy and Online Bidding. Register once to bid on any lot in this auction.
-              </p>
-              <div className="flex flex-wrap gap-3 mt-6">
-                <Link
-                  href="/current-auction"
-                  className="bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all"
-                >
-                  View Lots →
-                </Link>
-                <Link
-                  href="/register"
-                  className="border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
-                >
-                  Register to Bid
-                </Link>
-              </div>
-            </div>
-
-            {/* Card 2 — Timed */}
-            <div className="bg-[#0F0F14] border-t-2 border-t-[rgba(201,168,76,0.4)] border border-[rgba(201,168,76,0.2)] rounded-xl p-8">
-              <h2 className="font-black text-[#E8E4DC] text-2xl">Timed Online Auction</h2>
-              <p className="text-[#C9A84C] font-semibold text-lg mt-2">Weekly Online Auctions</p>
-              <p className="text-[rgba(232,228,220,0.5)] text-sm mt-1">Rolling, open 24/7</p>
-              <p className="text-[rgba(232,228,220,0.65)] text-sm mt-4 leading-relaxed">
-                View properties in our rolling online timed auction — bid from anywhere, any time, without attending an event.
-              </p>
-              <div className="mt-6">
-                <button
-                  disabled
-                  className="border border-[rgba(201,168,76,0.5)] text-[rgba(232,228,220,0.4)] px-6 py-3 rounded cursor-not-allowed opacity-60"
-                >
-                  Coming Soon
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 3 — STATS BAR ─────────────────────────────────────────── */}
-      <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.15)] py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {heroStats.map(stat => (
-              <div key={stat.label} className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-[#C9A84C]">{stat.value}</div>
-                <div className="text-sm text-[rgba(232,228,220,0.5)] mt-1 uppercase tracking-wider">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 4 — FEATURED LOTS ─────────────────────────────────────── */}
-      <section className="bg-[#080809] py-20">
-        <div className="max-w-7xl mx-auto px-6">
-
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-[#E8E4DC] text-2xl font-black">Current Auction Lots</h2>
-            <Link href="/current-auction" className="text-[#C9A84C] text-sm font-semibold hover:text-[#E8C96A] transition-colors">
-              View All Lots →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {publicLots.slice(0, 4).map(lot => (
-              <LotCard key={lot.id} lot={lot} />
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link
-              href="/current-auction"
-              className="inline-block border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
-            >
-              View All Properties →
-            </Link>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── SECTION 5 — WHY MIDAS ─────────────────────────────────────────── */}
-      <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.1)] py-20">
-        <div className="max-w-7xl mx-auto px-6">
-
-          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-            Why Midas
-          </p>
-          <h2 className="text-[#E8E4DC] text-3xl font-black mb-3">What Makes Midas Different</h2>
-          <p className="text-[rgba(232,228,220,0.65)] text-base mb-12 max-w-xl">
-            Technology and expertise no other London auction house offers.
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {whyCards.map(card => (
-              <div
-                key={card.title}
-                className="bg-[#15151C] border border-[rgba(201,168,76,0.15)] rounded-xl p-6 hover:border-[rgba(201,168,76,0.35)] transition-all"
-              >
-                <div className="text-2xl mb-3">{card.icon}</div>
-                <h3 className="text-[#E8E4DC] font-bold text-sm mb-2">{card.title}</h3>
-                <p className="text-[rgba(232,228,220,0.55)] text-sm leading-relaxed">{card.body}</p>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── SECTION 6 — MIDAS OS TEASER ───────────────────────────────────── */}
-      <section className="bg-[#080809] py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.35)] rounded-2xl p-10 text-center">
-
-            <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-              The Midas Intelligence Platform
-            </p>
-            <h2 className="text-[#E8E4DC] text-2xl font-black mb-4">
-              AI-Powered Auction Management
-            </h2>
-            <p className="text-[rgba(232,228,220,0.65)] text-base leading-relaxed max-w-2xl mx-auto">
-              Behind every lot on this website is a live AI-powered dashboard. Our team manages the pipeline,
-              analyses deals and monitors your investment in real time — technology no other London auction house has.
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-3 mt-6">
-              {['AI Deal Scoring', 'Live Pipeline', 'Instant Facility Letters'].map(pill => (
-                <span
-                  key={pill}
-                  className="border border-[rgba(201,168,76,0.3)] text-[#C9A84C] text-sm px-4 py-2 rounded-full"
-                >
-                  {pill}
-                </span>
-              ))}
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 7 — TESTIMONIALS ──────────────────────────────────────── */}
-      <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.1)] py-20">
-        <div className="max-w-7xl mx-auto px-6">
-
-          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-            Testimonials
-          </p>
-          <h2 className="text-[#E8E4DC] text-3xl font-black mb-12">
-            Trusted by Investors Across London
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 4 — WELCOME SECTION                                           */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#111118] py-16 px-6 text-center">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-black mb-6">
+            <span className="text-white">Welcome to </span>
+            <span className="text-[#C9A84C]">Midas Property Auctions!</span>
           </h2>
+          <p className="text-[rgba(232,228,220,0.75)] text-lg max-w-3xl mx-auto mb-10 leading-relaxed">
+            Midas Property Auctions is a premier London auction house, delivering fast, transparent and
+            professional results for buyers and sellers across London, Essex and nationwide.
+          </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map(t => (
-              <div
-                key={t.name}
-                className="bg-[#15151C] border border-[rgba(201,168,76,0.15)] rounded-xl p-7 flex flex-col"
-              >
-                <div className="text-[#C9A84C] text-4xl font-serif mb-4">&ldquo;</div>
-                <p className="text-[rgba(232,228,220,0.75)] text-sm leading-relaxed mb-6 flex-1 italic">
-                  {t.text}
-                </p>
-                <div>
-                  <div className="text-[#E8E4DC] font-semibold text-sm">{t.name}</div>
-                  <div className="text-[rgba(232,228,220,0.4)] text-xs">{t.location}</div>
-                </div>
-              </div>
+          {/* Bullet points */}
+          <ul className="max-w-2xl mx-auto text-left space-y-4">
+            {[
+              'Standing in the middle — connecting buyers to sellers, investors to opportunities, and clients to the professionals they need.',
+              'A trusted name in UK property auctions since 2015, with over 340 properties sold.',
+              'An active database of 2,847 investors with maximum exposure through email, WhatsApp and social media campaigns.',
+              'Specialising in residential, HMO, commercial and development opportunities across London and Essex.',
+              'Trusted by private sellers, landlords, developers, solicitors and housing associations.',
+            ].map((point, i) => (
+              <li key={i} className="flex items-start gap-4">
+                <div className="w-1 flex-shrink-0 mt-1 self-stretch bg-[#C9A84C] rounded-full" />
+                <p className="text-[rgba(232,228,220,0.75)] text-sm leading-relaxed">{point}</p>
+              </li>
             ))}
-          </div>
+          </ul>
 
+          {/* Links */}
+          <div className="flex justify-center gap-6 mt-8">
+            <Link href="/about" className="text-[#C9A84C] text-sm hover:text-[#E8C96A] transition-colors">
+              Learn more about us →
+            </Link>
+            <Link
+              href="https://www.midaspropertygroup.co.uk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[rgba(232,228,220,0.4)] text-xs hover:text-[#C9A84C] transition-colors"
+            >
+              Visit our main website →
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ── SECTION 8 — LATEST NEWS ───────────────────────────────────────── */}
-      <section className="bg-[#080809] py-20">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 5 — FEATURED LOTS                                             */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#080809] py-12 px-6">
+        {/* Header row */}
+        <div className="flex justify-between items-start mb-8 max-w-7xl mx-auto">
+          <div>
+            <h2 className="text-[#C9A84C] font-black uppercase text-xl">FEATURED LOTS</h2>
+            <div className="w-10 h-0.5 bg-[#C9A84C] mt-2" />
+          </div>
+          <div className="flex gap-4 text-sm">
+            <Link href="/current-auction" className="text-[#C9A84C] hover:text-[#E8C96A] transition-colors">
+              View Full List →
+            </Link>
+            <Link href="/current-auction" className="text-[rgba(232,228,220,0.4)] hover:text-[#C9A84C] transition-colors">
+              View Catalogue →
+            </Link>
+          </div>
+        </div>
 
-          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-            Blog
-          </p>
-          <h2 className="text-[#E8E4DC] text-3xl font-black mb-12">From the Midas Blog</h2>
+        {/* Grid */}
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {publicLots.slice(0, 4).map((lot, i) => (
+            <LotCard key={lot.id} lot={lot} lotNumber={i + 1} />
+          ))}
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {blogPosts.slice(0, 2).map(post => (
-              <div
-                key={post.slug}
-                className="bg-[#0F0F14] border border-[rgba(201,168,76,0.15)] rounded-xl overflow-hidden"
-              >
-                {/* Image placeholder */}
-                <div className="bg-gradient-to-br from-[#15151C] to-[#080809] h-36 flex items-center justify-center">
-                  <span className="bg-[rgba(201,168,76,0.15)] text-[#C9A84C] text-xs px-3 py-1 rounded-full uppercase tracking-wider">
-                    {post.category}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 6 — THREE COLUMN SECTION                                      */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#111118] border-y border-[rgba(201,168,76,0.1)] py-16 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 divide-x divide-[rgba(201,168,76,0.1)]">
+
+          {/* COLUMN 1 — LATEST EVENTS */}
+          <div className="md:pr-8">
+            <h3 className="text-[#C9A84C] font-black uppercase text-sm tracking-widest mb-2">LATEST EVENTS</h3>
+            <div className="w-10 h-0.5 bg-[#C9A84C] mb-6" />
+
+            <div className="space-y-0">
+              {eventsData.map((event, i) => (
+                <div
+                  key={i}
+                  className="flex gap-4 pb-5 mb-5 border-b border-[rgba(201,168,76,0.08)] last:border-0 last:mb-0 last:pb-0"
+                >
+                  {/* Date block */}
+                  <div className="w-14 text-center flex-shrink-0 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-lg py-2">
+                    <p className="text-[#C9A84C] text-2xl font-black leading-none">{event.day}</p>
+                    <p className="text-[#C9A84C] text-[9px] uppercase tracking-wider">{event.month}</p>
+                    <p className="text-[rgba(232,228,220,0.3)] text-[9px]">{event.year}</p>
+                  </div>
+                  {/* Content */}
+                  <div className="flex-1">
+                    <Link
+                      href={event.href}
+                      className="text-[#E8E4DC] text-sm font-semibold hover:text-[#C9A84C] transition-colors leading-snug mb-1 block"
+                    >
+                      {event.title}
+                    </Link>
+                    <p className="text-[rgba(232,228,220,0.5)] text-xs leading-relaxed line-clamp-2">
+                      {event.excerpt}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <Link href="/events" className="text-[#C9A84C] text-sm mt-4 block hover:text-[#E8C96A] transition-colors">
+              View All Events →
+            </Link>
+          </div>
+
+          {/* COLUMN 2 — OUR PRINCIPLES */}
+          <div className="md:px-8">
+            <h3 className="text-[#C9A84C] font-black uppercase text-sm tracking-widest mb-2">OUR PRINCIPLES</h3>
+            <div className="w-10 h-0.5 bg-[#C9A84C] mb-6" />
+
+            <div>
+              {principlesData.map((p, i) => (
+                <div key={i} className="mb-5 last:mb-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[#C9A84C] text-xs">◆</span>
+                    <span className="text-[#E8E4DC] font-bold text-sm">{p.title}</span>
+                  </div>
+                  <p className="text-[rgba(232,228,220,0.55)] text-xs leading-relaxed pl-5">
+                    {p.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* COLUMN 3 — OUR SERVICES */}
+          <div className="md:pl-8">
+            <h3 className="text-[#C9A84C] font-black uppercase text-sm tracking-widest mb-2">OUR SERVICES</h3>
+            <div className="w-10 h-0.5 bg-[#C9A84C] mb-6" />
+
+            <div>
+              {servicesData.map((service, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 py-2 border-b border-[rgba(201,168,76,0.07)] last:border-0 hover:border-[rgba(201,168,76,0.25)] transition-colors cursor-default"
+                >
+                  <div
+                    className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-[9px] font-bold text-[#C9A84C]"
+                    style={{ background: 'rgba(201,168,76,0.12)', border: '1px solid rgba(201,168,76,0.25)' }}
+                  >
+                    {i + 1}
+                  </div>
+                  <span className="text-[rgba(232,228,220,0.75)] text-xs hover:text-[#C9A84C] transition-colors">
+                    {service}
                   </span>
                 </div>
-                {/* Body */}
-                <div className="p-6">
-                  <p className="text-[rgba(232,228,220,0.4)] text-xs mb-2">{post.date}</p>
-                  <h3 className="text-[#E8E4DC] font-bold text-base mb-2 leading-snug">{post.title}</h3>
-                  <p className="text-[rgba(232,228,220,0.55)] text-sm leading-relaxed mb-4">{post.excerpt}</p>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="text-[#C9A84C] font-semibold text-sm hover:text-[#E8C96A] transition-colors"
-                  >
-                    Read More →
-                  </Link>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          <div className="text-center mt-10">
-            <Link
-              href="/blog"
-              className="inline-block border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
-            >
-              View All Articles →
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 7 — TIMED AUCTION LOTS                                        */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#080809] py-10 px-6">
+        {/* Header row */}
+        <div className="flex justify-between items-start mb-8 max-w-7xl mx-auto">
+          <div>
+            <h2 className="text-[#C9A84C] font-black uppercase text-xl">TIMED AUCTION LOTS</h2>
+            <div className="w-10 h-0.5 bg-[#C9A84C] mt-2" />
+          </div>
+          <div className="flex gap-4 text-sm">
+            <Link href="/timed-auction" className="text-[#C9A84C] hover:text-[#E8C96A] transition-colors">
+              View Full List →
             </Link>
           </div>
+        </div>
 
+        {/* Grid */}
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {publicLots.slice(4, 8).length > 0
+            ? publicLots.slice(4, 8).map((lot, i) => (
+                <LotCard key={lot.id} lot={lot} lotNumber={i + 5} />
+              ))
+            : publicLots.slice(0, 4).map((lot, i) => (
+                <LotCard key={lot.id + '-t'} lot={lot} lotNumber={i + 1} />
+              ))
+          }
         </div>
       </section>
 
-      {/* ── SECTION 9 — MAILING LIST ──────────────────────────────────────── */}
-      <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.1)] py-20">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-
-            {/* Left — Email */}
-            <div>
-              <h3 className="text-[#E8E4DC] font-bold text-xl mb-3">Stay in the Know</h3>
-              <p className="text-[rgba(232,228,220,0.55)] text-sm mb-6">
-                New lots, auction dates and market insights.
-              </p>
-
-              {subscribed ? (
-                <p className="text-[#C9A84C] font-semibold">
-                  You&apos;re subscribed. We&apos;ll be in touch.
-                </p>
-              ) : (
-                <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    className="flex-1 bg-[#15151C] border border-[rgba(201,168,76,0.2)] text-[#E8E4DC] placeholder-[rgba(232,228,220,0.3)] px-4 py-3 rounded text-sm focus:outline-none focus:border-[rgba(201,168,76,0.5)] transition-colors"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all whitespace-nowrap"
-                  >
-                    Subscribe
-                  </button>
-                </form>
-              )}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 8 — STATS BAR                                                 */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#0D0D14] border-y border-[rgba(201,168,76,0.2)] py-12 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[
+            { value: '340+', label: 'Properties Sold' },
+            { value: '2,847', label: 'Active Investors' },
+            { value: '15+', label: 'Years Experience' },
+            { value: '28 Days', label: 'To Completion' },
+          ].map(stat => (
+            <div key={stat.label} className="text-center">
+              <p className="text-4xl md:text-5xl font-black text-[#C9A84C] tabular-nums">{stat.value}</p>
+              <p className="text-xs uppercase tracking-wider text-[rgba(232,228,220,0.5)] mt-2">{stat.label}</p>
             </div>
+          ))}
+        </div>
+      </section>
 
-            {/* Right — WhatsApp */}
-            <div>
-              <h3 className="text-[#E8E4DC] font-bold text-xl mb-3">WhatsApp Alerts</h3>
-              <p className="text-[rgba(232,228,220,0.55)] text-sm mb-6">
-                Get new lots on WhatsApp before they go public.
-              </p>
-              <WhatsAppSignup />
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 9 — NEWSLETTER                                                */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[rgba(201,168,76,0.06)] border-y-2 border-[#C9A84C] py-14 px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-[#C9A84C] font-black uppercase text-xl tracking-wider mb-3">
+            JOIN OUR MAILING LIST
+          </h2>
+          <p className="text-[rgba(232,228,220,0.65)] text-base max-w-xl mx-auto">
+            Be the first to hear about new lots, auction dates and exclusive investment opportunities.
+          </p>
+        </div>
+        <NewsletterForm />
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 10 — GOLD CTA BANNER                                          */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section style={{ backgroundColor: '#C9A84C' }} className="py-16 px-6 text-center">
+        <h2 className="text-white font-black uppercase text-2xl md:text-3xl tracking-wide mb-3">
+          WE CAN ASSIST YOU WITH ALL YOUR PROPERTY INVESTMENT NEEDS
+        </h2>
+        <p className="text-white/80 text-xs tracking-[0.3em] uppercase mb-8">
+          LET US KNOW HOW WE CAN HELP
+        </p>
+        <Link
+          href="/contact"
+          className="inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-sm text-white hover:bg-[#111] hover:border-white transition-colors"
+          style={{ backgroundColor: '#1a1a1a', border: '2px solid rgba(255,255,255,0.3)' }}
+        >
+          ✉ Contact Us
+        </Link>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 11 — ACCREDITATION LOGOS                                      */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[rgba(255,255,255,0.02)] border-t border-[rgba(201,168,76,0.15)] py-8 px-6">
+        <div className="flex flex-wrap justify-center gap-4">
+          {accreditationsData.map(name => (
+            <span
+              key={name}
+              className="border border-[rgba(201,168,76,0.3)] rounded px-5 py-2 text-[#C9A84C] text-xs font-semibold tracking-wider uppercase hover:bg-[rgba(201,168,76,0.05)] transition-colors cursor-default"
+            >
+              {name}
+            </span>
+          ))}
+        </div>
+        <span className="text-[rgba(232,228,220,0.2)] text-xs italic text-center mt-6 block">
+          TODO: Replace text badges with official logo images when Sam provides them.
+        </span>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 12 — TESTIMONIALS                                             */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.1)] py-16 px-6">
+        <h2 className="text-[#C9A84C] font-black uppercase text-xl tracking-widest mb-2 text-center">
+          TESTIMONIALS
+        </h2>
+        <div className="w-10 h-0.5 bg-[#C9A84C] mx-auto mb-10" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 max-w-7xl mx-auto">
+          {testimonials.map(t => (
+            <div
+              key={t.name}
+              className="bg-[#15151C] border border-[rgba(201,168,76,0.15)] rounded-xl p-6 flex flex-col"
+            >
+              <p className="text-[#C9A84C] text-4xl font-serif leading-none mb-3">&ldquo;</p>
+              <p className="text-[#C9A84C] text-xs mb-3">{'★'.repeat(t.rating)}</p>
+              <p className="text-[rgba(232,228,220,0.7)] text-sm leading-relaxed italic flex-1 mb-4">{t.text}</p>
+              <div>
+                <p className="text-[#E8E4DC] font-bold text-sm">{t.name}</p>
+                <p className="text-[rgba(232,228,220,0.4)] text-xs">{t.location}</p>
+              </div>
             </div>
+          ))}
+        </div>
 
+        <Link
+          href="/testimonials"
+          className="text-[#C9A84C] text-sm mt-8 block text-center hover:text-[#E8C96A] transition-colors"
+        >
+          View All Testimonials →
+        </Link>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 13 — LATEST NEWS                                              */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#080809] py-14 px-6">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-8 max-w-7xl mx-auto">
+          <div>
+            <h2 className="text-[#C9A84C] font-black uppercase text-xl">LATEST NEWS</h2>
+            <div className="w-10 h-0.5 bg-[#C9A84C] mt-2" />
           </div>
+          <Link href="/blog" className="text-[#C9A84C] text-sm hover:text-[#E8C96A] transition-colors">
+            Read More Articles →
+          </Link>
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {blogPosts.slice(0, 2).map(post => (
+            <div
+              key={post.slug}
+              className="bg-[#0F0F14] border border-[rgba(201,168,76,0.15)] rounded-xl overflow-hidden"
+            >
+              {/* Image area */}
+              <div className="h-36 bg-gradient-to-br from-[#15151C] to-[#080809] flex items-center justify-center">
+                <span className="bg-[rgba(201,168,76,0.15)] text-[#C9A84C] text-xs px-3 py-1 rounded-full uppercase font-semibold">
+                  {post.category}
+                </span>
+              </div>
+              {/* Body */}
+              <div className="p-6">
+                <p className="text-[rgba(232,228,220,0.35)] text-xs mb-2">{post.date}</p>
+                <h3 className="text-[#E8E4DC] font-bold text-base leading-snug mb-3">{post.title}</h3>
+                <p className="text-[rgba(232,228,220,0.55)] text-sm leading-relaxed mb-4">{post.excerpt}</p>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="text-[#C9A84C] text-sm font-semibold hover:text-[#E8C96A] transition-colors"
+                >
+                  Read More →
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
+
 
     </main>
   )

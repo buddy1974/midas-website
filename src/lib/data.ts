@@ -581,6 +581,7 @@ export interface BlogPost {
   date: string
   excerpt: string
   slug: string
+  content?: string
 }
 
 export const blogPosts: BlogPost[] = [
@@ -616,6 +617,59 @@ export const blogPosts: BlogPost[] = [
       'Not every HMO is a good investment. In this guide we cover the key criteria — location, licensing, room size, yield calculation and common pitfalls to avoid.',
     slug: 'good-hmo-investment-2026',
   },
+]
+
+// ── PRINCIPLES ────────────────────────────────────────────────────────────────
+
+export const principles = [
+  { title: 'Speed & Certainty', description: 'We deliver fast, legally binding sales. When the hammer falls, contracts exchange immediately — no chains, no fall-throughs, no delays.' },
+  { title: 'Transparency', description: 'Every lot is fully disclosed. Legal packs, guide prices and viewing information available before you bid.' },
+  { title: 'Maximum Exposure', description: 'Your property reaches 2,847 active investors through email, WhatsApp and social media campaigns on day one.' },
+  { title: 'Professional Excellence', description: 'Sam Fongho has attended every Auction House London event for six consecutive years.' },
+  { title: 'Client-First Approach', description: 'We stand in the middle — representing both buyers and sellers with equal professionalism.' },
+]
+
+// ── SERVICE NAMES ─────────────────────────────────────────────────────────────
+
+export const serviceNames = [
+  'Auction Sales & Acquisitions',
+  'Off-Market Property',
+  'Buy-to-Let Investments',
+  'HMO Properties',
+  'Commercial Property',
+  'Probate Property Sales',
+  'Bridging Finance',
+  'Property Valuation',
+  'Investment Consultancy',
+  'Alternative Investments',
+]
+
+// ── ACCREDITATIONS ────────────────────────────────────────────────────────────
+
+export const accreditations = [
+  'The Property Ombudsman',
+  'MPG — Midas Property Group',
+  'Megamound Partner',
+  'HomeLet Accredited',
+  'TSI Approved Code',
+]
+
+// ── STATIC EVENTS ─────────────────────────────────────────────────────────────
+
+export interface StaticEvent {
+  day: string
+  month: string
+  year: string
+  title: string
+  excerpt: string
+  href: string
+}
+
+export const staticEvents: StaticEvent[] = [
+  { day: '14', month: 'MAY', year: '2026', title: 'Midas Spring Auction 2026', excerpt: 'Livestream auction — 12 lots across London and Essex. Register to bid by 13th May.', href: '/current-auction' },
+  { day: '25', month: 'JUN', year: '2026', title: 'Midas Summer Auction 2026', excerpt: 'Now accepting vendor instructions. Submit your property by 28th May.', href: '/auction-dates' },
+  { day: '10', month: 'MAY', year: '2026', title: 'Midas Investor Networking Evening', excerpt: 'Monthly networking event for property investors, developers and landlords in London.', href: '/events' },
+  { day: '30', month: 'APR', year: '2026', title: 'HMO Investment Strategy Webinar', excerpt: 'Online webinar covering HMO licensing, yields and the London market in 2026.', href: '/events' },
 ]
 
 // ── COMPANY ───────────────────────────────────────────────────────────────────

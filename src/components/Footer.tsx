@@ -1,65 +1,56 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { Phone, Smartphone, Mail } from 'lucide-react'
 import { company } from '@/lib/data'
 
-// ── Navigation columns ────────────────────────────────────────────────────────
+// ── Diamond logo mark ─────────────────────────────────────────────────────────
 
-interface FooterLink {
-  label: string
-  href: string
+function DiamondLogo() {
+  return (
+    <svg width="50" height="50" viewBox="0 0 50 50" aria-hidden="true">
+      <polygon
+        points="25,2 48,25 25,48 2,25"
+        fill="none"
+        stroke="#C9A84C"
+        strokeWidth="2"
+      />
+      <polygon
+        points="25,10 40,25 25,40 10,25"
+        fill="rgba(201,168,76,0.2)"
+        stroke="#C9A84C"
+        strokeWidth="1"
+      />
+    </svg>
+  )
 }
 
-interface FooterColumn {
-  heading: string
-  links: FooterLink[]
+// ── Social icon circle ────────────────────────────────────────────────────────
+
+function SocialIcon({ href, label, children }: { href: string; label: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="w-9 h-9 rounded-full border border-[rgba(201,168,76,0.3)] flex items-center justify-center text-[rgba(232,228,220,0.5)] hover:text-[#C9A84C] hover:border-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-all"
+    >
+      {children}
+    </a>
+  )
 }
 
-const footerNav: FooterColumn[] = [
-  {
-    heading: 'AUCTIONS',
-    links: [
-      { label: 'Current Auction Lots', href: '/current-auction' },
-      { label: 'Future Auction Dates', href: '/auction-dates' },
-      { label: 'Timed Auction', href: '/timed-auction' },
-      { label: 'Lots Still Available', href: '/lots-still-available' },
-      { label: 'Previous Results', href: '/past-auctions' },
-      { label: 'Register to Bid', href: '/register' },
-    ],
-  },
-  {
-    heading: 'BUY PROPERTY',
-    links: [
-      { label: 'Buying With Us', href: '/buy' },
-      { label: 'Guide to Buying', href: '/guide/buying' },
-      { label: 'Finance Your Property', href: '/finance' },
-      { label: 'AML Requirements', href: '/aml' },
-      { label: 'FAQs', href: '/faqs' },
-    ],
-  },
-  {
-    heading: 'SELL PROPERTY',
-    links: [
-      { label: 'Sell With Us', href: '/sell' },
-      { label: 'Guide to Selling', href: '/guide/selling' },
-      { label: 'Free Valuation', href: '/valuation' },
-      { label: 'Corporate & Probate', href: '/probate' },
-      { label: 'Instant Cash Offer', href: '/instant-offer' },
-      { label: 'Private Treaty', href: '/private-treaty' },
-    ],
-  },
-  {
-    heading: 'ABOUT',
-    links: [
-      { label: 'About Us', href: '/about' },
-      { label: 'Meet the Team', href: '/about#team' },
-      { label: 'Blog', href: '/blog' },
-      { label: 'Testimonials', href: '/testimonials' },
-      { label: 'Contact Us', href: '/contact' },
-      { label: 'Complaints', href: '/complaints' },
-    ],
-  },
-]
+// ── Column heading with rule ──────────────────────────────────────────────────
+
+function ColHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <h4 className="text-[#C9A84C] text-[10px] font-bold tracking-[0.2em] uppercase mb-2">
+        {children}
+      </h4>
+      <div className="w-10 h-0.5 bg-[#C9A84C] mb-6" />
+    </>
+  )
+}
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -68,179 +59,206 @@ export default function Footer() {
     <footer className="bg-[#080809] border-t border-[rgba(201,168,76,0.15)] pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6">
 
-        {/* 5-column grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+        {/* 4-column grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
 
           {/* Col 1 — Brand */}
           <div>
-            {/* Logo */}
-            <div className="mb-4">
-              <Link href="/">
-                <Image
-                  src="/logo.png"
-                  alt="Midas Property Group"
-                  width={160}
-                  height={48}
-                  className="h-12 w-auto"
-                />
-              </Link>
+            <div className="flex items-center gap-3 mb-4">
+              <DiamondLogo />
+              <div>
+                <div className="text-[#C9A84C] font-black text-2xl tracking-widest leading-none">MPG</div>
+                <div className="text-[rgba(232,228,220,0.6)] text-[9px] tracking-[0.2em] uppercase mt-0.5">
+                  MIDAS PROPERTY AUCTIONS
+                </div>
+              </div>
             </div>
 
-            {/* Fallback wordmark */}
-            <div className="mb-4">
-              <span className="text-[#C9A84C] font-black text-sm tracking-widest">MIDAS</span>
-              <span className="text-[#E8E4DC] text-xs ml-1 tracking-wide">PROPERTY AUCTIONS</span>
-            </div>
-
-            {/* Tagline */}
-            <p className="text-[#C9A84C] text-sm italic mb-5">{company.tagline}</p>
+            <p className="text-[rgba(232,228,220,0.5)] text-sm leading-relaxed mb-6 max-w-[220px]">
+              Where Committed Buyers Meet Committed Sellers. Connecting buyers, sellers and
+              investors through professional auction services.
+            </p>
 
             {/* Social icons */}
-            <div className="flex gap-3 mb-5">
-              <a
-                href={company.social.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="w-9 h-9 rounded-full border border-[rgba(201,168,76,0.3)] flex items-center justify-center text-[rgba(232,228,220,0.5)] hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <div className="flex gap-2.5 mb-5">
+              <SocialIcon href={company.social.facebook} label="Facebook">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                 </svg>
-              </a>
-              <a
-                href={company.social.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="w-9 h-9 rounded-full border border-[rgba(201,168,76,0.3)] flex items-center justify-center text-[rgba(232,228,220,0.5)] hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              </SocialIcon>
+              <SocialIcon href={company.social.instagram} label="Instagram">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                   <circle cx="12" cy="12" r="4" />
                   <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
                 </svg>
-              </a>
-              <a
-                href={company.social.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="w-9 h-9 rounded-full border border-[rgba(201,168,76,0.3)] flex items-center justify-center text-[rgba(232,228,220,0.5)] hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              </SocialIcon>
+              <SocialIcon href={company.social.linkedin} label="LinkedIn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                   <rect x="2" y="9" width="4" height="12" />
                   <circle cx="4" cy="4" r="2" />
                 </svg>
-              </a>
+              </SocialIcon>
+              <SocialIcon href="https://www.youtube.com/@midaspropertyauctions" label="YouTube">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
+                  <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#080809" />
+                </svg>
+              </SocialIcon>
             </div>
 
-            {/* Contact */}
-            <ul className="space-y-2 mb-5">
+            {/* Main website link */}
+            <a
+              href="https://www.midaspropertygroup.co.uk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-[#C9A84C] text-xs hover:text-[#E8C96A] transition-colors"
+            >
+              🌐 midaspropertygroup.co.uk
+            </a>
+          </div>
+
+          {/* Col 2 — Company Address */}
+          <div>
+            <ColHeading>Company Address</ColHeading>
+            <p className="text-[rgba(232,228,220,0.5)] text-sm leading-loose mb-5">
+              Stanmore Business and Innovation Centre,<br />
+              Stanmore Place, Honeypot Lane,<br />
+              London HA7 1BT
+            </p>
+
+            <ul className="space-y-2.5 mb-5">
               <li>
-                <a
-                  href={`tel:${company.phone.replace(/\s/g, '')}`}
-                  className="flex items-center gap-2 text-[rgba(232,228,220,0.5)] text-xs hover:text-[#C9A84C] transition-colors"
-                >
-                  <Phone size={12} className="text-[#C9A84C] shrink-0" />
-                  {company.phone}
+                <a href="tel:+442072062691"
+                  className="flex items-center gap-2 text-[rgba(232,228,220,0.6)] text-sm hover:text-[#C9A84C] transition-colors">
+                  <Phone size={13} className="text-[#C9A84C] flex-shrink-0" />
+                  +44 (0) 2072062691
                 </a>
               </li>
               <li>
-                <a
-                  href={`tel:${company.mobile.replace(/\s/g, '')}`}
-                  className="flex items-center gap-2 text-[rgba(232,228,220,0.5)] text-xs hover:text-[#C9A84C] transition-colors"
-                >
-                  <Smartphone size={12} className="text-[#C9A84C] shrink-0" />
-                  {company.mobile}
+                <a href="tel:+447413041372"
+                  className="flex items-center gap-2 text-[rgba(232,228,220,0.6)] text-sm hover:text-[#C9A84C] transition-colors">
+                  <Smartphone size={13} className="text-[#C9A84C] flex-shrink-0" />
+                  +44 (0) 7413041372
                 </a>
               </li>
               <li>
-                <a
-                  href={`mailto:${company.email}`}
-                  className="flex items-center gap-2 text-[rgba(232,228,220,0.5)] text-xs hover:text-[#C9A84C] transition-colors"
-                >
-                  <Mail size={12} className="text-[#C9A84C] shrink-0" />
-                  {company.email}
+                <a href="mailto:info@midaspropertygroup.co.uk"
+                  className="flex items-center gap-2 text-[rgba(232,228,220,0.6)] text-sm hover:text-[#C9A84C] transition-colors">
+                  <Mail size={13} className="text-[#C9A84C] flex-shrink-0" />
+                  info@midaspropertygroup.co.uk
                 </a>
               </li>
             </ul>
 
-            {/* Accreditations */}
-            <p className="text-[rgba(232,228,220,0.25)] text-xs leading-relaxed">
-              Member: The Property Ombudsman · TSI Code Compliant
-            </p>
+            <div className="border-t border-[rgba(201,168,76,0.1)] pt-4">
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-wider font-semibold mb-2">Registration Details</p>
+              <p className="text-[rgba(232,228,220,0.35)] text-xs leading-relaxed">
+                Midas Property Group Ltd<br />
+                Company: {company.companyNo}<br />
+                VAT: {company.vatNo}
+              </p>
+            </div>
           </div>
 
-          {/* Cols 2-5 — Navigation */}
-          {footerNav.map(col => (
-            <div key={col.heading}>
-              <h4 className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.2em] mb-5">
-                {col.heading}
-              </h4>
-              <ul className="space-y-3">
-                {col.links.map(({ label, href }) => (
-                  <li key={label}>
-                    <Link
-                      href={href}
-                      className="text-[rgba(232,228,220,0.5)] text-sm hover:text-[#C9A84C] transition-colors"
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {/* Col 3 — Site Map */}
+          <div>
+            <ColHeading>Site Map</ColHeading>
+            <ul className="space-y-2">
+              {[
+                ['Home', '/'],
+                ['Current Auction', '/current-auction'],
+                ['Timed Auction', '/timed-auction'],
+                ['Buying UK Property', '/buy'],
+                ['Selling UK Property', '/sell'],
+                ['Off-Market Properties', '/off-market'],
+                ['Finance & Bridging', '/finance'],
+                ['Our Services', '/about#services'],
+                ['Alternative Investments', '/alternative-investments'],
+                ['Events', '/events'],
+                ['Blog', '/blog'],
+                ['Testimonials', '/testimonials'],
+                ['Contact Us', '/contact'],
+                ['Sitemap', '/sitemap'],
+              ].map(([label, href]) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="text-[rgba(232,228,220,0.5)] text-sm hover:text-[#C9A84C] transition-colors block"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 pt-4 border-t border-[rgba(201,168,76,0.1)]">
+              <p className="text-[#C9A84C] text-[10px] uppercase tracking-wider font-semibold mb-2">Main Website</p>
+              <a
+                href="https://www.midaspropertygroup.co.uk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[rgba(232,228,220,0.35)] text-xs hover:text-[#C9A84C] transition-colors"
+              >
+                midaspropertygroup.co.uk ↗
+              </a>
             </div>
-          ))}
+          </div>
 
+          {/* Col 4 — Social Networks */}
+          <div>
+            <ColHeading>Social Networks</ColHeading>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { name: 'Facebook', href: company.social.facebook, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> },
+                { name: 'Instagram', href: company.social.instagram, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg> },
+                { name: 'LinkedIn', href: company.social.linkedin, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> },
+                { name: 'YouTube', href: 'https://www.youtube.com/@midaspropertyauctions', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#080809"/></svg> },
+              ].map(({ name, href, icon }) => (
+                <a
+                  key={name}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 border border-[rgba(201,168,76,0.25)] rounded px-3 py-2.5 text-[rgba(232,228,220,0.6)] text-xs hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all"
+                >
+                  <span className="flex-shrink-0">{icon}</span>
+                  {name}
+                </a>
+              ))}
+            </div>
+
+            <div className="mt-8">
+              <ColHeading>Opening Times</ColHeading>
+              <p className="text-[rgba(232,228,220,0.5)] text-sm">Mon – Fri: 9.00am – 6.00pm</p>
+              <p className="text-[rgba(232,228,220,0.35)] text-xs mt-1">Saturday: 10.00am – 2.00pm</p>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-[rgba(201,168,76,0.1)]">
+              <p className="text-[rgba(232,228,220,0.25)] text-[10px] leading-relaxed">
+                Member: The Property Ombudsman<br />
+                TSI Approved Code · Megamound Partner
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-[rgba(201,168,76,0.1)] pt-8">
-          <div className="flex flex-col md:flex-row justify-between gap-4">
-
-            {/* Left — legal */}
-            <div className="space-y-1">
-              <p className="text-[rgba(232,228,220,0.25)] text-xs">
-                &copy; 2026 {company.fullName} &middot; Company No: {company.companyNo} &middot; VAT: {company.vatNo}
-              </p>
-              <p className="text-[rgba(232,228,220,0.25)] text-xs">
-                Registered: Stanmore Business Centre, Stanmore Place, Honeypot Lane, London HA7 1BT
-              </p>
-            </div>
-
-            {/* Right — policy links */}
-            <div className="flex flex-wrap gap-3 items-center">
-              <Link
-                href="/privacy"
-                className="text-[rgba(232,228,220,0.3)] text-xs hover:text-[#C9A84C] transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <span className="text-[rgba(232,228,220,0.2)] text-xs">&middot;</span>
-              <Link
-                href="/complaints"
-                className="text-[rgba(232,228,220,0.3)] text-xs hover:text-[#C9A84C] transition-colors"
-              >
-                Complaints
-              </Link>
-              <span className="text-[rgba(232,228,220,0.2)] text-xs">&middot;</span>
-              <Link
-                href="/conditions"
-                className="text-[rgba(232,228,220,0.3)] text-xs hover:text-[#C9A84C] transition-colors"
-              >
-                General Conditions
-              </Link>
-              <span className="text-[rgba(232,228,220,0.2)] text-xs">&middot;</span>
-              <span className="text-[rgba(201,168,76,0.35)] text-xs">
-                Site powered by ARIA — Midas Property Intelligence Platform
-              </span>
-            </div>
-
+        <div className="border-t border-[rgba(201,168,76,0.1)] pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-[rgba(232,228,220,0.25)] text-xs">
+            © 2026 {company.fullName}. All rights reserved.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3 text-[rgba(232,228,220,0.25)] text-xs">
+            <Link href="/privacy" className="hover:text-[#C9A84C] transition-colors">Privacy Policy</Link>
+            <span>·</span>
+            <Link href="/complaints" className="hover:text-[#C9A84C] transition-colors">Complaints</Link>
+            <span>·</span>
+            <Link href="/conditions" className="hover:text-[#C9A84C] transition-colors">General Conditions</Link>
           </div>
+          <p className="text-[rgba(201,168,76,0.35)] text-xs italic">
+            Site powered by ARIA — Midas Intelligence
+          </p>
         </div>
-
       </div>
     </footer>
   )

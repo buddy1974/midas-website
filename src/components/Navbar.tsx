@@ -18,44 +18,38 @@ const navItems: NavItem[] = [
   {
     label: 'Livestream Auction',
     dropdown: [
-      { label: 'Current Auction — 14th May', href: '/current-auction' },
+      { label: 'Current Lots — 14th May', href: '/current-auction' },
       { label: 'Future Auction Dates', href: '/auction-dates' },
+      { label: 'Timed Auction', href: '/timed-auction' },
       { label: 'Lots Still Available', href: '/lots-still-available' },
-      { label: 'Previous Auction Results', href: '/past-auctions' },
+      { label: 'Previous Results', href: '/past-auctions' },
       { label: 'Register to Bid', href: '/register' },
-    ],
-  },
-  {
-    label: 'Timed Auction',
-    dropdown: [
-      { label: 'Current Timed Lots', href: '/timed-auction' },
-      { label: 'Guide to Buying at Timed Auction', href: '/guide/buying-timed' },
-      { label: 'Guide to Selling at Timed Auction', href: '/guide/selling-timed' },
     ],
   },
   {
     label: 'Buy Property',
     dropdown: [
-      { label: 'Buying a Property With Us', href: '/buy' },
-      { label: 'Guide to Buying at Auction', href: '/guide/buying' },
-      { label: 'Future Auction Dates', href: '/auction-dates' },
+      { label: 'Buying With Us', href: '/buy' },
+      { label: 'Guide to Buying', href: '/guide/buying' },
+      { label: 'Guide to Timed Auction', href: '/guide/buying-timed' },
       { label: 'Finance Your Property', href: '/finance' },
-      { label: 'Private Treaty Services', href: '/private-treaty' },
-      { label: 'General Conditions of Sale', href: '/conditions' },
+      { label: 'AML Requirements', href: '/aml' },
+      { label: 'Private Treaty', href: '/private-treaty' },
     ],
   },
   {
     label: 'Sell Property',
     dropdown: [
-      { label: 'Free Auction Valuation', href: '/valuation' },
-      { label: 'Sell Your Property With Us', href: '/sell' },
-      { label: 'Guide to Selling at Auction', href: '/guide/selling' },
-      { label: 'Corporate & Probate Services', href: '/probate' },
-      { label: 'Get an Instant Offer', href: '/instant-offer' },
-      { label: 'Private Treaty Services', href: '/private-treaty' },
+      { label: 'Free Valuation', href: '/valuation' },
+      { label: 'Sell With Us', href: '/sell' },
+      { label: 'Guide to Selling', href: '/guide/selling' },
+      { label: 'Corporate & Probate', href: '/probate' },
+      { label: 'Get Instant Offer', href: '/instant-offer' },
+      { label: 'General Conditions', href: '/conditions' },
     ],
   },
   { label: 'Instant Cash Offer', href: '/instant-offer' },
+  { label: 'Alternative Investments', href: '/alternative-investments' },
   {
     label: 'About',
     dropdown: [
@@ -63,8 +57,9 @@ const navItems: NavItem[] = [
       { label: 'Meet the Team', href: '/about#team' },
       { label: 'Blog', href: '/blog' },
       { label: 'Testimonials', href: '/testimonials' },
-      { label: 'Contact Us', href: '/contact' },
       { label: 'FAQs', href: '/faqs' },
+      { label: 'Contact Us', href: '/contact' },
+      { label: 'Main Website ↗', href: 'https://www.midaspropertygroup.co.uk' },
     ],
   },
 ]
@@ -194,15 +189,27 @@ export default function Navbar() {
                           borderTopWidth: '2px',
                         }}
                       >
-                        {item.dropdown.map(sub => (
-                          <Link
-                            key={sub.href}
-                            href={sub.href}
-                            className="block px-6 py-3 text-sm text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-all duration-150"
-                          >
-                            {sub.label}
-                          </Link>
-                        ))}
+                        {item.dropdown.map(sub =>
+                          sub.href.startsWith('http') ? (
+                            <a
+                              key={sub.href}
+                              href={sub.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block px-6 py-3 text-sm text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-all duration-150 italic"
+                            >
+                              {sub.label}
+                            </a>
+                          ) : (
+                            <Link
+                              key={sub.href}
+                              href={sub.href}
+                              className="block px-6 py-3 text-sm text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-all duration-150"
+                            >
+                              {sub.label}
+                            </Link>
+                          )
+                        )}
                       </div>
                     </div>
                   )}
