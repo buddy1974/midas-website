@@ -1,0 +1,226 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import LotCard from '@/components/LotCard'
+import SectionHeader from '@/components/SectionHeader'
+import { lots as staticLots, pastAuctions, type Lot, type LotStatus } from '@/lib/data'
+import { Lock, TrendingUp } from 'lucide-react'
+
+type FilterType = 'All' | 'HMO' | 'Residential' | 'Commercial' | 'Portfolio' | 'Still Available'
+type SortType = 'price_asc' | 'price_desc' | 'newest'
+
+const filters: FilterType[] = ['All', 'HMO', 'Residential', 'Commercial', 'Portfolio', 'Still Available']
+
+function matchesFilter(type: string, filter: FilterType): boolean {
+  if (filter === 'All') return true
+  if (filter === 'HMO') return type === 'HMO'
+  if (filter === 'Residential')
+    return ['Residential Flat', 'Terraced House', 'Detached House'].includes(type)
+  if (filter === 'Commercial') return type === 'Commercial'
+  if (filter === 'Portfolio') return type === 'Portfolio'
+  return true
+}
+
+interface OsLot {
+  id: string
+  address: string
+  guidePrice: number
+  soldPrice: number | null
+  arv: number | null
+  bedrooms: number | null
+  propertyType: string | null
+  pipelineStage: string
+  coverImage: string | null
+  images: string | null
+  isOffMarket: boolean
+  notes: string | null
+  createdAt: string
+}
+
+function mapOsLot(l: OsLot): Lot {
+  const parts = l.address.split(',')
+  const address = parts[0].trim()
+  const area = parts.length > 1 ? parts.slice(1).join(',').trim() : ''
+  const stageMap: Record<string, LotStatus> = {
+    live: 'live',
+    legal_pack: 'legal_pack',
+    sourcing: 'sourcing',
+    completed: 'sourcing',
+    unsold: 'sourcing',
+  }
+  return {
+    id: l.id,
+    address,
+    area,
+    type: l.propertyType ?? 'Residential',
+    bedrooms: l.bedrooms ?? 0,
+    guidePrice: l.guidePrice,
+    arv: l.arv ?? 0,
+    status: stageMap[l.pipelineStage] ?? 'sourcing',
+    description: l.notes ?? '',
+    features: [],
+    auctionDate: 'Contact for details',
+    auctionTime: '',
+    isOffMarket: l.isOffMarket,
+    showOnWebsite: true,
+    postcode: '',
+  }
+}
+
+export default function PropertiesPage() {
+  const [activeFilter, setActiveFilter] = useState<FilterType>('All')
+  const [sort, setSort] = useState<SortType>('newest')
+  const [liveLots, setLiveLots] = useState<Lot[] | null>(null)
+
+  useEffect(() => {
+    const osUrl = process.env.NEXT_PUBLIC_OS_URL
+    if (!osUrl) return
+    fetch(`${osUrl}/api/public/lots`)
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then((data: { lots: OsLot[] }) => {
+        if (Array.isArray(data?.lots)) {
+          setLiveLots(data.lots.map(mapOsLot))
+        }
+      })
+      .catch(() => { /* fall back to static */ })
+  }, [])
+
+  const allLots = liveLots ?? staticLots.filter(l => l.showOnWebsite)
+  const publicLots = allLots.filter(l => !l.isOffMarket)
+  const offMarketCount = allLots.filter(l => l.isOffMarket).length
+
+  const filtered = publicLots
+    .filter(l =>
+      activeFilter === 'Still Available'
+        ? l.status === 'unsold'
+        : matchesFilter(l.type, activeFilter)
+    )
+    .sort((a, b) => {
+      if (sort === 'price_asc') return a.guidePrice - b.guidePrice
+      if (sort === 'price_desc') return b.guidePrice - a.guidePrice
+      // newest: numeric IDs sort desc; UUIDs preserve API order (already sorted by createdAt asc)
+      const aNum = parseInt(a.id)
+      const bNum = parseInt(b.id)
+      if (!isNaN(aNum) && !isNaN(bNum)) return bNum - aNum
+      return 0
+    })
+
+  return (
+    <div className="min-h-screen bg-white pt-24 pb-20">
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHeader
+          eyebrow="Active Lots"
+          title="Current Properties"
+          subtitle="Active lots across London and Essex. Legal packs available on request."
+        />
+
+        {liveLots !== null && (
+          <div className="mb-6 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-xs text-green-400">Live data from Midas OS</span>
+          </div>
+        )}
+
+        {/* Stats bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 bg-[#F8F7F4] border border-[#E8E5DE] rounded-xl p-5">
+          {[
+            { value: '28 days', label: 'Average time to completion' },
+            { value: '10% deposit', label: 'Secured at hammer fall' },
+            { value: '100% legal pack', label: 'Available before you bid' },
+            { value: '340+ sold', label: 'Our track record' },
+          ].map(({ value, label }) => (
+            <div key={label} className="text-center">
+              <div className="text-[#C9A84C] font-black text-xl mb-1">{value}</div>
+              <div className="text-[#777] text-xs">{label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Filter + Sort bar */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
+          <div className="flex flex-wrap gap-2">
+            {filters.map(f => (
+              <button
+                key={f}
+                onClick={() => setActiveFilter(f)}
+                className={`px-4 py-2 text-sm rounded border transition-all ${
+                  activeFilter === f
+                    ? 'bg-[#C9A84C] text-[#080809] border-[#C9A84C] font-semibold'
+                    : 'border-[#E0DDD4] text-[#666] hover:border-[#C9A84C] hover:text-[#1A1A1A]'
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+          <select
+            value={sort}
+            onChange={e => setSort(e.target.value as SortType)}
+            className="bg-[#F8F7F4] border border-[#E0DDD4] text-[#444] text-sm px-3 py-2 rounded focus:outline-none focus:border-[#C9A84C]"
+          >
+            <option value="newest">Newest First</option>
+            <option value="price_asc">Guide Price ↑</option>
+            <option value="price_desc">Guide Price ↓</option>
+          </select>
+        </div>
+
+        {/* Lot grid */}
+        {filtered.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filtered.map(lot => (
+              <LotCard key={lot.id} lot={lot} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 text-[#888]">
+            No properties match this filter.
+          </div>
+        )}
+
+        {/* Off-market teaser */}
+        <div className="mt-12 border border-[#D8D4CC] rounded-xl p-8 bg-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+          <div className="flex items-center gap-4">
+            <Lock className="text-[#C9A84C] flex-shrink-0" size={32} />
+            <div>
+              <h3 className="text-[#1A1A1A] font-bold text-lg">
+                🔐 {offMarketCount > 0 ? `+${offMarketCount} more` : 'More'} off-market properties available
+              </h3>
+              <p className="text-[#666] text-sm">
+                Available to registered investors only. Not advertised publicly.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/off-market"
+            className="whitespace-nowrap bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all flex-shrink-0"
+          >
+            Request Access →
+          </Link>
+        </div>
+
+        {/* Past results */}
+        <div className="mt-12">
+          <div className="flex items-center gap-3 mb-4">
+            <TrendingUp className="text-[#C9A84C]" size={18} />
+            <h3 className="text-[#1A1A1A] font-bold">Recent Auction Results</h3>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {pastAuctions.map(auction => (
+              <div
+                key={auction.title}
+                className="bg-[#F8F7F4] border border-[#F0EDE6] rounded-lg p-4 text-center"
+              >
+                <div className="text-[#C9A84C] font-bold text-sm">{auction.totalRaised}</div>
+                <div className="text-[#666] text-xs mt-1">{auction.title.replace('Midas ', '')}</div>
+                <div className="text-[#999] text-[10px] mt-0.5">
+                  {auction.sold}/{auction.lots} sold
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

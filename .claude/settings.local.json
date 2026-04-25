@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/loneb/Documents/ai-software-dev/projects/**)",
+      "Bash(npx create-next-app@latest midas-website --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(node:*)",
+      "Bash(npm run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(git reset:*)",
+      "Bash(nohup npm:*)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(npx vercel:*)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(taskkill /F /IM node.exe /T)",
+      "Bash(mkdir -p \"C:\\\\Users\\\\loneb\\\\Documents\\\\ai-software-dev\\\\projects\\\\midas-website\\\\src\\\\app\\\\probate\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\loneb\\\\Documents\\\\ai-software-dev\\\\projects\\\\midas-website\\\\src\\\\app\\\\blog\\\\[slug]\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\loneb\\\\Documents\\\\ai-software-dev\\\\projects\\\\midas-website\\\\src\\\\app\\\\privacy\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\loneb\\\\Documents\\\\ai-software-dev\\\\projects\\\\midas-website\\\\src\\\\app\\\\complaints\")",
+      "Read(//c/Users/loneb/.local/share/com.vercel.cli\" 2>/dev/**)",
+      "Read(//c/Users/loneb/AppData/Local/com.vercel.cli\" 2>/dev/**)",
+      "Bash(curl -s -X PATCH https://api.vercel.com/v9/projects/prj_srDfyz32egubFvh8j7OENvP1Zb8z -H 'Authorization: Bearer vca_6TL9UxS0p9o12Sx3mlCHuljpNYn5iasX69yqKf3L3W33kqOThZ4eBoMv' -H 'Content-Type: application/json' -d '{\"rootDirectory\": null}')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('rootDirectory:', d.get\\('rootDirectory'\\)\\)\")",
+      "Bash(git init *)"
+    ]
+  }
+}
