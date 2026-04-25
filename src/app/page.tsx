@@ -199,7 +199,8 @@ export default function HomePage() {
               <h2 className="text-[#E8E4DC] font-black text-xl mb-1">Livestream Auction</h2>
               <p className="text-[#C9A84C] font-semibold text-sm mb-3">14th May 2026 — 12:00pm</p>
               <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-6">
-                View properties in our upcoming Livestream Auction with Telephone, Proxy and Online Bidding
+                Browse properties we are currently listing through our network of partner
+                auction companies across London and Essex.
               </p>
             </div>
             <div className="flex gap-2">
@@ -291,8 +292,9 @@ export default function HomePage() {
             <span className="text-[#C9A84C]">Midas Property Auctions!</span>
           </h2>
           <p className="text-[rgba(232,228,220,0.75)] text-lg max-w-3xl mx-auto mb-10 leading-relaxed">
-            Midas Property Auctions is a premier London auction house, delivering fast, transparent and
-            professional results for buyers and sellers across London, Essex and nationwide.
+            Midas Property Auctions connects buyers, sellers and investors across London, Essex and
+            nationwide — working with a network of established UK auction companies to deliver fast,
+            transparent and professional results.
           </p>
 
           {/* Bullet points */}

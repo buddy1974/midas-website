@@ -97,7 +97,8 @@ export default function ValuationPage() {
                     Thank you, {form.name}.
                   </p>
                   <p className="text-[#444] text-sm mb-6">
-                    Sam will be in touch within 24 hours to discuss your property.
+                    Our listing service is completely free. Sam will be in touch within 24 hours
+                    to discuss the best route to sale for your property.
                   </p>
                   <p className="text-[#666] text-sm mb-6">
                     Questions? Call:{' '}
@@ -293,7 +294,7 @@ export default function ValuationPage() {
                   'Completion typically within 28 days',
                   'Legally binding at hammer fall — no fall-throughs',
                   'Access to 2,847 active investors',
-                  'No upfront costs — no sale, no fee',
+                  'Our listing service is completely free',
                 ].map((point) => (
                   <li key={point} className="flex items-start gap-3">
                     <span className="text-[#C9A84C] font-bold mt-0.5">✓</span>

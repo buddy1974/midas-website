@@ -364,7 +364,7 @@ export const team: TeamMember[] = [
     name: 'Sam Fongho',
     role: 'CEO & Auction Director',
     initials: 'SF',
-    bio: 'Sam has over 15 years of experience in UK property investment and auctions. A former Senior IT Consultant to Goldman Sachs, JP Morgan and CitiBank, Sam founded Midas Property Group in 2015 to bring professional, data-driven property auction services to London and Essex investors. He has moderated and hosted Pre-Auction Question and Answer sessions across all Auction House London events for six consecutive years and has attended every Auction House London auction since founding Midas. Sam holds an undergraduate degree from Keele University and a postgraduate MSc from Westminster University.',
+    bio: 'Sam has over 15 years of experience in UK property investment and auctions. A former Senior IT Consultant to Goldman Sachs, JP Morgan and CitiBank, Sam founded Midas Property Group in 2015 to bring professional, data-driven property auction services to London and Essex investors. He works with a network of established UK auction companies to ensure every property reaches the widest possible pool of committed buyers. Sam holds an undergraduate degree from Keele University and a postgraduate MSc from Westminster University.',
     linkedin: 'https://www.linkedin.com/in/sam-fongho-a33963a/',
     phone: '07454 753318',
   },
@@ -625,7 +625,7 @@ export const principles = [
   { title: 'Speed & Certainty', description: 'We deliver fast, legally binding sales. When the hammer falls, contracts exchange immediately — no chains, no fall-throughs, no delays.' },
   { title: 'Transparency', description: 'Every lot is fully disclosed. Legal packs, guide prices and viewing information available before you bid.' },
   { title: 'Maximum Exposure', description: 'Your property reaches 2,847 active investors through email, WhatsApp and social media campaigns on day one.' },
-  { title: 'Professional Excellence', description: 'Sam Fongho has attended every Auction House London event for six consecutive years.' },
+  { title: 'Professional Excellence', description: 'Sam Fongho brings over 15 years of hands-on auction experience, working across a network of established UK auction companies.' },
   { title: 'Client-First Approach', description: 'We stand in the middle — representing both buyers and sellers with equal professionalism.' },
 ]
 
@@ -693,6 +693,8 @@ export const company = {
   samEmail: 'Sam@MidasPropertyAuctions.co.uk',
   website: 'www.midaspropertyauctions.co.uk',
   hours: 'Monday – Friday: 9:00am – 6:00pm · Saturday: 10:00am – 2:00pm',
+  sellerFee: 'Free — no charge to list with Midas',
+  auctionPartners: 'We work with multiple established UK auction companies',
   social: {
     facebook: 'https://www.facebook.com/MidasPropertyGroupUK/',
     instagram: 'https://www.instagram.com/midas_property_auctions/',

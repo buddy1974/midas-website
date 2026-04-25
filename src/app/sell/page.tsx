@@ -16,8 +16,8 @@ const sellerFaqs = [
     content: 'Competitive bidding can drive the price up, especially for well-presented, well-priced properties. We manage the marketing to attract serious, qualified bidders.',
   },
   {
-    title: 'How much are your fees?',
-    content: 'We charge a sourcing or brokerage fee depending on the deal. This is always clearly communicated upfront before you commit to anything.',
+    title: 'What does it cost to list with Midas?',
+    content: 'Listing your property through Midas is completely free. We submit your property to our network of partner auction companies. You only pay the standard auction house fees — clearly communicated before you commit to anything.',
   },
   {
     title: 'What happens after I agree to sell?',
@@ -107,7 +107,7 @@ export default function SellPage() {
             { icon: TrendingUp,   claim: '98% of lots sold at or above reserve price', detail: 'Our auction format drives competitive bidding between qualified investors, consistently achieving strong results.' },
             { icon: ClipboardList,claim: 'Legal pack preparation included', detail: 'We coordinate your solicitor and prepare your legal pack as part of the service — at no extra cost to you.' },
             { icon: Zap,         claim: '28-day completion from hammer fall', detail: 'On auction day contracts exchange immediately. You receive a 10% deposit on the day. Completion in 28 days.' },
-            { icon: Shield,      claim: 'No sale — no marketing fee', detail: 'We only earn when you do. If your property does not sell at auction, you pay nothing.' },
+            { icon: Shield,      claim: 'Free to list — no Midas fees', detail: 'Listing with Midas costs nothing. We submit your property to our partner auction companies at no charge to you.' },
             { icon: LinkIcon,    claim: 'No chain — clean transaction', detail: 'Auction sales are chain-free by design. No mortgage delays, no gazundering, no fall-throughs.' },
           ].map(({ icon: Icon, claim, detail }) => (
             <div key={claim} className="bg-white border border-[#E8E5DE] rounded-xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
@@ -145,22 +145,24 @@ export default function SellPage() {
         </div>
       </section>
 
-      {/* Fees */}
+      {/* No Fees */}
       <section className="max-w-3xl mx-auto px-6 py-16">
-        <SectionHeader eyebrow="Transparent Pricing" title="What We Charge" />
+        <SectionHeader eyebrow="Transparent Pricing" title="No Fees to List With Midas" />
         <div className="bg-white border border-[#E0DDD4] rounded-2xl p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-          <p className="text-[#444] text-sm leading-relaxed mb-6">
-            Our selling fee is <span className="text-[#C9A84C] font-bold">2% + VAT</span> of the
-            final hammer price, taken at completion. There are no upfront costs. If your property
-            does not sell, you pay nothing.
-          </p>
+          <div className="bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.4)] rounded-xl p-6 mb-8">
+            <p className="text-[#1A1A1A] text-sm leading-relaxed">
+              <span className="text-[#C9A84C] font-bold">★ Listing your property through Midas is completely free.</span>
+              <br /><br />
+              We submit your property to our network of partner auction companies across the UK.
+              The only fees you pay are the standard auction house charges — clearly communicated
+              before you commit to anything.
+            </p>
+          </div>
           <div className="space-y-4">
             {[
-              'No upfront fees. Our fee is taken on successful completion only.',
-              'Legal pack coordination included in our service.',
-              'Marketing to 2,847 active investors at no extra cost.',
-              'No sale, no fee — we only earn when your property sells.',
-              'VAT-registered — fee is 2% + VAT of the hammer price.',
+              'Free to list — no charge from Midas whatsoever.',
+              'We handle the entire submission process on your behalf.',
+              'You choose which auction house to proceed with.',
             ].map((item) => (
               <div key={item} className="flex items-start gap-3">
                 <CheckCircle className="text-[#C9A84C] flex-shrink-0 mt-0.5" size={18} />
