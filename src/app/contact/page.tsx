@@ -113,6 +113,12 @@ export default function ContactPage() {
                   <GoldButton variant="filled" type="submit" size="lg" className="w-full">
                     Send Message
                   </GoldButton>
+                  <p className="text-center text-[#AAA] text-xs">
+                    Protected by reCAPTCHA — Google{' '}
+                    <a href="https://policies.google.com/privacy" className="underline hover:text-[#C9A84C]" target="_blank" rel="noopener noreferrer">Privacy</a>
+                    {' '}·{' '}
+                    <a href="https://policies.google.com/terms" className="underline hover:text-[#C9A84C]" target="_blank" rel="noopener noreferrer">Terms</a>
+                  </p>
                 </form>
               )}
             </div>
@@ -234,6 +240,22 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Google Maps */}
+        <div className="pb-16">
+          <h2 className="text-xl font-bold text-[#1A1A1A] mb-5">Find Us</h2>
+          <iframe
+            src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&q=${encodeURIComponent('Stanmore Business and Innovation Centre, Stanmore Place, Honeypot Lane, London HA7 1BT')}&zoom=15`}
+            width="100%"
+            height="350"
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            className="rounded-xl border border-[rgba(201,168,76,0.2)]"
+            title="Midas Property Auctions — Stanmore"
+            style={{ border: 0 }}
+          />
         </div>
       </div>
     </div>

@@ -52,29 +52,64 @@ export default function AboutPage() {
       {/* Company description */}
       <section className="bg-[#F8F7F4] py-16">
         <div className="max-w-4xl mx-auto px-6">
-          <SectionHeader eyebrow="Who We Are" title="Founded on a Simple Belief" />
+          <SectionHeader eyebrow="Who We Are" title="A Team of Dedicated Experts" />
           <div className="space-y-5 text-[#444] text-sm leading-relaxed">
             <p>
-              Midas Property Auctions is a UK-based property brokerage that helps people buy, sell
-              and invest in property across the UK and beyond.
+              At Midas Property Group, we focus on ensuring we deliver a professional service for
+              each of our clients. We are experts in Property Investment as well as land and property
+              sourcing, residential acquisitions and disposals, and auction acquisitions and disposals.
             </p>
             <p>
-              We stand in the middle — connecting buyers to sellers, investors to opportunities,
-              and clients to the trusted professionals they need: solicitors, private lenders,
-              construction partners and auction houses.
+              Our team has a drive and a vision to help Midas Property Group become one of the leaders
+              in our industry. We work closely with investors and developers throughout the UK and
+              overseas to help implement investment strategies that underpin and support their goals.
             </p>
             <p>
-              We mainly work with property auctions, but we also handle off-market deals. Our focus
-              is on people who are ready to take action — buyers who are ready to invest, sellers
-              who want to sell fast, and investors looking for real opportunities.
+              We strive to work with clients who want to invest in property — with our foresight and
+              network of contacts, we can assist clients in all aspects of property investments.
+              Whether you are taking that first step on your property investment journey or you want
+              to expand your portfolio, we are with you every step of the way.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Dedicated to clients */}
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <SectionHeader eyebrow="Our Reputation" title="We&rsquo;re Dedicated to Supporting Our Clients" />
+          <div className="space-y-5 text-[#444] text-sm leading-relaxed">
+            <p>
+              We have gained a reputation as one of the leading companies when it comes to working
+              with investors. We don&apos;t just help investors with the acquisition and disposal of
+              assets — we now offer a complete acquisition and disposal service through auction.
             </p>
             <p>
-              Founded in 2015 by Sam Fongho, Midas has grown into a full-service property brokerage
-              with a database of over 2,847 active investors and a track record of over 340
-              successful sales. Midas Property Group has established partnerships with multiple
-              London Boroughs including Harrow, Brent, Barnet and Redbridge. Sam has attended
-              MIPIM — the world&apos;s leading property conference held annually in Cannes — as a
-              representative of the UK auction market.
+              Through a dynamic approach, we offer high-quality auction facilities for both corporate
+              and independent sellers and buyers. We strive to offer a personal service that sets
+              us apart.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* How We Do It */}
+      <section className="bg-[#F8F7F4] py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <SectionHeader eyebrow="Our Approach" title="How We Do It" />
+          <div className="space-y-5 text-[#444] text-sm leading-relaxed">
+            <p>
+              We have a strong ethos and a desire to provide a turn-key solution — we work closely
+              with each client, build strong relationships and understand their exact needs.
+            </p>
+            <p>
+              Due diligence and research are part of what we do because we only offer stock backed
+              by data and analysis. We manage the risk of investment for each client, giving them
+              complete confidence in every decision they make.
+            </p>
+            <p>
+              Every purchase and sale benefits from our extensive knowledge and our ability to work
+              closely with mortgage brokers, solicitors, private lenders, estate agents and developers.
             </p>
           </div>
         </div>

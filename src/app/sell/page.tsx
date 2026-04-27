@@ -121,27 +121,105 @@ export default function SellPage() {
         </div>
       </section>
 
-      {/* Process */}
+      {/* Process — 8 Steps */}
       <section className="bg-[#F8F7F4] py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <SectionHeader eyebrow="Our Process" title="From Valuation to Sold" />
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <SectionHeader eyebrow="Our Process" title="From Appraisal to Completion" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { step: '01', icon: Star,         title: 'Free Valuation', desc: 'We assess your property and recommend the best auction strategy. We advise on reserve price, guide price and marketing approach.' },
-              { step: '02', icon: ClipboardList, title: 'Legal Pack',     desc: 'We coordinate legal pack preparation with your solicitor. All searches, title documents and special conditions prepared and uploaded.' },
-              { step: '03', icon: Users,         title: 'Marketing',      desc: 'Listed to 2,847 active investors across email, WhatsApp and social media. Maximum exposure from day one of instruction.' },
-              { step: '04', icon: CheckCircle,   title: 'Sold',           desc: 'Auction day. Exchange of contracts at hammer fall. 10% deposit received immediately. Completion within 28 days.' },
-            ].map(({ step, icon: Icon, title, desc }) => (
+              { step: '01', title: 'Appraisal',           desc: 'We discuss whether auction is the best route for your property. You receive an estimated sale price and a recommended reserve price.' },
+              { step: '02', title: 'Guide Price',          desc: 'A guide price is agreed — aligned with a sale price you deem acceptable. The guide price is set higher than the agreed reserve.' },
+              { step: '03', title: 'Fees & Terms',         desc: 'All relevant terms and conditions are provided and agreed. These include any entry fees and the commission payable on a successful sale.' },
+              { step: '04', title: 'Identity Checks',      desc: 'Strict Anti-Money Laundering Regulations require proof of identity and address before marketing can begin — even when acting on behalf of the seller.' },
+              { step: '05', title: 'Property Inspection',  desc: 'A surveyor carries out an inspection — taking measurements and photographs. Draft sales particulars are prepared and your solicitor is requested to create the legal pack.' },
+              { step: '06', title: 'Marketing',            desc: 'Your property is marketed through online catalogues, email campaigns to registered buyers, property portals, social media and targeted outreach to investors.' },
+              { step: '07', title: 'Reserve Price Meeting',desc: '2–3 days before auction, we discuss the reserve price based on marketing feedback. The guide price may be adjusted at this point.' },
+              { step: '08', title: 'Auction Day',          desc: 'When the hammer falls, a binding contract is formed. The buyer pays a deposit immediately. Completion takes place within the agreed timeframe — typically 28 days.' },
+            ].map(({ step, title, desc }) => (
               <div key={step} className="bg-white border border-[#E8E5DE] rounded-xl p-6 relative shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
                 <div className="text-[rgba(201,168,76,0.12)] text-7xl font-black absolute top-4 right-4 leading-none select-none">
                   {step}
                 </div>
-                <Icon className="text-[#C9A84C] mb-4" size={24} />
+                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[rgba(201,168,76,0.12)] text-[#C9A84C] text-xs font-bold mb-4">
+                  {step}
+                </div>
                 <h3 className="text-[#1A1A1A] font-bold mb-2">{title}</h3>
                 <p className="text-[#666] text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Comparison: Auction vs Estate Agent */}
+      <section className="max-w-4xl mx-auto px-6 py-16">
+        <SectionHeader eyebrow="Why Auction?" title="Auction vs Estate Agent" />
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr>
+                <th className="text-left py-3 px-4 text-[#444] font-medium border-b border-[#E8E5DE] w-1/3"></th>
+                <th className="py-3 px-4 text-center font-bold text-[#C9A84C] border-b border-[#E8E5DE] bg-[rgba(201,168,76,0.04)] rounded-t-lg">
+                  Auction
+                </th>
+                <th className="py-3 px-4 text-center font-semibold text-[#666] border-b border-[#E8E5DE]">
+                  Estate Agent
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { label: 'Success Rate',           auction: '78%+',           agent: '51%' },
+                { label: 'Sales Falling Through',  auction: '1–5%',           agent: '25–40%' },
+                { label: 'Time to Sell',           auction: '3–4 weeks',      agent: '14–23 weeks' },
+                { label: 'Certainty',              auction: 'Legally binding at hammer', agent: 'Can fall through anytime' },
+              ].map(({ label, auction, agent }) => (
+                <tr key={label} className="border-b border-[#F0EDE6]">
+                  <td className="py-3 px-4 text-[#444] font-medium">{label}</td>
+                  <td className="py-3 px-4 text-center text-[#C9A84C] font-semibold bg-[rgba(201,168,76,0.04)]">{auction}</td>
+                  <td className="py-3 px-4 text-center text-[#888]">{agent}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* What you need to provide */}
+      <section className="bg-[#F8F7F4] py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <SectionHeader eyebrow="Getting Started" title="What You Need to Provide" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              'Property address and postcode',
+              'Interior and exterior photographs',
+              'Tenure details (freehold or leasehold)',
+              'Tenancy details (if applicable)',
+              'Floor plans and room sizes',
+              'Title plan',
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-3 bg-white border border-[#E8E5DE] rounded-lg px-4 py-3 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
+                <CheckCircle className="text-[#C9A84C] flex-shrink-0" size={16} />
+                <span className="text-[#444] text-sm">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Who can sell */}
+      <section className="max-w-4xl mx-auto px-6 py-16">
+        <SectionHeader eyebrow="Who Is This For?" title="Who Can Sell at Auction?" />
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)] space-y-4">
+          <p className="text-[#444] text-sm leading-relaxed">
+            A wide range of sellers can sell both residential and commercial properties at auction —
+            including private investors, property companies, receivers, trustees, banks, local
+            authorities and owner-occupiers.
+          </p>
+          <p className="text-[#444] text-sm leading-relaxed">
+            Auction is also particularly suitable for probate properties where trustees want a quick,
+            certain and transparent sale.
+          </p>
         </div>
       </section>
 
