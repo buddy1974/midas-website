@@ -251,6 +251,64 @@ export default function SellPage() {
         </div>
       </section>
 
+      {/* Buyer's Fees — what the buyer pays (not the seller) */}
+      <section id="fees" className="max-w-3xl mx-auto px-6 py-16">
+        <SectionHeader eyebrow="Buyer&apos;s Fees" title="What Does the Buyer Pay?" align="left" />
+        <div className="bg-white border border-[#E0DDD4] rounded-2xl p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="bg-[#F8F7F4] rounded-xl p-5">
+              <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-wider mb-3">
+                Residential Properties
+              </p>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between items-center py-2 border-b border-[#E8E5DE]">
+                  <span className="text-[#444]">Lots £10,000 and above</span>
+                  <span className="text-[#1A1A1A] font-bold">£1,500 inc. VAT</span>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-[#444]">Lots below £10,000</span>
+                  <span className="text-[#1A1A1A] font-bold">£300 inc. VAT</span>
+                </div>
+              </div>
+            </div>
+            <div className="bg-[#F8F7F4] rounded-xl p-5">
+              <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-wider mb-3">
+                Commercial Properties
+              </p>
+              <div className="text-sm">
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-[#444]">All lots</span>
+                  <span className="text-[#1A1A1A] font-bold">£1,000 inc. VAT</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.4)] rounded-xl p-5">
+            <p className="text-[#1A1A1A] text-sm leading-relaxed">
+              <span className="text-[#C9A84C] font-bold">★ Listing your property through Midas is completely free.</span>
+              {' '}There are no upfront fees to list with us. The above buyer&apos;s fees are paid by
+              the buyer on the day — not by you as the seller.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Guide link */}
+      <section className="max-w-3xl mx-auto px-6 pb-4">
+        <div className="bg-[#F8F7F4] border border-[#E8E5DE] rounded-xl p-6 flex items-center justify-between gap-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+          <div>
+            <p className="text-[#1A1A1A] font-bold text-sm mb-1">Want the full selling process explained?</p>
+            <p className="text-[#666] text-xs">Step-by-step guide using Sam&apos;s own words — from appraisal to completion.</p>
+          </div>
+          <a
+            href="/guide/selling"
+            className="flex-shrink-0 border border-[#C9A84C] text-[#C9A84C] text-sm font-semibold px-4 py-2.5 rounded hover:bg-[#C9A84C] hover:text-[#080809] transition-all whitespace-nowrap"
+          >
+            Read the Guide →
+          </a>
+        </div>
+      </section>
+
       {/* Seller testimonial */}
       {patricia && (
         <section className="max-w-3xl mx-auto px-6 pb-16">

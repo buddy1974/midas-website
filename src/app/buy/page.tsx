@@ -134,6 +134,22 @@ export default function BuyPage() {
         </div>
       </section>
 
+      {/* Guide link */}
+      <section className="max-w-3xl mx-auto px-6 pt-16 pb-2">
+        <div className="bg-[#F8F7F4] border border-[#E8E5DE] rounded-xl p-6 flex items-center justify-between gap-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+          <div>
+            <p className="text-[#1A1A1A] font-bold text-sm mb-1">New to buying at auction?</p>
+            <p className="text-[#666] text-xs">Read our complete guide — what to bring, how bidding works, buyer&apos;s fees and more.</p>
+          </div>
+          <a
+            href="/guide/buying"
+            className="flex-shrink-0 border border-[#C9A84C] text-[#C9A84C] text-sm font-semibold px-4 py-2.5 rounded hover:bg-[#C9A84C] hover:text-[#080809] transition-all whitespace-nowrap"
+          >
+            Read our complete buying guide →
+          </a>
+        </div>
+      </section>
+
       {/* Accordion guide */}
       <section className="max-w-3xl mx-auto px-6 py-16">
         <SectionHeader eyebrow="Buyer's Guide" title="Step by Step Guide" align="left" />

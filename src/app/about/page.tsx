@@ -53,6 +53,9 @@ export default function AboutPage() {
       <section className="bg-[#F8F7F4] py-16">
         <div className="max-w-4xl mx-auto px-6">
           <SectionHeader eyebrow="Who We Are" title="A Team of Dedicated Experts" />
+          <p className="text-center text-[#C9A84C] font-bold text-base mb-10 -mt-8">
+            That&apos;s The Midas Touch
+          </p>
           <div className="space-y-5 text-[#444] text-sm leading-relaxed">
             <p>
               At Midas Property Group, we focus on ensuring we deliver a professional service for

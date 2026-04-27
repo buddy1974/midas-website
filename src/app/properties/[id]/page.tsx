@@ -95,13 +95,24 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
     <div className="min-h-screen bg-white pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-6">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-[#888] mb-8 pt-6">
+        <nav className="flex items-center gap-2 text-sm text-[#888] mb-4 pt-6">
           <Link href="/" className="hover:text-[#C9A84C] transition-colors">Home</Link>
           <span>/</span>
           <Link href="/properties" className="hover:text-[#C9A84C] transition-colors">Properties</Link>
           <span>/</span>
           <span className="text-[#444]">{lot.address}</span>
         </nav>
+
+        {/* First-time buyer nudge */}
+        <div className="mb-6 flex items-center justify-between bg-[#F8F7F4] border border-[#E8E5DE] rounded-lg px-5 py-3">
+          <p className="text-[#666] text-xs">First time buying at auction?</p>
+          <Link
+            href="/guide/buying"
+            className="text-[#C9A84C] text-xs font-semibold hover:text-[#E8C96A] transition-colors"
+          >
+            Read our guide →
+          </Link>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
           {/* Left column */}
