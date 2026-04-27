@@ -184,6 +184,12 @@ export default function RegisterPage() {
                   Register →
                 </GoldButton>
               </div>
+              <p className="text-center text-[#999] text-[10px] mt-2">
+                Protected by reCAPTCHA —{' '}
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C9A84C]">Privacy</a>
+                {' '}·{' '}
+                <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C9A84C]">Terms</a>
+              </p>
             </div>
           )}
 

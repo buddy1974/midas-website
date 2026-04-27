@@ -6,6 +6,7 @@ import LotCard from '@/components/LotCard'
 import SectionHeader from '@/components/SectionHeader'
 import { lots as staticLots, pastAuctions, type Lot, type LotStatus } from '@/lib/data'
 import { Lock, TrendingUp } from 'lucide-react'
+import type { MRIProperty } from '@/lib/mri-feed'
 
 type FilterType = 'All' | 'HMO' | 'Residential' | 'Commercial' | 'Portfolio' | 'Still Available'
 type SortType = 'price_asc' | 'price_desc' | 'newest'
@@ -68,22 +69,59 @@ function mapOsLot(l: OsLot): Lot {
   }
 }
 
+function mapMRIProperty(p: MRIProperty): Lot {
+  const parts = p.address.split(',')
+  return {
+    id: `mri-${p.id}`,
+    address: parts[0].trim(),
+    area: parts.length > 1 ? parts.slice(1).join(',').trim() : '',
+    type: p.type || 'Residential',
+    bedrooms: p.bedrooms,
+    guidePrice: p.price,
+    arv: 0,
+    status: 'live' as LotStatus,
+    description: p.description,
+    features: [],
+    auctionDate: 'Contact for details',
+    auctionTime: '',
+    isOffMarket: false,
+    showOnWebsite: true,
+    postcode: '',
+  }
+}
+
 export default function PropertiesPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('All')
   const [sort, setSort] = useState<SortType>('newest')
   const [liveLots, setLiveLots] = useState<Lot[] | null>(null)
+  const [mriCount, setMriCount] = useState(0)
 
   useEffect(() => {
     const osUrl = process.env.NEXT_PUBLIC_OS_URL
-    if (!osUrl) return
-    fetch(`${osUrl}/api/public/lots`)
+
+    const fetchOs = osUrl
+      ? fetch(`${osUrl}/api/public/lots`)
+          .then(r => r.ok ? r.json() : Promise.reject())
+          .then((data: { lots: OsLot[] }) =>
+            Array.isArray(data?.lots) ? data.lots.map(mapOsLot) : []
+          )
+          .catch(() => [] as Lot[])
+      : Promise.resolve([] as Lot[])
+
+    const fetchMri = fetch('/api/mri-properties')
       .then(r => r.ok ? r.json() : Promise.reject())
-      .then((data: { lots: OsLot[] }) => {
-        if (Array.isArray(data?.lots)) {
-          setLiveLots(data.lots.map(mapOsLot))
-        }
-      })
-      .catch(() => { /* fall back to static */ })
+      .then((data: { properties: MRIProperty[] }) =>
+        Array.isArray(data?.properties) ? data.properties.map(mapMRIProperty) : []
+      )
+      .catch(() => [] as Lot[])
+
+    Promise.all([fetchOs, fetchMri]).then(([osLots, mriLots]) => {
+      const combined = [...osLots, ...mriLots]
+      if (combined.length > 0) {
+        setLiveLots(combined)
+        setMriCount(mriLots.length)
+      }
+    })
   }, [])
 
   const allLots = liveLots ?? staticLots.filter(l => l.showOnWebsite)
@@ -116,9 +154,17 @@ export default function PropertiesPage() {
         />
 
         {liveLots !== null && (
-          <div className="mb-6 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs text-green-400">Live data from Midas OS</span>
+          <div className="mb-6 flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-xs text-green-400">Live data from Midas OS</span>
+            </div>
+            {mriCount > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+                <span className="text-xs text-blue-400">{mriCount} from MRI CRM</span>
+              </div>
+            )}
           </div>
         )}
 
