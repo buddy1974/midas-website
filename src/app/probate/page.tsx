@@ -61,7 +61,7 @@ export default function ProbatePage() {
             Specialist Property Services
           </h1>
           <p className="text-[#999] text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-            We handle the complex cases other auction houses turn away.
+            We handle the complex cases other brokerages turn away.
           </p>
           <Link
             href="/contact"

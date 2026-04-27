@@ -16,7 +16,7 @@ interface AuctionRow {
 
 const AUCTION_ROWS: AuctionRow[] = [
   {
-    name: 'Midas Spring Auction 2026',
+    name: 'May Auction 2026',
     date: '14th May 2026',
     time: '12:00pm',
     format: 'Online Livestream',
@@ -24,7 +24,7 @@ const AUCTION_ROWS: AuctionRow[] = [
     href: '/register',
   },
   {
-    name: 'Midas Summer Auction 2026',
+    name: 'June Auction 2026',
     date: '25th June 2026',
     time: '12:00pm',
     format: 'Online Livestream',
@@ -32,7 +32,7 @@ const AUCTION_ROWS: AuctionRow[] = [
     href: '/sell',
   },
   {
-    name: 'Midas Autumn Auction 2026',
+    name: 'Autumn Auction 2026',
     date: 'September 2026',
     time: 'TBC',
     format: 'Online Livestream',
@@ -73,7 +73,7 @@ export default function AuctionDatesPage() {
             Future Auction Dates
           </h1>
           <p className="text-[rgba(232,228,220,0.65)] text-xl max-w-2xl mx-auto">
-            Plan ahead and register early. Our auctions sell out — register before the closing date.
+            Plan ahead and register early. Auction events fill fast — register before the closing date.
           </p>
         </div>
 
@@ -83,7 +83,7 @@ export default function AuctionDatesPage() {
             NEXT AUCTION
           </p>
           <h2 className="text-[#E8E4DC] text-3xl font-black mb-3">
-            Midas Spring Auction 2026
+            Next Auction Event
           </h2>
           <p className="text-[#C9A84C] font-bold text-xl mt-2">
             14th May 2026 — 12:00pm
@@ -158,11 +158,11 @@ export default function AuctionDatesPage() {
       <section className="bg-[#080809] py-16 px-6 text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-[#E8E4DC] font-black text-2xl mb-4">
-            Selling at One of Our Auctions?
+            Listing With Us for the Next Auction?
           </h2>
           <p className="text-[rgba(232,228,220,0.65)] text-base leading-relaxed mb-8">
-            We accept vendor instructions up to 4 weeks before each auction. Contact us today for a free
-            valuation and reserve price recommendation.
+            We submit vendor instructions to our partner auction companies up to 4 weeks before each
+            auction event. Contact us today for a free valuation and reserve price recommendation.
           </p>
           <Link
             href="/valuation"

@@ -16,14 +16,14 @@ export const metadata: Metadata = {
     template: '%s | Midas Property Auctions',
   },
   description:
-    'Premier property auction house serving London and Essex. HMOs, residential, commercial and development sites. 2,847 active investors. Register to bid today.',
+    'Premier property brokerage serving London and Essex. HMOs, residential, commercial and development sites sold at auction. 2,847 active investors. Register to bid today.',
   keywords: [
     'property auction London',
     'HMO auction',
     'buy property at auction',
     'sell property at auction',
     'London property investment',
-    'Essex auction house',
+    'Essex property brokerage',
     'bridging finance',
     'off-market property',
     'Midas Property Group',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: 'Midas Property Auctions',
     title: 'Midas Property Auctions | London & Essex Property Auctioneers',
     description:
-      'Premier property auction house serving London and Essex. HMOs, residential, commercial and development sites.',
+      'Premier property brokerage serving London and Essex. HMOs, residential, commercial and development sites sold at auction.',
   },
 }
 

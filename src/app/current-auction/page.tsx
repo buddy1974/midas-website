@@ -345,14 +345,14 @@ export default function CurrentAuctionPage() {
           {/* Left */}
           <div className="lg:col-span-3">
             <p className="text-[#C9A84C] text-xs uppercase tracking-widest mb-3 font-semibold">
-              Livestream Auction
+              Going to Auction
             </p>
             <h1 className="text-4xl md:text-5xl font-black text-[#E8E4DC] leading-tight mb-4">
-              Current Property<br />Auction Lots
+              Current Properties<br />Going to Auction
             </h1>
             <p className="text-[rgba(232,228,220,0.65)] text-base leading-relaxed mb-8 max-w-xl">
-              Listings from our upcoming Livestream auction. Scroll down for full listings or
-              download our catalogue below. This auction will be remote bidding only.
+              Properties sourced and listed by Midas through our network of partner UK auction
+              companies. All lots are fully vetted by the Midas team. Remote bidding available.
             </p>
 
             <p className="text-[#C9A84C] text-2xl font-bold mb-4">14th May 2026 — 12:00pm</p>
@@ -385,7 +385,7 @@ export default function CurrentAuctionPage() {
             <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.2)] rounded-2xl p-8">
               <AuctionCountdown
                 targetDate="2026-05-14T12:00:00"
-                auctionName="Midas Spring Auction 2026"
+                auctionName="Next Auction Event — May 2026"
                 lotCount={12}
               />
             </div>

@@ -75,8 +75,8 @@ export default function Footer() {
             </div>
 
             <p className="text-[rgba(232,228,220,0.5)] text-sm leading-relaxed mb-6 max-w-[220px]">
-              Where Committed Buyers Meet Committed Sellers. Connecting buyers, sellers and
-              investors through professional auction services.
+              A property brokerage connecting buyers, sellers and investors through established
+              UK auction companies and exclusive off-market opportunities.
             </p>
 
             {/* Social icons */}

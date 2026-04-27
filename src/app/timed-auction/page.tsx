@@ -101,7 +101,7 @@ export default function TimedAuctionPage() {
       {/* ── Timed vs Livestream Comparison ───────────────────────────────────── */}
       <section className="bg-[#0F0F14] border-y border-[rgba(201,168,76,0.1)] py-16 px-6">
         <h2 className="text-center text-[#E8E4DC] font-black text-2xl mb-10">
-          Timed vs Livestream Auction
+          Timed vs Livestream Auction Event
         </h2>
         <div className="max-w-3xl mx-auto overflow-x-auto">
           <table className="w-full text-sm">

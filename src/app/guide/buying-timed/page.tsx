@@ -135,7 +135,7 @@ export default function BuyingTimedGuidePage() {
             Comparison
           </p>
           <h2 className="text-3xl font-black text-[#E8E4DC] mb-8">
-            Timed vs Livestream Auction
+            Timed vs Livestream Auction Event
           </h2>
           <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.2)] rounded-xl overflow-hidden">
             {/* Table header */}
@@ -145,7 +145,7 @@ export default function BuyingTimedGuidePage() {
                 Timed Auction
               </div>
               <div className="p-4 text-[rgba(232,228,220,0.5)] text-xs font-semibold uppercase tracking-wider border-l border-[rgba(201,168,76,0.15)]">
-                Livestream Auction
+                Livestream Event
               </div>
             </div>
             {comparisons.map((row, i) => (

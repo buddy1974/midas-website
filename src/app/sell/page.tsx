@@ -17,7 +17,7 @@ const sellerFaqs = [
   },
   {
     title: 'What does it cost to list with Midas?',
-    content: 'Listing your property through Midas is completely free. We submit your property to our network of partner auction companies. You only pay the standard auction house fees — clearly communicated before you commit to anything.',
+    content: 'Listing your property through Midas is completely free. We submit your property to our network of partner auction companies. You only pay the standard auction company fees — clearly communicated before you commit to anything.',
   },
   {
     title: 'What happens after I agree to sell?',
@@ -29,7 +29,7 @@ const sellerFaqs = [
   },
   {
     title: 'How do I know your deals are genuine?',
-    content: 'We work with established auction houses, verified sellers and professional partners to ensure legitimacy at every step.',
+    content: 'We work through established UK auction companies, verified sellers and professional partners to ensure legitimacy at every step.',
   },
   {
     title: 'Can buyers view properties before bidding?',
@@ -232,7 +232,7 @@ export default function SellPage() {
               <span className="text-[#C9A84C] font-bold">★ Listing your property through Midas is completely free.</span>
               <br /><br />
               We submit your property to our network of partner auction companies across the UK.
-              The only fees you pay are the standard auction house charges — clearly communicated
+              The only fees you pay are the standard auction company charges — clearly communicated
               before you commit to anything.
             </p>
           </div>
@@ -240,7 +240,7 @@ export default function SellPage() {
             {[
               'Free to list — no charge from Midas whatsoever.',
               'We handle the entire submission process on your behalf.',
-              'You choose which auction house to proceed with.',
+              'You choose which auction company to proceed with.',
             ].map((item) => (
               <div key={item} className="flex items-start gap-3">
                 <CheckCircle className="text-[#C9A84C] flex-shrink-0 mt-0.5" size={18} />

@@ -194,7 +194,7 @@ const sellerFaqs: AccordionItem[] = [
     id: 'seller-marketing',
     question: 'How do you market my property?',
     answer:
-      'We list it in our auction catalogue, send it to 2,847 investors via email and WhatsApp, and promote it across social media. Every property also benefits from photography and a full legal pack.',
+      'We list it through our partner auction companies, send details to 2,847 investors via email and WhatsApp, and promote it across social media. Every property also benefits from photography and a full legal pack.',
   },
   {
     id: 'seller-reserve',

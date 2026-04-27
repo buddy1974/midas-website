@@ -239,7 +239,7 @@ export default async function EventsPage() {
         <section className="mb-16">
           <SectionHeader eyebrow="Investor Events" title="Networking Events" align="left" />
           <p className="text-[#666] text-sm leading-relaxed mb-8 max-w-3xl">
-            Beyond our auctions, Midas organises regular property investment networking events in
+            Beyond auction events, Midas organises regular property investment networking events in
             London featuring expert speakers, deal discussions and investor meetups. We have hosted
             events in partnership with the London Borough of Harrow, London Borough of Brent,
             London Borough of Barnet and London Borough of Redbridge. Past events have been held

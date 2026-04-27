@@ -28,7 +28,7 @@ export default function PastAuctionsPage() {
             Previous Auction Results
           </h1>
           <p className="text-[#666] text-lg">
-            Transparent results from every Midas auction.
+            Transparent results from every auction event.
           </p>
         </div>
       </section>

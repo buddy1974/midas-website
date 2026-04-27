@@ -139,7 +139,7 @@ export default function HomePage() {
             </p>
             <AuctionCountdown
               targetDate="2026-05-14T12:00:00"
-              auctionName="Midas Spring Auction 2026"
+              auctionName="Next Auction Event — May 2026"
               lotCount={12}
             />
           </div>
@@ -192,11 +192,11 @@ export default function HomePage() {
       <section className="bg-[#080809] py-10 px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
 
-          {/* Card 1 — Livestream Auction */}
+          {/* Card 1 — Properties Going to Auction */}
           <div className="bg-gradient-to-b from-[#1a1a2e] to-[#0d0d14] border border-[rgba(201,168,76,0.3)] rounded-xl p-7 flex flex-col justify-between min-h-[260px]">
             <div>
               <p className="text-[#C9A84C] text-[10px] uppercase tracking-widest font-bold mb-2">UPCOMING</p>
-              <h2 className="text-[#E8E4DC] font-black text-xl mb-1">Livestream Auction</h2>
+              <h2 className="text-[#E8E4DC] font-black text-xl mb-1">Properties Going to Auction</h2>
               <p className="text-[#C9A84C] font-semibold text-sm mb-3">14th May 2026 — 12:00pm</p>
               <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-6">
                 Browse properties we are currently listing through our network of partner

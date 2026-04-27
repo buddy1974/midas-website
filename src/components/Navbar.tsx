@@ -16,13 +16,14 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: 'Livestream Auction',
+    label: 'Properties',
     dropdown: [
-      { label: 'Current Lots — 14th May', href: '/current-auction' },
-      { label: 'Future Auction Dates', href: '/auction-dates' },
-      { label: 'Timed Auction', href: '/timed-auction' },
+      { label: 'Current Lots', href: '/properties' },
+      { label: 'Going to Auction', href: '/current-auction' },
+      { label: 'Off-Market', href: '/off-market' },
       { label: 'Lots Still Available', href: '/lots-still-available' },
-      { label: 'Previous Results', href: '/past-auctions' },
+      { label: 'Past Sales', href: '/past-auctions' },
+      { label: 'Future Auction Dates', href: '/auction-dates' },
       { label: 'Register to Bid', href: '/register' },
     ],
   },
