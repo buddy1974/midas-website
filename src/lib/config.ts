@@ -67,7 +67,7 @@ const defaultConfig: SiteConfigMap = {
   'social.instagram': company.social.instagram,
   'social.linkedin': company.social.linkedin,
   'auction.next_date': '2026-05-14T12:00:00',
-  'auction.next_name': 'Midas Spring Auction 2026',
+  'auction.next_name': 'Next Auction Event — May 2026',
   'auction.next_lots': '12',
   'auction.next_format': 'livestream',
   'auction.catalogue_pdf': '',

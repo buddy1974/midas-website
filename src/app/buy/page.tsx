@@ -259,7 +259,7 @@ export default function BuyPage() {
           </div>
         </div>
         <p className="text-center text-[#999] text-xs mt-6">
-          Partner details to be confirmed. Contact Sam directly for referrals.
+          Contact us for a referral to our trusted solicitor and finance partners.
         </p>
       </section>
     </div>

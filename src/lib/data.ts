@@ -470,7 +470,7 @@ export const testimonials: Testimonial[] = [
 export const upcomingAuctions = [
   {
     id: 'spring-2026',
-    title: 'Midas Spring Auction 2026',
+    title: 'May Auction Event 2026',
     date: '14 May 2026',
     time: '12:00pm',
     format: 'Online — Live Stream',
@@ -481,7 +481,7 @@ export const upcomingAuctions = [
   },
   {
     id: 'summer-2026',
-    title: 'Midas Summer Auction 2026',
+    title: 'June Auction Event 2026',
     date: '25 June 2026',
     time: '12:00pm',
     format: 'Online — Live Stream',
@@ -666,8 +666,8 @@ export interface StaticEvent {
 }
 
 export const staticEvents: StaticEvent[] = [
-  { day: '14', month: 'MAY', year: '2026', title: 'Midas Spring Auction 2026', excerpt: 'Livestream auction — 12 lots across London and Essex. Register to bid by 13th May.', href: '/current-auction' },
-  { day: '25', month: 'JUN', year: '2026', title: 'Midas Summer Auction 2026', excerpt: 'Now accepting vendor instructions. Submit your property by 28th May.', href: '/auction-dates' },
+  { day: '14', month: 'MAY', year: '2026', title: 'Next Auction Event — May 2026', excerpt: 'Properties going to auction through our partner auction companies. Register to bid by 13th May.', href: '/current-auction' },
+  { day: '25', month: 'JUN', year: '2026', title: 'June Auction Event 2026', excerpt: 'Now accepting vendor instructions. Submit your property by 28th May.', href: '/auction-dates' },
   { day: '10', month: 'MAY', year: '2026', title: 'Midas Investor Networking Evening', excerpt: 'Monthly networking event for property investors, developers and landlords in London.', href: '/events' },
   { day: '30', month: 'APR', year: '2026', title: 'HMO Investment Strategy Webinar', excerpt: 'Online webinar covering HMO licensing, yields and the London market in 2026.', href: '/events' },
 ]

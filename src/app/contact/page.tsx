@@ -246,13 +246,19 @@ export default function ContactPage() {
         <div className="pb-16">
           <h2 className="text-xl font-bold text-[#1A1A1A] mb-5">Find Us</h2>
           <iframe
-            src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&q=${encodeURIComponent('Stanmore Business and Innovation Centre, Stanmore Place, Honeypot Lane, London HA7 1BT')}&zoom=15`}
+            src={(() => {
+              const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
+              const address = encodeURIComponent('Stanmore Business Innovation Centre, Stanmore Place, Honeypot Lane, London HA7 1BT')
+              return apiKey
+                ? `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${address}&zoom=15`
+                : `https://maps.google.com/maps?q=${address}&z=15&output=embed`
+            })()}
             width="100%"
             height="350"
             loading="lazy"
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
-            className="rounded-xl border border-[rgba(201,168,76,0.2)]"
+            className="w-full rounded-xl border border-[rgba(201,168,76,0.2)]"
             title="Midas Property Auctions — Stanmore"
             style={{ border: 0 }}
           />

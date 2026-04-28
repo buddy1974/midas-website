@@ -87,7 +87,7 @@ export default function HomePage() {
         <div className="relative max-w-4xl mx-auto px-6 text-center">
           {/* Eyebrow */}
           <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.3em] mb-4">
-            PROPERTY ACQUISITION — LONDON &amp; ESSEX
+            PROPERTY BROKERAGE — LONDON, ESSEX &amp; NATIONWIDE
           </p>
 
           {/* H1 */}
@@ -547,9 +547,7 @@ export default function HomePage() {
             </span>
           ))}
         </div>
-        <span className="text-[rgba(232,228,220,0.2)] text-xs italic text-center mt-6 block">
-          TODO: Replace text badges with official logo images when Sam provides them.
-        </span>
+        {/* TODO: Replace accreditation badges with real logo images — /public/logos/ */}
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
