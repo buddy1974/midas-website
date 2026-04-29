@@ -27,6 +27,7 @@ const navItems: NavItem[] = [
       { label: 'Register to Bid', href: '/register' },
     ],
   },
+  { label: 'Yielding Investments', href: '/yielding-investments' },
   {
     label: 'Buy Property',
     dropdown: [

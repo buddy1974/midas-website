@@ -173,6 +173,7 @@ export default function Footer() {
                 ['Buying UK Property', '/buy'],
                 ['Selling UK Property', '/sell'],
                 ['Off-Market Properties', '/off-market'],
+                ['Yielding Investments', '/yielding-investments'],
                 ['Finance & Bridging', '/finance'],
                 ['Our Services', '/about#services'],
                 ['Alternative Investments', '/alternative-investments'],

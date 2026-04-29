@@ -359,6 +359,88 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* SECTION 5B — YIELDING INVESTMENTS                                     */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#0D0D14] border-t border-[rgba(201,168,76,0.1)] py-14 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-[#C9A84C] font-black uppercase text-xl">YIELDING INVESTMENTS</h2>
+              <div className="w-10 h-0.5 bg-[#C9A84C] mt-2" />
+              <p className="text-[rgba(232,228,220,0.5)] text-sm mt-3">
+                Tenanted properties producing verified rental income from day one.
+              </p>
+            </div>
+            <Link
+              href="/yielding-investments"
+              className="flex-shrink-0 text-[#C9A84C] text-sm font-semibold hover:text-[#E8C96A] transition-colors"
+            >
+              View All →
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {[
+              {
+                address: '5 Weald Lane',
+                area: 'Harrow, HA3 5EU',
+                type: 'HMO — 9 Rooms',
+                yield: '13.0%',
+                monthly: '£10,300/mo',
+                price: '£895,000',
+                gradient: 'from-[#C9A84C] to-[#080809]',
+              },
+              {
+                address: '88 Ripple Road',
+                area: 'Barking, IG11 7NS',
+                type: 'HMO — 6 Rooms',
+                yield: '16.3%',
+                monthly: '£4,200/mo',
+                price: '£310,000',
+                gradient: 'from-blue-900 to-[#080809]',
+              },
+            ].map((p) => (
+              <Link
+                key={p.address}
+                href="/yielding-investments"
+                className="bg-[#0F0F14] border border-[rgba(201,168,76,0.18)] rounded-xl overflow-hidden hover:border-[rgba(201,168,76,0.4)] transition-all flex flex-col sm:flex-row"
+              >
+                <div className={`w-full sm:w-40 h-32 sm:h-auto bg-gradient-to-br ${p.gradient} flex-shrink-0 flex flex-col justify-between p-4`}>
+                  <span className="bg-[#C9A84C] text-[#080809] text-xs font-black px-2.5 py-1 rounded self-start">
+                    {p.yield} YIELD
+                  </span>
+                  <p className="text-white text-xs font-semibold">{p.type}</p>
+                </div>
+                <div className="p-5 flex flex-col justify-center flex-1">
+                  <p className="text-[#E8E4DC] font-bold mb-0.5">{p.address}</p>
+                  <p className="text-[rgba(232,228,220,0.5)] text-xs mb-3">{p.area}</p>
+                  <div className="flex items-center gap-4">
+                    <div>
+                      <p className="text-[rgba(232,228,220,0.4)] text-[10px] uppercase tracking-wider">Monthly Rent</p>
+                      <p className="text-[#C9A84C] font-bold text-sm">{p.monthly}</p>
+                    </div>
+                    <div>
+                      <p className="text-[rgba(232,228,220,0.4)] text-[10px] uppercase tracking-wider">Guide Price</p>
+                      <p className="text-[#E8E4DC] font-semibold text-sm">{p.price}+</p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-6 text-center">
+            <Link
+              href="/yielding-investments"
+              className="inline-block border border-[rgba(201,168,76,0.4)] text-[#C9A84C] text-sm font-semibold px-6 py-3 rounded hover:bg-[rgba(201,168,76,0.08)] transition-colors"
+            >
+              View All Yielding Investments →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
       {/* SECTION 6 — THREE COLUMN SECTION                                      */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       <section className="bg-[#111118] border-y border-[rgba(201,168,76,0.1)] py-16 px-6">
