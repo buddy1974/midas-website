@@ -119,21 +119,15 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
+          <Link href="/" className="flex items-center flex-shrink-0">
             <Image
-              src="/logo.png"
+              src="/logo-midas-white-subtext.png"
               alt="Midas Property Auctions"
-              width={120}
-              height={40}
-              className="h-9 w-auto"
+              width={160}
+              height={48}
+              className="h-10 w-auto"
               priority
             />
-            <span className="hidden sm:block">
-              <span className="text-[#C9A84C] font-black text-sm tracking-widest">MIDAS</span>
-              <span className="text-[rgba(232,228,220,0.6)] text-xs ml-1.5 tracking-wide hidden lg:inline">
-                PROPERTY AUCTIONS
-              </span>
-            </span>
           </Link>
 
           {/* Desktop nav */}
@@ -265,9 +259,8 @@ export default function Navbar() {
         <div className="fixed inset-0 z-[100] bg-[#080809] flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between px-6 h-16 border-b border-[rgba(201,168,76,0.15)]">
-            <Link href="/" className="flex items-center gap-2">
-              <Image src="/logo.png" alt="Midas" width={100} height={34} className="h-8 w-auto" />
-              <span className="text-[#C9A84C] font-black text-sm tracking-widest">MIDAS</span>
+            <Link href="/" className="flex items-center">
+              <Image src="/logo-midas-white-subtext.png" alt="Midas Property Auctions" width={130} height={40} className="h-8 w-auto" />
             </Link>
             <button
               onClick={() => setMobileOpen(false)}

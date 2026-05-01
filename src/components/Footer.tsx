@@ -1,27 +1,7 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Phone, Smartphone, Mail } from 'lucide-react'
 import { company } from '@/lib/data'
-
-// ── Diamond logo mark ─────────────────────────────────────────────────────────
-
-function DiamondLogo() {
-  return (
-    <svg width="50" height="50" viewBox="0 0 50 50" aria-hidden="true">
-      <polygon
-        points="25,2 48,25 25,48 2,25"
-        fill="none"
-        stroke="#C9A84C"
-        strokeWidth="2"
-      />
-      <polygon
-        points="25,10 40,25 25,40 10,25"
-        fill="rgba(201,168,76,0.2)"
-        stroke="#C9A84C"
-        strokeWidth="1"
-      />
-    </svg>
-  )
-}
 
 // ── Social icon circle ────────────────────────────────────────────────────────
 
@@ -64,14 +44,14 @@ export default function Footer() {
 
           {/* Col 1 — Brand */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <DiamondLogo />
-              <div>
-                <div className="text-[#C9A84C] font-black text-2xl tracking-widest leading-none">MPG</div>
-                <div className="text-[rgba(232,228,220,0.6)] text-[9px] tracking-[0.2em] uppercase mt-0.5">
-                  MIDAS PROPERTY AUCTIONS
-                </div>
-              </div>
+            <div className="mb-4">
+              <Image
+                src="/logo-midas-white-subtext.png"
+                alt="Midas Property Auctions"
+                width={160}
+                height={48}
+                className="h-12 w-auto"
+              />
             </div>
 
             <p className="text-[rgba(232,228,220,0.5)] text-sm leading-relaxed mb-6 max-w-[220px]">
