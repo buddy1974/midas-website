@@ -2,9 +2,15 @@ import { type Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Property Blog | Midas Property Auctions',
+  title: 'Property Blog | Market Insights, Investment Guides & Auction News',
   description:
-    'Market insights, investment guides and auction news from the Midas team.',
+    'Market insights, investment guides and auction news from the Midas team. HMO market reports, bridging finance guides and expert buying advice.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/blog' },
+  openGraph: {
+    title: 'Property Blog | Market Insights, Investment Guides & Auction News',
+    description: 'Market insights, investment guides and auction news from the Midas team.',
+    url: 'https://www.midaspropertyauctions.co.uk/blog',
+  },
 }
 
 interface BlogPost {

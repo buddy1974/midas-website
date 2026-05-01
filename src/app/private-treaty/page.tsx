@@ -2,7 +2,15 @@ import { type Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Private Treaty Services | Midas Property Auctions',
+  title: 'Private Treaty Sales | Discreet Off-Market Property Transactions',
+  description:
+    'Confidential private treaty property sales for sensitive situations — probate, corporate disposals and complex transactions. Flexible timelines, discreet marketing and guaranteed confidentiality.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/private-treaty' },
+  openGraph: {
+    title: 'Private Treaty Sales | Discreet Off-Market Property Transactions',
+    description: 'Confidential property sales for sensitive situations. Flexible timelines, discreet marketing and guaranteed confidentiality.',
+    url: 'https://www.midaspropertyauctions.co.uk/private-treaty',
+  },
 }
 
 const whenToChoose = [

@@ -2,9 +2,15 @@ import { type Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Guide to Selling at Auction | Midas Property Auctions',
+  title: 'Guide to Selling Property at Auction | Free to List',
   description:
     'A clear and simple guide to selling your property at auction through Midas. Free to list. Fast completion. Professional marketing to 2,847+ investors.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/guide/selling' },
+  openGraph: {
+    title: 'Guide to Selling Property at Auction | Free to List',
+    description: 'Free to list. Fast completion. Professional marketing to 2,847+ investors.',
+    url: 'https://www.midaspropertyauctions.co.uk/guide/selling',
+  },
 }
 
 export default function SellingGuidePage() {

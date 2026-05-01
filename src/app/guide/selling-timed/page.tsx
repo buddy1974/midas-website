@@ -2,9 +2,15 @@ import { type Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Guide to Selling at Timed Auction | Midas Property Auctions',
+  title: 'Guide to Selling at Timed Auction | Reach Bidders 24/7',
   description:
     'Reach bidders 24/7 with a timed auction listing. Find out how to sell your property at timed auction with Midas.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/guide/selling-timed' },
+  openGraph: {
+    title: 'Guide to Selling at Timed Auction | Reach Bidders 24/7',
+    description: 'Reach bidders 24/7 with a timed auction listing. Contracts exchange at close — same legal certainty as livestream.',
+    url: 'https://www.midaspropertyauctions.co.uk/guide/selling-timed',
+  },
 }
 
 const benefits: { icon: string; title: string; body: string }[] = [

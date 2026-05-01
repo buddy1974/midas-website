@@ -14,11 +14,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const post = blogPosts.find((p) => p.slug === slug)
+  const title = post ? post.title : 'Article'
+  const description = post?.excerpt ?? ''
+  const canonical = `https://www.midaspropertyauctions.co.uk/blog/${slug}`
   return {
-    title: post
-      ? `${post.title} | Midas Property Auctions`
-      : 'Article | Midas Property Auctions',
-    description: post?.excerpt ?? '',
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title: `${title} | Midas Property Auctions`,
+      description,
+      url: canonical,
+      type: 'article',
+    },
   }
 }
 

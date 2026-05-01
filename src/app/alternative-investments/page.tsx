@@ -2,7 +2,15 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Alternative Property Investments | Midas Property Auctions',
+  title: 'Alternative Property Investments | Beyond Standard Auctions',
+  description:
+    'Explore alternative property investment strategies with Midas — international opportunities, development finance, sale-and-leaseback and commercial assets. Diversify beyond traditional residential.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/alternative-investments' },
+  openGraph: {
+    title: 'Alternative Property Investments | Beyond Standard Auctions',
+    description: 'International opportunities, development finance, sale-and-leaseback and commercial assets. Diversify beyond traditional residential.',
+    url: 'https://www.midaspropertyauctions.co.uk/alternative-investments',
+  },
 }
 
 // ─── Types ────────────────────────────────────────────────────────────────────

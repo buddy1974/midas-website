@@ -2,9 +2,15 @@ import { type Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Guide to Buying at Timed Auction | Midas Property Auctions',
+  title: 'Guide to Buying at Timed Online Auction | Bid 24/7',
   description:
     'Your complete guide to buying property at a timed online auction with Midas — bid 24/7 from anywhere in the world.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/guide/buying-timed' },
+  openGraph: {
+    title: 'Guide to Buying at Timed Online Auction | Bid 24/7',
+    description: 'Complete guide to buying property at timed auction — bid 24/7 from anywhere in the world.',
+    url: 'https://www.midaspropertyauctions.co.uk/guide/buying-timed',
+  },
 }
 
 const steps: { number: string; title: string; body: string }[] = [

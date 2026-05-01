@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
@@ -12,32 +12,93 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.midaspropertyauctions.co.uk'),
+
   title: {
-    default: 'Midas Property Auctions | London & Essex Property Auctioneers',
+    default: 'Midas Property Auctions | London, Essex & Nationwide Property Brokerage',
     template: '%s | Midas Property Auctions',
   },
+
   description:
-    'Premier property brokerage serving London and Essex. HMOs, residential, commercial and development sites sold at auction. 2,847 active investors. Register to bid today.',
+    'Midas Property Auctions — a property brokerage connecting buyers, sellers and investors through established UK auction companies. HMOs, residential, commercial and development sites. Free to list. 2,847 active investors.',
+
   keywords: [
-    'property auction London',
-    'HMO auction',
-    'buy property at auction',
-    'sell property at auction',
-    'London property investment',
-    'Essex property brokerage',
-    'bridging finance',
-    'off-market property',
-    'Midas Property Group',
-    'Sam Fongho',
+    'property auctions London',
+    'property brokerage UK',
+    'HMO properties London',
+    'below market value property',
+    'off-market property London',
+    'bridging finance property',
+    'buy property at auction UK',
+    'sell property at auction London',
+    'investment property London',
+    'yielding investments UK',
+    'property auction Essex',
+    'tenanted property investment',
+    'Midas Property Auctions',
+    'Sam Fongho property',
+    'property investment London 2026',
   ],
+
+  authors: [{ name: 'Midas Property Auctions', url: 'https://www.midaspropertyauctions.co.uk' }],
+  creator: 'Midas Property Auctions',
+  publisher: 'Midas Property Group Ltd',
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+
   openGraph: {
     type: 'website',
     locale: 'en_GB',
+    url: 'https://www.midaspropertyauctions.co.uk',
     siteName: 'Midas Property Auctions',
-    title: 'Midas Property Auctions | London & Essex Property Auctioneers',
+    title: 'Midas Property Auctions | London, Essex & Nationwide Property Brokerage',
     description:
-      'Premier property brokerage serving London and Essex. HMOs, residential, commercial and development sites sold at auction.',
+      'Connecting buyers, sellers and investors through established UK auction companies. Free to list. 2,847 active investors. HMOs, residential, commercial.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Midas Property Auctions — London Property Brokerage',
+      },
+    ],
   },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Midas Property Auctions | London Property Brokerage',
+    description:
+      'Connecting buyers, sellers and investors through established UK auction companies. Free to list. 2,847 active investors.',
+    images: ['/og-image.jpg'],
+    creator: '@midaspropertyauctions',
+  },
+
+  alternates: {
+    canonical: 'https://www.midaspropertyauctions.co.uk',
+  },
+
+  verification: {
+    google: 'G-QHFW6H6W5H',
+  },
+
+  category: 'property',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#C9A84C',
 }
 
 export default function RootLayout({

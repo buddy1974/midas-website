@@ -2,9 +2,15 @@ import { type Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Guide to Buying at Auction | Midas Property Auctions',
+  title: 'Guide to Buying Property at Auction | Step-by-Step',
   description:
     'Everything you need to know about buying property at auction. Browse lots, register to bid, attend the auction and complete your purchase with confidence.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/guide/buying' },
+  openGraph: {
+    title: 'Guide to Buying Property at Auction | Step-by-Step',
+    description: 'Browse lots, register to bid, attend the auction and complete your purchase with confidence.',
+    url: 'https://www.midaspropertyauctions.co.uk/guide/buying',
+  },
 }
 
 export default function BuyingGuidePage() {

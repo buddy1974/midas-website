@@ -4,9 +4,15 @@ import { team, services, company } from '@/lib/data'
 import { Shield, Eye, Zap, Star } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'About Midas Property Auctions | Sam Fongho',
+  title: 'About Midas Property Auctions | Founded by Sam Fongho',
   description:
     'Learn about Midas Property Group — founded by Sam Fongho, former IT consultant to Goldman Sachs, JP Morgan and CitiBank. 15+ years at the heart of London property auctions.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/about' },
+  openGraph: {
+    title: 'About Midas Property Auctions | Founded by Sam Fongho',
+    description: 'Founded by Sam Fongho — former IT consultant to Goldman Sachs, JP Morgan and CitiBank. 15+ years at the heart of London property auctions.',
+    url: 'https://www.midaspropertyauctions.co.uk/about',
+  },
 }
 
 export default function AboutPage() {

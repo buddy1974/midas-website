@@ -2,6 +2,10 @@ import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Midas Property Auctions',
+  description:
+    'How Midas Property Group Ltd collects, uses and protects your personal data. We comply fully with the UK GDPR and Data Protection Act 2018.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/privacy' },
+  robots: { index: true, follow: false },
 }
 
 interface PolicySection {

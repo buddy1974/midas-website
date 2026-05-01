@@ -1,3 +1,4 @@
+import { type Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { lots, type Lot, type LotStatus } from '@/lib/data'
@@ -77,6 +78,29 @@ async function getLot(id: string): Promise<Lot | null> {
 }
 
 export const dynamicParams = true
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+  const lot = await getLot(id)
+  if (!lot) return { title: 'Property Lot' }
+  const title = `${lot.address}${lot.area ? ', ' + lot.area : ''} — ${lot.type}`
+  const description = `${lot.type} at auction. Guide price ${new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 }).format(lot.guidePrice)}. Legal pack available. Register to bid with Midas Property Auctions.`
+  const canonical = `https://www.midaspropertyauctions.co.uk/properties/${id}`
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title: `${title} | Midas Property Auctions`,
+      description,
+      url: canonical,
+    },
+  }
+}
 
 export async function generateStaticParams() {
   return lots.filter((l) => !l.isOffMarket).map((lot) => ({ id: lot.id }))

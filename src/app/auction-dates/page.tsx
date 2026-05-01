@@ -2,7 +2,15 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Future Auction Dates | Midas Property Auctions',
+  title: 'Future Auction Dates 2026 | Upcoming Property Auctions',
+  description:
+    'All upcoming Midas Property Auction dates for 2026. Livestream and timed online auctions across London and Essex. Register to bid — free and takes 2 minutes.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/auction-dates' },
+  openGraph: {
+    title: 'Future Auction Dates 2026 | Upcoming Property Auctions',
+    description: 'All upcoming Midas Property Auction dates for 2026. Livestream and timed online auctions. Register to bid free.',
+    url: 'https://www.midaspropertyauctions.co.uk/auction-dates',
+  },
 }
 
 interface AuctionRow {

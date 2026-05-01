@@ -3,9 +3,15 @@ import Link from 'next/link'
 import RegisterYieldForm from './RegisterYieldForm'
 
 export const metadata: Metadata = {
-  title: 'Yielding Investments | Midas Property Auctions',
+  title: 'Yielding Investments | Tenanted Properties With Verified Income',
   description:
-    'Tenanted properties with verified rental income. Income-producing investment opportunities producing yield from day one.',
+    'Tenanted properties with verified rental income — producing yield from day one. HMOs and BTLs with existing tenancy agreements. Yields from 8.5% to 16.3%.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/yielding-investments' },
+  openGraph: {
+    title: 'Yielding Investments | Tenanted Properties With Verified Income',
+    description: 'Income-producing properties with tenants in place. Yields from 8.5% to 16.3%. Immediate rental income from completion.',
+    url: 'https://www.midaspropertyauctions.co.uk/yielding-investments',
+  },
 }
 
 const yieldingProperties = [

@@ -3,6 +3,10 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'General Conditions of Sale | Midas Property Auctions',
+  description:
+    'General conditions of sale that apply to all lots offered at Midas Property Auctions. Read the full terms before bidding, including deposit requirements and completion timescales.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/conditions' },
+  robots: { index: true, follow: false },
 }
 
 interface ConditionSection {

@@ -2,6 +2,10 @@ import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Complaints Procedure | Midas Property Auctions',
+  description:
+    'How to raise a complaint with Midas Property Auctions. We aim to resolve all complaints within 5 working days. Member of The Property Ombudsman scheme.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/complaints' },
+  robots: { index: true, follow: false },
 }
 
 export default function ComplaintsPage() {

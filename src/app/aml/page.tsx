@@ -2,7 +2,10 @@ import { type Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Anti-Money Laundering Requirements | Midas Property Auctions',
+  title: 'AML Requirements | Anti-Money Laundering for Property Buyers',
+  description:
+    'Anti-money laundering requirements for buyers at Midas Property Auctions. Find out what ID and proof of funds documentation you need to bid and complete a purchase.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/aml' },
 }
 
 const individualPhotoId = [

@@ -2,7 +2,15 @@ import { type Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Probate & Corporate Property Services | Midas Property Auctions',
+  title: 'Probate & Corporate Property Sales | Specialist Auction Services',
+  description:
+    'Specialist probate, fire-damaged, corporate and distressed property sales through auction. Sensitive handling, fast completion and full coordination with solicitors and estate administrators.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/probate' },
+  openGraph: {
+    title: 'Probate & Corporate Property Sales | Specialist Auction Services',
+    description: 'Specialist probate, fire-damaged, corporate and distressed property sales through auction. Sensitive handling, fast completion.',
+    url: 'https://www.midaspropertyauctions.co.uk/probate',
+  },
 }
 
 const specialistTypes = [

@@ -3,9 +3,15 @@ import Link from 'next/link'
 import { pastAuctions } from '@/lib/data'
 
 export const metadata: Metadata = {
-  title: 'Previous Auction Results | Midas Property Auctions',
+  title: 'Previous Auction Results | Track Record & Sold Prices',
   description:
     'Transparent results from every Midas Property Auctions event. View lots offered, lots sold, success rates and total raised per auction.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/past-auctions' },
+  openGraph: {
+    title: 'Previous Auction Results | Track Record & Sold Prices',
+    description: 'Transparent results from every Midas auction — lots offered, lots sold, success rates and total raised.',
+    url: 'https://www.midaspropertyauctions.co.uk/past-auctions',
+  },
 }
 
 function parseTotal(value: string): number {

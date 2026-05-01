@@ -3,9 +3,15 @@ import Link from 'next/link'
 import { testimonials } from '@/lib/data'
 
 export const metadata: Metadata = {
-  title: 'Client Testimonials | Midas Property Auctions',
+  title: 'Client Testimonials | Real Reviews from Buyers & Sellers',
   description:
     'Real feedback from buyers, sellers and investors across London and Essex. See what clients say about Midas Property Auctions.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/testimonials' },
+  openGraph: {
+    title: 'Client Testimonials | Real Reviews from Buyers & Sellers',
+    description: 'Real feedback from buyers, sellers and investors across London and Essex.',
+    url: 'https://www.midaspropertyauctions.co.uk/testimonials',
+  },
 }
 
 export default function TestimonialsPage() {

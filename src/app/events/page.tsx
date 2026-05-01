@@ -5,9 +5,15 @@ import { upcomingAuctions, pastAuctions } from '@/lib/data'
 import { Calendar, Clock, Monitor, Package, TrendingUp } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Auctions & Events | Midas Property Auctions',
+  title: 'Upcoming Auctions & Events | 97% Clearance Rate',
   description:
     'View upcoming Midas property auctions and register to bid online. Track record of 97% clearance rate across all auctions. Networking events across London.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/events' },
+  openGraph: {
+    title: 'Upcoming Auctions & Events | 97% Clearance Rate',
+    description: 'Upcoming property auctions. 97% clearance rate. Register to bid online. Networking events across London.',
+    url: 'https://www.midaspropertyauctions.co.uk/events',
+  },
 }
 
 interface OsEvent {

@@ -1,6 +1,6 @@
 import { type MetadataRoute } from 'next'
 
-const BASE = 'https://midas-website-rho.vercel.app'
+const BASE = 'https://www.midaspropertyauctions.co.uk'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
@@ -38,6 +38,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/complaints`, lastModified: now, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${BASE}/sitemap`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
     { url: `${BASE}/wishlist`, lastModified: now, changeFrequency: 'never', priority: 0.3 },
+    { url: `${BASE}/yielding-investments`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/compare`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
   ]
 
   const blogSlugs = [

@@ -2,7 +2,15 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Timed Online Auction | Midas Property Auctions',
+  title: 'Timed Online Auction | Bid 24/7 From Anywhere in the World',
+  description:
+    'Buy property at timed online auction with Midas. Lots open for 7–14 days. Bid from anywhere, 24/7. Same legal certainty at close as livestream. Contracts exchange automatically.',
+  alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/timed-auction' },
+  openGraph: {
+    title: 'Timed Online Auction | Bid 24/7 From Anywhere in the World',
+    description: 'Lots open 7–14 days. Bid 24/7 from anywhere. Contracts exchange automatically at close — same legal certainty as livestream.',
+    url: 'https://www.midaspropertyauctions.co.uk/timed-auction',
+  },
 }
 
 export default function TimedAuctionPage() {
