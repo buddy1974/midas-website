@@ -121,7 +121,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center flex-shrink-0">
             <Image
-              src="/logo-midas-white-subtext.png"
+              src="/logo-midas-white--REMIX.png"
               alt="Midas Property Auctions"
               width={160}
               height={48}
@@ -260,7 +260,7 @@ export default function Navbar() {
           {/* Header */}
           <div className="flex items-center justify-between px-6 h-16 border-b border-[rgba(201,168,76,0.15)]">
             <Link href="/" className="flex items-center">
-              <Image src="/logo-midas-white-subtext.png" alt="Midas Property Auctions" width={130} height={40} className="h-8 w-auto" />
+              <Image src="/logo-midas-white--REMIX.png" alt="Midas Property Auctions" width={130} height={40} className="h-8 w-auto" />
             </Link>
             <button
               onClick={() => setMobileOpen(false)}

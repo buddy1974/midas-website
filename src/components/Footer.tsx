@@ -46,7 +46,7 @@ export default function Footer() {
           <div>
             <div className="mb-4">
               <Image
-                src="/logo-midas-white-subtext.png"
+                src="/logo-midas-white--REMIX.png"
                 alt="Midas Property Auctions"
                 width={160}
                 height={48}
