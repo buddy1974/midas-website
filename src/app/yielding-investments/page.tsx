@@ -1,299 +1,324 @@
-import { type Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import RegisterYieldForm from './RegisterYieldForm'
 
 export const metadata: Metadata = {
   title: 'Yielding Investments | Midas Property Auctions',
   description:
-    'Tenanted properties with verified rental income. Ready-made investment opportunities producing yield from day one.',
+    'Tenanted properties with verified rental income. Income-producing investment opportunities producing yield from day one.',
 }
 
 const yieldingProperties = [
   {
     id: 'yi-1',
     address: '5 Weald Lane',
-    area: 'Harrow, HA3 5EU',
+    area: 'Harrow HA3 5EU',
     type: 'HMO — 9 Rooms',
-    guidePrice: 895000,
-    monthlyRent: 10300,
-    annualIncome: 123600,
-    yield: '13.0',
+    badge: 'Fully Licensed',
+    guidePrice: '£895,000',
+    monthlyRent: '£10,300',
+    annualIncome: '£123,600',
+    yieldPct: '13.0%',
     tenancy: 'Individual ASTs — all occupied',
-    gradient: 'from-[#C9A84C] to-[#080809]',
+    gradient: 'from-[#1a1208] to-[#0d0d14]',
   },
   {
     id: 'yi-2',
     address: '88 Ripple Road',
-    area: 'Barking, IG11 7NS',
+    area: 'Barking IG11 7NS',
     type: 'HMO — 6 Rooms',
-    guidePrice: 310000,
-    monthlyRent: 4200,
-    annualIncome: 50400,
-    yield: '16.3',
+    badge: 'Licensed',
+    guidePrice: '£310,000',
+    monthlyRent: '£4,200',
+    annualIncome: '£50,400',
+    yieldPct: '16.3%',
     tenancy: 'Licensed HMO — fully occupied',
-    gradient: 'from-blue-900 to-[#080809]',
+    gradient: 'from-[#0a1220] to-[#0d0d14]',
   },
   {
     id: 'yi-3',
     address: 'Portfolio — 3 x BTL',
     area: 'Barking & Dagenham',
     type: 'BTL Portfolio',
-    guidePrice: 510000,
-    monthlyRent: 3600,
-    annualIncome: 43200,
-    yield: '8.5',
+    badge: 'Tenants in Situ',
+    guidePrice: '£510,000',
+    monthlyRent: '£3,600',
+    annualIncome: '£43,200',
+    yieldPct: '8.5%',
     tenancy: 'Tenants in situ — ASTs',
-    gradient: 'from-purple-900 to-[#080809]',
+    gradient: 'from-[#0d1a0d] to-[#0d0d14]',
   },
 ]
 
-function formatPrice(n: number) {
-  return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 }).format(n)
-}
-
-function formatRent(n: number) {
-  return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 }).format(n)
-}
-
 export default function YieldingInvestmentsPage() {
   return (
-    <div className="min-h-screen bg-white pt-24 pb-20">
+    <main>
 
-      {/* Hero */}
-      <section className="max-w-5xl mx-auto px-6 text-center py-16">
-        <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-          Income-Producing Properties
-        </p>
-        <h1 className="text-4xl md:text-5xl font-black text-[#1A1A1A] mb-6 leading-tight">
-          Yielding Investments
-        </h1>
-        <p className="text-[#666] text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-          Tenanted properties with verified rental income — producing yield from day one.
-          No void periods. No setup required. Just a proven income stream.
-        </p>
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      <section
+        className="relative min-h-[78vh] flex items-center justify-center"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, rgba(8,8,9,0.72) 0%, rgba(8,8,9,0.92) 100%), url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="relative max-w-4xl mx-auto px-6 text-center pt-20">
+          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.3em] mb-4">
+            INCOME-PRODUCING PROPERTIES
+          </p>
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
+            Yielding <span className="text-[#C9A84C]">Investments</span>
+          </h1>
+          <p className="text-[rgba(232,228,220,0.8)] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+            Tenanted properties with verified rental income — producing yield from day one.
+            No void periods. No setup required. Just a proven income stream.
+          </p>
 
-        {/* 3 stat cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {[
-            {
-              title: 'Immediate Income',
-              body: 'Rental income from day one — tenants already in place',
-            },
-            {
-              title: 'Verified Yields',
-              body: 'All rental income independently verified before listing',
-            },
-            {
-              title: 'Hassle Free',
-              body: 'Existing tenancies, compliant and professionally managed',
-            },
-          ].map(({ title, body }) => (
-            <div
-              key={title}
-              className="bg-white border border-[#E8E5DE] rounded-xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
+          {/* Benefit pills */}
+          <div className="flex flex-wrap justify-center gap-3 mb-10">
+            {['Immediate Income', 'Verified Yields', 'Tenants in Place'].map(pill => (
+              <span
+                key={pill}
+                className="bg-[rgba(201,168,76,0.12)] border border-[rgba(201,168,76,0.4)] text-[#C9A84C] text-xs font-semibold px-4 py-2 rounded-full"
+              >
+                {pill}
+              </span>
+            ))}
+          </div>
+
+          {/* CTAs */}
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/properties"
+              className="bg-[#C9A84C] text-[#080809] font-bold px-6 py-3 rounded hover:bg-[#E8C96A] transition-colors"
             >
-              <div className="w-2 h-2 rounded-full bg-[#C9A84C] mb-3 mx-auto" />
-              <h3 className="text-[#1A1A1A] font-bold text-base mb-2">{title}</h3>
-              <p className="text-[#666] text-sm leading-relaxed">{body}</p>
-            </div>
-          ))}
+              View Current Lots →
+            </Link>
+            <Link
+              href="/register"
+              className="border border-[rgba(201,168,76,0.5)] text-[#E8E4DC] px-6 py-3 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors"
+            >
+              Register Interest →
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* What Are Yielding Investments */}
-      <section className="bg-[#F8F7F4] py-16">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      {/* ── WHAT ARE YIELDING INVESTMENTS ─────────────────────────────────── */}
+      <section className="bg-[#0D0D14] py-20 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12">
 
-            {/* Left — explanation */}
-            <div>
-              <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-3">
-                What Are Yielding Investments?
+          {/* Left — 60% */}
+          <div className="lg:col-span-3">
+            <h2 className="text-2xl md:text-3xl font-black text-white mb-6">
+              What is a <span className="text-[#C9A84C]">Yielding Investment?</span>
+            </h2>
+            <div className="space-y-4 text-[rgba(232,228,220,0.7)] text-base leading-relaxed">
+              <p>
+                A yielding investment is a property that already has tenants in place and is producing
+                rental income at the point of purchase.
               </p>
-              <h2 className="text-2xl md:text-3xl font-black text-[#1A1A1A] mb-6">
-                Income from day one
-              </h2>
-              <div className="space-y-4 text-[#444] text-sm leading-relaxed">
-                <p>
-                  A yielding investment is a property that already has tenants in place and is
-                  producing rental income at the point of purchase.
-                </p>
-                <p>
-                  Unlike vacant properties that require finding tenants after purchase, yielding
-                  investments give you an immediate income stream from the moment you complete.
-                </p>
-                <p>
-                  Midas sources and lists yielding investment properties across London, Essex and
-                  nationwide — from single BTL properties to fully occupied HMOs producing
-                  £40,000+ per year.
-                </p>
+              <p>
+                Unlike vacant properties that require finding tenants after purchase, yielding
+                investments give you an immediate income stream from the moment you complete.
+              </p>
+              <p>
+                Midas sources and lists yielding investment properties across London, Essex and
+                nationwide — from single BTL properties to fully occupied HMOs.
+              </p>
+            </div>
+          </div>
+
+          {/* Right — 40% benefit cards */}
+          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { icon: '💰', title: 'Immediate Rental Income', desc: 'No waiting for tenants. Income starts from completion.' },
+              { icon: '📋', title: 'Existing Tenancy Agreements', desc: 'ASTs already in place. All documentation provided with the legal pack.' },
+              { icon: '🏠', title: 'HMOs and BTLs', desc: 'Single lets, multi-room HMOs and portfolio opportunities.' },
+              { icon: '📊', title: 'Verified Income Figures', desc: 'Rental income independently verified — no inflated estimates.' },
+            ].map(b => (
+              <div
+                key={b.title}
+                className="rounded-xl p-5"
+                style={{ backgroundColor: '#0F0F14', border: '1px solid rgba(201,168,76,0.2)' }}
+              >
+                <div className="text-2xl mb-3">{b.icon}</div>
+                <p className="text-[#E8E4DC] font-bold text-sm mb-2">{b.title}</p>
+                <p className="text-[rgba(232,228,220,0.55)] text-xs leading-relaxed">{b.desc}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CURRENT YIELDING PROPERTIES ───────────────────────────────────── */}
+      <section className="bg-[#080809] py-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-10">
+            <h2 className="text-[#C9A84C] font-black uppercase text-xl mb-2">Current Yielding Properties</h2>
+            <div className="w-10 h-0.5 bg-[#C9A84C] mb-4" />
+            <p className="text-[rgba(232,228,220,0.5)] text-sm">
+              All properties below are tenanted and producing verified rental income.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {yieldingProperties.map(p => (
+              <div
+                key={p.id}
+                className="rounded-xl overflow-hidden flex flex-col"
+                style={{ backgroundColor: '#0F0F14', border: '1px solid rgba(201,168,76,0.2)' }}
+              >
+                {/* Header */}
+                <div className={`bg-gradient-to-br ${p.gradient} px-5 pt-5 pb-4`}>
+                  <span className="bg-[#C9A84C] text-[#080809] text-xs font-black px-3 py-1 rounded-full">
+                    {p.yieldPct} YIELD
+                  </span>
+                  <p className="text-white font-black text-base mt-3">{p.address}</p>
+                  <p className="text-[rgba(232,228,220,0.5)] text-xs">{p.area}</p>
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    <span className="bg-[rgba(201,168,76,0.12)] border border-[rgba(201,168,76,0.3)] text-[#C9A84C] text-[10px] font-semibold px-2 py-0.5 rounded">
+                      {p.type}
+                    </span>
+                    <span className="bg-[rgba(255,255,255,0.05)] text-[rgba(232,228,220,0.5)] text-[10px] px-2 py-0.5 rounded">
+                      {p.badge}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Income grid */}
+                <div className="px-5 py-4 grid grid-cols-2 gap-3 flex-1">
+                  {[
+                    { label: 'Monthly Rent', value: p.monthlyRent },
+                    { label: 'Annual Income', value: p.annualIncome },
+                    { label: 'Tenancy Type', value: 'AST' },
+                    { label: 'Guide Price', value: `${p.guidePrice}+` },
+                  ].map(({ label, value }) => (
+                    <div key={label}>
+                      <p className="text-[rgba(232,228,220,0.35)] text-[10px] uppercase tracking-wider">{label}</p>
+                      <p className="text-[#E8E4DC] text-sm font-semibold">{value}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="px-5 pb-3 text-[rgba(232,228,220,0.35)] text-[10px] italic border-t border-[rgba(201,168,76,0.08)] pt-3">
+                  {p.tenancy}
+                </p>
+
+                {/* Buttons */}
+                <div className="px-5 pb-5 flex gap-2">
+                  <Link
+                    href="/contact"
+                    className="flex-1 text-center bg-[#C9A84C] text-[#080809] text-xs font-bold py-2.5 rounded hover:bg-[#E8C96A] transition-colors"
+                  >
+                    View Details →
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="flex-1 text-center border border-[rgba(201,168,76,0.4)] text-[rgba(232,228,220,0.7)] text-xs py-2.5 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors"
+                  >
+                    Register Interest
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHY BUY YIELDING COMPARISON ───────────────────────────────────── */}
+      <section className="bg-[#111118] border-y border-[rgba(201,168,76,0.1)] py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-black text-white text-center mb-10">
+            Why Buy a <span className="text-[#C9A84C]">Yielding Investment?</span>
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Yielding */}
+            <div
+              className="rounded-xl p-7"
+              style={{ border: '2px solid #C9A84C', backgroundColor: 'rgba(201,168,76,0.04)' }}
+            >
+              <p className="text-[#C9A84C] font-black uppercase tracking-wider text-sm mb-5">
+                ◆ Yielding Investment
+              </p>
+              <ul className="space-y-3">
+                {[
+                  '✅ Income from day one',
+                  '✅ No tenant void risk',
+                  '✅ Verified rental figures',
+                  '✅ Existing tenancy documentation',
+                  '✅ Immediate ROI calculation',
+                ].map(item => (
+                  <li key={item} className="text-[rgba(232,228,220,0.8)] text-sm">{item}</li>
+                ))}
+              </ul>
             </div>
 
-            {/* Right — 4 benefit cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                {
-                  icon: '💰',
-                  title: 'Immediate rental income',
-                  body: 'No waiting for tenants. Income starts from completion.',
-                },
-                {
-                  icon: '📋',
-                  title: 'Existing tenancy agreements',
-                  body: 'ASTs in place. All documentation provided with the legal pack.',
-                },
-                {
-                  icon: '🏠',
-                  title: 'HMOs and BTLs',
-                  body: 'Single lets, multi-room HMOs and portfolio opportunities.',
-                },
-                {
-                  icon: '📊',
-                  title: 'Verified income figures',
-                  body: 'Rental income independently verified — no inflated estimates.',
-                },
-              ].map(({ icon, title, body }) => (
-                <div
-                  key={title}
-                  className="bg-white border border-[#E8E5DE] rounded-xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
-                >
-                  <span className="text-2xl block mb-2">{icon}</span>
-                  <h3 className="text-[#1A1A1A] font-bold text-sm mb-1">{title}</h3>
-                  <p className="text-[#666] text-xs leading-relaxed">{body}</p>
-                </div>
-              ))}
+            {/* Vacant */}
+            <div
+              className="rounded-xl p-7"
+              style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}
+            >
+              <p className="text-[rgba(232,228,220,0.4)] font-black uppercase tracking-wider text-sm mb-5">
+                Vacant Property
+              </p>
+              <ul className="space-y-3">
+                {[
+                  '⏳ Wait to find tenants',
+                  '⚠️ Void period — no income',
+                  '📊 Estimated rental projections only',
+                  '📝 New tenancy to arrange',
+                  '❓ Unknown actual yield',
+                ].map(item => (
+                  <li key={item} className="text-[rgba(232,228,220,0.45)] text-sm">{item}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Current Yielding Properties */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <div className="mb-10">
-          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-3">
-            Available Now
-          </p>
-          <h2 className="text-2xl md:text-3xl font-black text-[#1A1A1A] mb-3">
-            Current Yielding Properties
-          </h2>
-          <p className="text-[#666] text-sm">
-            All properties below are tenanted and producing verified rental income.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {yieldingProperties.map((p) => (
-            <div
-              key={p.id}
-              className="bg-white border border-[#E8E5DE] rounded-xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:border-[rgba(201,168,76,0.4)] transition-all"
-            >
-              {/* Image area with yield badge */}
-              <div className={`relative h-44 bg-gradient-to-br ${p.gradient}`}>
-                <span className="absolute top-3 left-3 bg-[#C9A84C] text-[#080809] text-xs font-black px-3 py-1.5 rounded">
-                  {p.yield}% YIELD
-                </span>
-                <span className="absolute top-3 right-3 text-xs px-3 py-1 rounded bg-black/60 text-[#E8E4DC]">
-                  {p.type}
-                </span>
-                <div className="absolute bottom-3 left-3">
-                  <p className="text-white font-black text-lg leading-tight">{p.address}</p>
-                  <p className="text-[rgba(232,228,220,0.7)] text-xs">{p.area}</p>
-                </div>
-              </div>
-
-              {/* Details */}
-              <div className="p-5">
-                {/* Price and yield */}
-                <div className="flex items-baseline justify-between mb-4">
-                  <div>
-                    <p className="text-[#888] text-xs uppercase tracking-wider mb-1">Guide Price</p>
-                    <p className="text-[#C9A84C] font-black text-2xl">{formatPrice(p.guidePrice)}+</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[#888] text-xs uppercase tracking-wider mb-1">Annual Income</p>
-                    <p className="text-[#1A1A1A] font-bold text-lg">{formatRent(p.annualIncome)}</p>
-                  </div>
-                </div>
-
-                {/* Income breakdown */}
-                <div className="bg-[#F8F7F4] rounded-lg p-3 mb-4 space-y-1.5">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-[#888]">Current Rent</span>
-                    <span className="text-[#1A1A1A] font-semibold">{formatRent(p.monthlyRent)}/mo</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-[#888]">Gross Yield</span>
-                    <span className="text-[#C9A84C] font-bold">{p.yield}%</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-[#888]">Tenancy</span>
-                    <span className="text-[#444] font-medium text-right max-w-[140px] leading-snug">{p.tenancy}</span>
-                  </div>
-                </div>
-
-                <Link
-                  href="/contact"
-                  className="block w-full text-center bg-[#C9A84C] text-[#080809] font-bold py-3 rounded hover:bg-[#E8C96A] transition-all text-sm"
-                >
-                  Enquire About This Property
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <p className="text-center text-[#999] text-xs mt-8">
-          Additional yielding properties available to registered investors.{' '}
-          <Link href="/register" className="text-[#C9A84C] hover:text-[#E8C96A] transition-colors">
-            Register for full access →
-          </Link>
-        </p>
-      </section>
-
-      {/* Register Interest */}
-      <section className="bg-[#F8F7F4] py-16">
-        <div className="max-w-2xl mx-auto px-6">
-          <div className="bg-white border border-[rgba(201,168,76,0.4)] rounded-2xl p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-            <div className="mb-6">
-              <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-2">
-                Never Miss an Opportunity
-              </p>
-              <h2 className="text-2xl font-bold text-[#1A1A1A] mb-2">
-                Register for Yielding Investment Alerts
-              </h2>
-              <p className="text-[#666] text-sm leading-relaxed">
-                Tell us your minimum yield requirement and preferred location. We will contact you
-                the moment a matching property becomes available.
-              </p>
-            </div>
+      {/* ── REGISTER INTEREST ─────────────────────────────────────────────── */}
+      <section className="bg-[#080809] py-16 px-6">
+        <div className="max-w-2xl mx-auto">
+          <div
+            className="rounded-xl p-8 md:p-10"
+            style={{ border: '1px solid rgba(201,168,76,0.35)', backgroundColor: '#0F0F14' }}
+          >
+            <h2 className="text-2xl font-black text-white mb-2">
+              Register for Yielding Investment Alerts
+            </h2>
+            <p className="text-[rgba(232,228,220,0.55)] text-sm mb-8 leading-relaxed">
+              Tell us your minimum yield and budget. We contact you the moment a matching property
+              becomes available.
+            </p>
             <RegisterYieldForm />
           </div>
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="max-w-3xl mx-auto px-6 py-16 text-center">
-        <div className="bg-[#1A1A1A] rounded-2xl p-10">
-          <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-3">
-            Have a Tenanted Property?
-          </p>
-          <h2 className="text-2xl md:text-3xl font-black text-white mb-4">
+      {/* ── BOTTOM CTA ────────────────────────────────────────────────────── */}
+      <section className="bg-[#0D0D14] border-t border-[rgba(201,168,76,0.1)] py-16 px-6 text-center">
+        <div className="max-w-xl mx-auto">
+          <h2 className="text-xl md:text-2xl font-black text-white mb-4">
             Have a tenanted property to sell?
           </h2>
-          <p className="text-[rgba(232,228,220,0.7)] text-sm leading-relaxed max-w-xl mx-auto mb-8">
-            We specialise in selling tenanted properties. Your tenants stay in place — the sale is
-            simple, certain and fast.
+          <p className="text-[rgba(232,228,220,0.6)] text-base leading-relaxed mb-8">
+            We specialise in selling tenanted properties discreetly. Your tenants stay in place —
+            the sale is simple, certain and fast.
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-[#C9A84C] text-[#080809] font-bold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all"
+            className="inline-block bg-[#C9A84C] text-[#080809] font-bold px-8 py-4 rounded hover:bg-[#E8C96A] transition-colors"
           >
             Contact Sam →
           </Link>
         </div>
       </section>
 
-    </div>
+    </main>
   )
 }

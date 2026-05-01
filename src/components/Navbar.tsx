@@ -236,7 +236,7 @@ export default function Navbar() {
 
             {/* Team Login */}
             <a
-              href="https://midas-property-sam.vercel.app/login"
+              href="https://os.midaspropertyauctions.co.uk/login"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden md:flex items-center gap-1.5 text-[rgba(232,228,220,0.5)] text-xs hover:text-[#C9A84C] transition-colors border border-[rgba(201,168,76,0.2)] px-3 py-1.5 rounded"
@@ -362,7 +362,7 @@ export default function Navbar() {
                 )}
               </Link>
               <a
-                href="https://midas-property-sam.vercel.app/login"
+                href="https://os.midaspropertyauctions.co.uk/login"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center text-xs text-[rgba(232,228,220,0.4)] py-3 border-t border-[rgba(201,168,76,0.1)] hover:text-[#C9A84C] transition-colors"

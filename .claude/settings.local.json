@@ -26,7 +26,8 @@
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('rootDirectory:', d.get\\('rootDirectory'\\)\\)\")",
       "Bash(git init *)",
       "Bash(dir \"C:\\\\Users\\\\loneb\\\\Documents\\\\ai-software-dev\\\\projects\\\\midas-website\")",
-      "Bash(npm uninstall *)"
+      "Bash(npm uninstall *)",
+      "PowerShell(Copy-Item *)"
     ]
   }
 }
