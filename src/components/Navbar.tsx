@@ -50,6 +50,7 @@ const navItems: NavItem[] = [
     ],
   },
   { label: 'Instant Cash Offer', href: '/instant-offer' },
+  { label: 'Events', href: '/events' },
   { label: 'Alternative Investments', href: '/alternative-investments' },
   { label: 'Yielding Investments', href: '/yielding-investments' },
   {
