@@ -27,7 +27,6 @@ const navItems: NavItem[] = [
       { label: 'Register to Bid', href: '/register' },
     ],
   },
-  { label: 'Yielding Investments', href: '/yielding-investments' },
   {
     label: 'Buy Property',
     dropdown: [
@@ -52,11 +51,11 @@ const navItems: NavItem[] = [
   },
   { label: 'Instant Cash Offer', href: '/instant-offer' },
   { label: 'Alternative Investments', href: '/alternative-investments' },
+  { label: 'Yielding Investments', href: '/yielding-investments' },
   {
     label: 'About',
     dropdown: [
       { label: 'About Us', href: '/about' },
-      { label: 'Meet the Team', href: '/about#team' },
       { label: 'Blog', href: '/blog' },
       { label: 'Testimonials', href: '/testimonials' },
       { label: 'FAQs', href: '/faqs' },
