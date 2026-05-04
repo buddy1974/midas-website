@@ -368,41 +368,13 @@ export const team: TeamMember[] = [
     linkedin: 'https://www.linkedin.com/in/sam-fongho-a33963a/',
     phone: '07454 753318',
   },
-  {
-    name: 'Sara Williams',
-    role: 'Head of Investor Relations',
-    initials: 'SW',
-    bio: 'Sara manages relationships with the Midas investor network of over 2,800 active contacts. She oversees investor communications, campaign management and subscriber engagement, ensuring every investor receives timely, relevant information about new lots and investment opportunities.',
-    linkedin: '#',
-  },
-  {
-    name: 'Aarti Sawhney',
-    role: 'Acquisitions & Finance Director',
-    initials: 'AS',
-    bio: 'Aarti leads the acquisitions process at Midas, managing due diligence, financial analysis and creative finance structures for complex auction purchases. She has particular expertise in bridging finance, HMO structuring and below-market-value acquisition strategy.',
-    linkedin: '#',
-  },
-  {
-    name: 'Chris Ola',
-    role: 'Operations Manager',
-    initials: 'CO',
-    bio: 'Chris manages the operational workflow across all active lots — coordinating viewings, legal pack preparation, vendor liaison and transaction management. He ensures every deal moves efficiently from sourcing to completion.',
-    linkedin: '#',
-  },
-  {
-    name: 'Queen Igwe',
-    role: 'Real Estate Consultant',
-    initials: 'QI',
-    bio: 'Queen provides consultancy to investors on portfolio strategy, investment structure and market analysis. With a background in residential and commercial real estate, she helps clients identify the right opportunities for their specific investment goals.',
-    linkedin: '#',
-  },
-  {
-    name: 'Collins',
-    role: 'Business Development',
-    initials: 'CO',
-    bio: 'Collins supports business development across the Midas auction and private lending operations. With two years of hands-on experience across all areas of the business, he plays a key role in client engagement and operational support.',
-    linkedin: '#',
-  },
+  // Removed per Sam — 4 May 2026
+  // Old staff — Sam to provide new team details
+  // { name: 'Sara Williams', role: 'Head of Investor Relations', initials: 'SW', bio: '...', linkedin: '#' },
+  // { name: 'Aarti Sawhney', role: 'Acquisitions & Finance Director', initials: 'AS', bio: '...', linkedin: '#' },
+  // { name: 'Chris Ola', role: 'Operations Manager', initials: 'CO', bio: '...', linkedin: '#' },
+  // { name: 'Queen Igwe', role: 'Real Estate Consultant', initials: 'QI', bio: '...', linkedin: '#' },
+  // { name: 'Collins', role: 'Business Development', initials: 'CO', bio: '...', linkedin: '#' },
 ]
 
 // ── TESTIMONIALS ──────────────────────────────────────────────────────────────

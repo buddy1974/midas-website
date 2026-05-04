@@ -160,30 +160,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Full team */}
-      <section id="team" className="max-w-7xl mx-auto px-6 py-16">
-        <SectionHeader eyebrow="Our People" title="The Full Team" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {team.map((member) => (
-            <div
-              key={member.name}
-              className="bg-white border border-[#E8E5DE] rounded-xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full bg-[#C9A84C] flex items-center justify-center text-[#080809] font-black text-base flex-shrink-0">
-                  {member.initials}
-                </div>
-                <div>
-                  <h3 className="text-[#1A1A1A] font-bold">{member.name}</h3>
-                  <p className="text-[#C9A84C] text-xs uppercase tracking-wider">{member.role}</p>
-                </div>
-              </div>
-              <p className="text-[#666] text-xs leading-relaxed">{member.bio}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Trusted network */}
       <section className="bg-[#F8F7F4] py-16">
         <div className="max-w-7xl mx-auto px-6">
