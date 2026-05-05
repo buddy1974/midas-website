@@ -57,7 +57,6 @@ const sections: SitemapSection[] = [
     heading: 'About',
     links: [
       { label: 'About Us', href: '/about' },
-      { label: 'Meet the Team', href: '/about#team' },
       { label: 'Testimonials', href: '/testimonials' },
       { label: 'Events', href: '/events' },
       { label: 'Contact Us', href: '/contact' },
@@ -79,12 +78,6 @@ const sections: SitemapSection[] = [
       { label: 'Alternative Investments', href: '/alternative-investments' },
       { label: 'Off-Market Properties', href: '/off-market' },
       { label: 'Wishlist', href: '/wishlist' },
-      {
-        label: 'Main Website ↗',
-        href: 'https://www.midaspropertygroup.co.uk',
-        external: true,
-        italic: true,
-      },
     ],
   },
 ]

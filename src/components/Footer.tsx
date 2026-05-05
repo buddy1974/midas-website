@@ -88,15 +88,6 @@ export default function Footer() {
               </SocialIcon>
             </div>
 
-            {/* Main website link */}
-            <a
-              href="https://www.midaspropertygroup.co.uk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[#C9A84C] text-xs hover:text-[#E8C96A] transition-colors"
-            >
-              🌐 midaspropertygroup.co.uk
-            </a>
           </div>
 
           {/* Col 2 — Company Address */}
@@ -124,10 +115,10 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:info@midaspropertygroup.co.uk"
+                <a href="mailto:info@midaspropertyauctions.co.uk"
                   className="flex items-center gap-2 text-[rgba(232,228,220,0.6)] text-sm hover:text-[#C9A84C] transition-colors">
                   <Mail size={13} className="text-[#C9A84C] flex-shrink-0" />
-                  info@midaspropertygroup.co.uk
+                  info@midaspropertyauctions.co.uk
                 </a>
               </li>
             </ul>
@@ -173,17 +164,6 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <div className="mt-4 pt-4 border-t border-[rgba(201,168,76,0.1)]">
-              <p className="text-[#C9A84C] text-[10px] uppercase tracking-wider font-semibold mb-2">Main Website</p>
-              <a
-                href="https://www.midaspropertygroup.co.uk"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[rgba(232,228,220,0.35)] text-xs hover:text-[#C9A84C] transition-colors"
-              >
-                midaspropertygroup.co.uk ↗
-              </a>
-            </div>
           </div>
 
           {/* Col 4 — Social Networks */}

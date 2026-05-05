@@ -12,7 +12,6 @@ import {
   blogPosts,
   principles,
   serviceNames,
-  accreditations,
   staticEvents,
   type Lot,
   type LotStatus,
@@ -67,8 +66,6 @@ export default function HomePage() {
 
   const servicesData = serviceNames
 
-  const accreditationsData = accreditations
-
   return (
     <main>
 
@@ -99,9 +96,8 @@ export default function HomePage() {
           {/* Gold-bordered intro box */}
           <div className="bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.5)] rounded-lg px-8 py-6 max-w-2xl mx-auto mb-8">
             <p className="text-[rgba(232,228,220,0.85)] text-lg leading-relaxed">
-              Midas Property Auctions specialises in sourcing, selling and investing in top-performing
-              properties across London, Essex and nationwide — connecting buyers, sellers and investors
-              through professional auction and off-market services.
+              Standing in the middle — connecting buyers, sellers and investors across the UK through
+              our network of established auction companies and exclusive off-market services.
             </p>
           </div>
 
@@ -150,7 +146,7 @@ export default function HomePage() {
       {/* SECTION 2 — CONTACT BAR                                               */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       <section className="bg-[#0D0D14] border-t-2 border-t-[#C9A84C] border-b border-b-[rgba(201,168,76,0.15)] py-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-0">
           {/* Phone */}
           <div className="flex items-center gap-3 px-6 py-2 border-r border-[rgba(201,168,76,0.15)]">
             <Phone className="text-[#C9A84C] flex-shrink-0" size={18} />
@@ -172,7 +168,7 @@ export default function HomePage() {
             <Mail className="text-[#C9A84C] flex-shrink-0" size={18} />
             <div>
               <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.15em] font-semibold">EMAIL</p>
-              <p className="text-[#E8E4DC] text-sm font-medium">info@midaspropertygroup.co.uk</p>
+              <p className="text-[#E8E4DC] text-sm font-medium">info@midaspropertyauctions.co.uk</p>
             </div>
           </div>
           {/* Hours */}
@@ -317,14 +313,6 @@ export default function HomePage() {
           <div className="flex justify-center gap-6 mt-8">
             <Link href="/about" className="text-[#C9A84C] text-sm hover:text-[#E8C96A] transition-colors">
               Learn more about us →
-            </Link>
-            <Link
-              href="https://www.midaspropertygroup.co.uk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[rgba(232,228,220,0.4)] text-xs hover:text-[#C9A84C] transition-colors"
-            >
-              Visit our main website →
             </Link>
           </div>
         </div>
@@ -566,12 +554,11 @@ export default function HomePage() {
       {/* SECTION 8 — STATS BAR                                                 */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       <section className="bg-[#0D0D14] border-y border-[rgba(201,168,76,0.2)] py-12 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
           {[
             { value: '340+', label: 'Properties Sold' },
             { value: '2,847', label: 'Active Investors' },
             { value: '15+', label: 'Years Experience' },
-            { value: '28 Days', label: 'To Completion' },
           ].map(stat => (
             <div key={stat.label} className="text-center">
               <p className="text-4xl md:text-5xl font-black text-[#C9A84C] tabular-nums">{stat.value}</p>
@@ -589,7 +576,7 @@ export default function HomePage() {
           <h2 className="text-[#C9A84C] font-black uppercase text-xl tracking-wider mb-3">
             JOIN OUR MAILING LIST
           </h2>
-          <p className="text-[rgba(232,228,220,0.65)] text-base max-w-xl mx-auto">
+          <p className="text-[#1A1A1A] text-base max-w-xl mx-auto">
             Be the first to hear about new lots, auction dates and exclusive investment opportunities.
           </p>
         </div>
@@ -613,23 +600,6 @@ export default function HomePage() {
         >
           ✉ Contact Us
         </Link>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* SECTION 11 — ACCREDITATION LOGOS                                      */}
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      <section className="bg-[rgba(255,255,255,0.02)] border-t border-[rgba(201,168,76,0.15)] py-8 px-6">
-        <div className="flex flex-wrap justify-center gap-4">
-          {accreditationsData.map(name => (
-            <span
-              key={name}
-              className="border border-[rgba(201,168,76,0.3)] rounded px-5 py-2 text-[#C9A84C] text-xs font-semibold tracking-wider uppercase hover:bg-[rgba(201,168,76,0.05)] transition-colors cursor-default"
-            >
-              {name}
-            </span>
-          ))}
-        </div>
-        {/* TODO: Replace accreditation badges with real logo images — /public/logos/ */}
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════════ */}

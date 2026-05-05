@@ -61,7 +61,6 @@ const navItems: NavItem[] = [
       { label: 'Testimonials', href: '/testimonials' },
       { label: 'FAQs', href: '/faqs' },
       { label: 'Contact Us', href: '/contact' },
-      { label: 'Main Website ↗', href: 'https://www.midaspropertygroup.co.uk' },
     ],
   },
 ]

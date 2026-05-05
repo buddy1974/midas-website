@@ -92,27 +92,6 @@ export default function AlternativeInvestmentsPage() {
         </div>
       </section>
 
-      {/* ── MPG Link ──────────────────────────────────────────────────────────── */}
-      <section className="bg-[rgba(201,168,76,0.06)] border-y border-[#C9A84C]/30 py-12 px-6 text-center">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-[#E8E4DC] font-black text-2xl mb-4">
-            Full Details on Our Main Website
-          </h2>
-          <p className="text-[rgba(232,228,220,0.65)] text-base leading-relaxed mb-8">
-            For comprehensive information on all our alternative investment services, visit the Midas
-            Property Group main website.
-          </p>
-          <a
-            href="https://www.midaspropertygroup.co.uk/alternative-investments-with-midas-property-group/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#C9A84C] font-bold text-lg hover:text-[#E8C96A] transition-colors"
-          >
-            Full details at midaspropertygroup.co.uk/alternative-investments →
-          </a>
-        </div>
-      </section>
-
       {/* ── Contact CTA ───────────────────────────────────────────────────────── */}
       <section className="bg-[#080809] py-16 px-6 text-center">
         <div className="max-w-xl mx-auto">

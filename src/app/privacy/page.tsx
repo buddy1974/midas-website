@@ -17,7 +17,7 @@ const sections: PolicySection[] = [
   {
     heading: '1. Data Controller',
     content:
-      'Midas Property Group Ltd (Company No: 09522321) is the data controller for personal data collected through this website and our services. Contact: info@midaspropertygroup.co.uk',
+      'Midas Property Group Ltd (Company No: 09522321) is the data controller for personal data collected through this website and our services. Contact: info@midaspropertyauctions.co.uk',
   },
   {
     heading: '2. What Data We Collect',
@@ -47,7 +47,7 @@ const sections: PolicySection[] = [
   {
     heading: '7. Your Rights (GDPR)',
     content:
-      'Under UK GDPR, you have the right to:\n• Access your personal data\n• Correct inaccurate data\n• Request erasure of your data\n• Object to processing\n• Data portability\n• Withdraw consent at any time\nTo exercise these rights, contact: info@midaspropertygroup.co.uk',
+      'Under UK GDPR, you have the right to:\n• Access your personal data\n• Correct inaccurate data\n• Request erasure of your data\n• Object to processing\n• Data portability\n• Withdraw consent at any time\nTo exercise these rights, contact: info@midaspropertyauctions.co.uk',
   },
   {
     heading: '8. Cookies',
@@ -62,7 +62,7 @@ const sections: PolicySection[] = [
   {
     heading: '10. Contact',
     content:
-      'For privacy queries: info@midaspropertygroup.co.uk or write to: Midas Property Group Ltd, Stanmore Business & Innovation Centre, Stanmore Place, Honeypot Lane, London HA7 1BT',
+      'For privacy queries: info@midaspropertyauctions.co.uk or write to: Midas Property Group Ltd, Stanmore Business & Innovation Centre, Stanmore Place, Honeypot Lane, London HA7 1BT',
   },
 ]
 

@@ -501,7 +501,6 @@ export const stats = [
   { label: 'Properties Sold', value: '340+' },
   { label: 'Active Investors', value: '2,847' },
   { label: 'Years in Auctions', value: '15+' },
-  { label: 'Avg. Days to Sold', value: '28' },
 ]
 
 // ── SERVICES ──────────────────────────────────────────────────────────────────
@@ -661,7 +660,7 @@ export const company = {
   },
   phone: '+44 207 206 2691',
   mobile: '07454 753318',
-  email: 'info@midaspropertygroup.co.uk',
+  email: 'info@midaspropertyauctions.co.uk',
   samEmail: 'Sam@MidasPropertyAuctions.co.uk',
   website: 'www.midaspropertyauctions.co.uk',
   hours: 'Monday – Friday: 9:00am – 6:00pm · Saturday: 10:00am – 2:00pm',

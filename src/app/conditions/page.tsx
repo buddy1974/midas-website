@@ -139,10 +139,10 @@ export default function ConditionsPage() {
         <p className="text-[rgba(232,228,220,0.4)] text-xs mt-3">
           Contact{' '}
           <a
-            href="mailto:info@midaspropertygroup.co.uk"
+            href="mailto:info@midaspropertyauctions.co.uk"
             className="text-[#C9A84C] hover:text-[#E8C96A] transition-colors"
           >
-            info@midaspropertygroup.co.uk
+            info@midaspropertyauctions.co.uk
           </a>{' '}
           for the official PDF version.
         </p>

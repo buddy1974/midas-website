@@ -27,12 +27,12 @@ export default function AriaWidget() {
       setMessages(prev => [...prev, {
         role: 'aria',
         text: data.reply || data.summary ||
-          'Thank you for your enquiry. Please call Sam on 07454 753318 or email info@midaspropertygroup.co.uk for a personal response.'
+          'Thank you for your enquiry. Please call Sam on 07454 753318 or email info@midaspropertyauctions.co.uk for a personal response.'
       }])
     } catch {
       setMessages(prev => [...prev, {
         role: 'aria',
-        text: 'Please call Sam on 07454 753318 or email info@midaspropertygroup.co.uk and we will get back to you shortly.'
+        text: 'Please call Sam on 07454 753318 or email info@midaspropertyauctions.co.uk and we will get back to you shortly.'
       }])
     }
     setLoading(false)

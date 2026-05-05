@@ -52,10 +52,10 @@ export default function ComplaintsPage() {
               <p>
                 <span className="font-semibold text-[#1A1A1A]">Email:</span>{' '}
                 <a
-                  href="mailto:info@midaspropertygroup.co.uk"
+                  href="mailto:info@midaspropertyauctions.co.uk"
                   className="text-[#C9A84C] hover:text-[#E8C96A] transition-colors"
                 >
-                  info@midaspropertygroup.co.uk
+                  info@midaspropertyauctions.co.uk
                 </a>
               </p>
               <p>
@@ -161,10 +161,10 @@ export default function ComplaintsPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center text-sm">
               <a
-                href="mailto:info@midaspropertygroup.co.uk"
+                href="mailto:info@midaspropertyauctions.co.uk"
                 className="text-[#C9A84C] hover:text-[#E8C96A] transition-colors font-medium"
               >
-                info@midaspropertygroup.co.uk
+                info@midaspropertyauctions.co.uk
               </a>
               <span className="hidden sm:inline text-[#CCC]">|</span>
               <a

@@ -5,10 +5,10 @@ import { useState } from 'react'
 const USER_TYPES = ['Buyer', 'Seller', 'Investor', 'Landlord', 'Developer', 'Both Buyer & Seller']
 
 const inputClass =
-  'w-full px-4 py-3 rounded-md text-sm text-white placeholder-[rgba(232,228,220,0.4)] focus:outline-none focus:ring-1 focus:ring-[#C9A84C]'
+  'w-full px-4 py-3 rounded-md text-sm text-[#1A1A1A] placeholder-[rgba(0,0,0,0.4)] focus:outline-none focus:ring-1 focus:ring-[#C9A84C]'
 const inputStyle = {
-  backgroundColor: 'rgba(255,255,255,0.05)',
-  border: '1px solid rgba(201,168,76,0.3)',
+  backgroundColor: 'rgba(255,255,255,0.9)',
+  border: '1px solid #C9A84C',
 }
 
 export default function NewsletterForm() {

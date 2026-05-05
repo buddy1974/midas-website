@@ -333,10 +333,10 @@ export default function ValuationPage() {
                   07454 753318
                 </a>
                 <a
-                  href="mailto:info@midaspropertygroup.co.uk"
+                  href="mailto:info@midaspropertyauctions.co.uk"
                   className="block text-[#C9A84C] text-sm font-medium hover:text-[#E8C96A] transition-colors mt-1"
                 >
-                  info@midaspropertygroup.co.uk
+                  info@midaspropertyauctions.co.uk
                 </a>
               </div>
 
