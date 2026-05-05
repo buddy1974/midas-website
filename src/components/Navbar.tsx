@@ -8,34 +8,37 @@ import { Menu, X, ChevronDown, Heart } from 'lucide-react'
 
 // ── Nav structure ─────────────────────────────────────────────────────────────
 
+interface DropdownItem {
+  label: string
+  href: string
+  isHeader?: boolean
+}
+
 interface NavItem {
   label: string
   href?: string
-  dropdown?: { label: string; href: string }[]
+  dropdown?: DropdownItem[]
 }
 
 const navItems: NavItem[] = [
+  { label: 'Home', href: '/' },
   {
-    label: 'Properties',
+    label: 'Buy Property',
     dropdown: [
-      { label: 'Current Lots', href: '/properties' },
-      { label: 'Going to Auction', href: '/current-auction' },
-      { label: 'Off-Market', href: '/off-market' },
+      { label: 'PROPERTIES', href: '', isHeader: true },
+      { label: 'Current Lots', href: '/current-auction' },
+      { label: 'Going to Auction', href: '/properties' },
+      { label: 'Off-Market Properties', href: '/off-market' },
       { label: 'Lots Still Available', href: '/lots-still-available' },
       { label: 'Past Sales', href: '/past-auctions' },
       { label: 'Future Auction Dates', href: '/auction-dates' },
       { label: 'Register to Bid', href: '/register' },
-    ],
-  },
-  {
-    label: 'Buy Property',
-    dropdown: [
+      { label: 'BUYING GUIDES', href: '', isHeader: true },
       { label: 'Buying With Us', href: '/buy' },
-      { label: 'Guide to Buying', href: '/guide/buying' },
+      { label: 'Guide to Buying at Auction', href: '/guide/buying' },
       { label: 'Guide to Timed Auction', href: '/guide/buying-timed' },
-      { label: 'Finance Your Property', href: '/finance' },
+      { label: 'Finance Your Purchase', href: '/finance' },
       { label: 'AML Requirements', href: '/aml' },
-      { label: 'Private Treaty', href: '/private-treaty' },
     ],
   },
   {
@@ -51,8 +54,6 @@ const navItems: NavItem[] = [
   },
   { label: 'Instant Cash Offer', href: '/instant-offer' },
   { label: 'Events', href: '/events' },
-  { label: 'Alternative Investments', href: '/alternative-investments' },
-  { label: 'Yielding Investments', href: '/yielding-investments' },
   {
     label: 'About',
     dropdown: [
@@ -70,6 +71,7 @@ const navItems: NavItem[] = [
 function isActive(item: NavItem, pathname: string): boolean {
   if (item.href) return pathname === item.href
   return (item.dropdown ?? []).some(sub => {
+    if (sub.isHeader) return false
     const path = sub.href.split('?')[0]
     return pathname === path || (path !== '/' && pathname.startsWith(path))
   })
@@ -178,20 +180,28 @@ export default function Navbar() {
                         className="rounded-b-xl shadow-2xl shadow-black/60 py-2"
                         style={{
                           backgroundColor: '#0D0D14',
-                          borderTop: '2px solid #C9A84C',
                           border: '1px solid rgba(201,168,76,0.2)',
                           borderTopColor: '#C9A84C',
                           borderTopWidth: '2px',
                         }}
                       >
-                        {item.dropdown.map(sub =>
-                          sub.href.startsWith('http') ? (
+                        {item.dropdown.map((sub, i) =>
+                          sub.isHeader ? (
+                            <div
+                              key={`${sub.label}-${i}`}
+                              className="px-6 pt-4 pb-1.5"
+                            >
+                              <span className="text-[#C9A84C] text-[9px] uppercase tracking-[0.2em] font-bold">
+                                {sub.label}
+                              </span>
+                            </div>
+                          ) : sub.href.startsWith('http') ? (
                             <a
                               key={sub.href}
                               href={sub.href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="block px-6 py-3 text-sm text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-all duration-150 italic"
+                              className="block px-6 py-2.5 text-sm text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-all duration-150 italic"
                             >
                               {sub.label}
                             </a>
@@ -199,7 +209,7 @@ export default function Navbar() {
                             <Link
                               key={sub.href}
                               href={sub.href}
-                              className="block px-6 py-3 text-sm text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-all duration-150"
+                              className="block px-6 py-2.5 text-sm text-[rgba(232,228,220,0.75)] hover:text-[#C9A84C] hover:bg-[rgba(201,168,76,0.06)] transition-all duration-150"
                             >
                               {sub.label}
                             </Link>
@@ -214,7 +224,7 @@ export default function Navbar() {
           </ul>
 
           {/* Right side */}
-          <div className="hidden xl:flex items-center gap-4 flex-shrink-0">
+          <div className="hidden xl:flex items-center gap-3 flex-shrink-0">
             {/* Wishlist */}
             <Link href="/wishlist" className="relative text-[rgba(232,228,220,0.6)] hover:text-[#C9A84C] transition-colors">
               <Heart size={18} />
@@ -225,25 +235,25 @@ export default function Navbar() {
               )}
             </Link>
 
-            {/* Phone */}
-            <a
-              href="tel:07454753318"
-              className="text-[rgba(232,228,220,0.5)] text-sm hover:text-[#C9A84C] transition-colors"
+            {/* Contact Us */}
+            <Link
+              href="/contact"
+              className="flex items-center gap-1.5 text-[rgba(232,228,220,0.75)] text-xs font-medium hover:text-[#C9A84C] transition-colors border border-[rgba(201,168,76,0.35)] px-3 py-1.5 rounded hover:border-[#C9A84C]"
             >
-              📞 07454 753318
-            </a>
+              Contact Us
+            </Link>
 
             {/* Team Login */}
             <a
               href="https://os.midaspropertyauctions.co.uk/login"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-1.5 text-[rgba(232,228,220,0.5)] text-xs hover:text-[#C9A84C] transition-colors border border-[rgba(201,168,76,0.2)] px-3 py-1.5 rounded"
+              className="flex items-center gap-1.5 text-[rgba(232,228,220,0.5)] text-xs hover:text-[#C9A84C] transition-colors border border-[rgba(201,168,76,0.2)] px-3 py-1.5 rounded"
             >
               Team Login →
             </a>
 
-            {/* CTA */}
+            {/* Free Valuation CTA */}
             <Link
               href="/valuation"
               className="bg-[#C9A84C] text-[#080809] text-sm font-bold px-4 py-2 rounded hover:bg-[#E8C96A] transition-all hover:scale-[1.02]"
@@ -303,16 +313,24 @@ export default function Navbar() {
                       </button>
                       {mobileExpanded === item.label && (
                         <ul className="border-l-2 border-[#C9A84C] ml-4 border-b border-[rgba(201,168,76,0.1)]">
-                          {item.dropdown.map(sub => (
-                            <li key={sub.href}>
-                              <Link
-                                href={sub.href}
-                                className="block px-4 py-3 text-sm text-[rgba(232,228,220,0.6)] hover:text-[#C9A84C] transition-colors"
-                              >
-                                {sub.label}
-                              </Link>
-                            </li>
-                          ))}
+                          {item.dropdown.map((sub, i) =>
+                            sub.isHeader ? (
+                              <li key={`${sub.label}-${i}`} className="px-4 pt-3 pb-1">
+                                <span className="text-[#C9A84C] text-[9px] uppercase tracking-[0.2em] font-bold">
+                                  {sub.label}
+                                </span>
+                              </li>
+                            ) : (
+                              <li key={sub.href}>
+                                <Link
+                                  href={sub.href}
+                                  className="block px-4 py-2.5 text-sm text-[rgba(232,228,220,0.6)] hover:text-[#C9A84C] transition-colors"
+                                >
+                                  {sub.label}
+                                </Link>
+                              </li>
+                            )
+                          )}
                         </ul>
                       )}
                     </div>
@@ -330,12 +348,12 @@ export default function Navbar() {
 
             {/* Bottom CTAs */}
             <div className="mt-8 space-y-3 pb-8">
-              <a
-                href="tel:07454753318"
-                className="flex items-center justify-center gap-2 w-full border border-[rgba(201,168,76,0.3)] text-[#C9A84C] text-base font-medium px-6 py-4 rounded hover:bg-[rgba(201,168,76,0.06)] transition-colors"
+              <Link
+                href="/contact"
+                className="flex items-center justify-center w-full border border-[rgba(201,168,76,0.4)] text-[rgba(232,228,220,0.85)] text-base font-semibold px-6 py-4 rounded hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors"
               >
-                📞 07454 753318
-              </a>
+                Contact Us
+              </Link>
               <Link
                 href="/valuation"
                 className="block w-full text-center bg-[#C9A84C] text-[#080809] text-base font-bold px-6 py-4 rounded hover:bg-[#E8C96A] transition-colors"
