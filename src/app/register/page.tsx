@@ -223,7 +223,7 @@ export default function RegisterPage() {
 
               <div className="mt-6">
                 <GoldButton href="/properties" variant="filled" size="lg">
-                  View Current Lots →
+                  Available Properties →
                 </GoldButton>
               </div>
             </div>

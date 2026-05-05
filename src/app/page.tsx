@@ -104,10 +104,10 @@ export default function HomePage() {
           {/* CTA buttons */}
           <div className="flex flex-wrap justify-center gap-3">
             <Link
-              href="/current-auction"
+              href="/properties"
               className="bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-colors"
             >
-              View Current Lots →
+              Available Properties →
             </Link>
             <Link
               href="/register"
@@ -128,17 +128,23 @@ export default function HomePage() {
             📱 Sam Fongho: +44 (0) 7413041372
           </p>
 
-          {/* Next auction countdown */}
-          <div className="mt-8 max-w-sm mx-auto bg-[rgba(8,8,9,0.6)] border border-[rgba(201,168,76,0.3)] rounded-xl p-5">
+          {/* Next event countdown */}
+          <Link
+            href="/events"
+            className="block mt-8 max-w-sm mx-auto bg-[rgba(8,8,9,0.6)] border border-[rgba(201,168,76,0.3)] rounded-xl p-5 hover:border-[rgba(201,168,76,0.8)] transition-colors cursor-pointer"
+          >
             <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.2em] font-semibold mb-3">
-              Next Auction
+              Next Event
             </p>
             <AuctionCountdown
               targetDate="2026-05-14T12:00:00"
               auctionName="Next Auction Event — May 2026"
               lotCount={12}
             />
-          </div>
+            <p className="text-[#C9A84C] text-xs mt-4 text-right">
+              View all events →
+            </p>
+          </Link>
         </div>
       </section>
 

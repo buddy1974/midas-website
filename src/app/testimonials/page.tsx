@@ -110,7 +110,7 @@ export default function TestimonialsPage() {
               href="/properties"
               className="inline-block bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all"
             >
-              View Current Lots
+              Available Properties
             </Link>
             <Link
               href="/register"

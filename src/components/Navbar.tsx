@@ -27,12 +27,9 @@ const navItems: NavItem[] = [
     dropdown: [
       { label: 'PROPERTIES', href: '', isHeader: true },
       { label: 'Current Lots', href: '/current-auction' },
-      { label: 'Going to Auction', href: '/properties' },
+      { label: 'Available Properties', href: '/properties' },
       { label: 'Off-Market Properties', href: '/off-market' },
-      { label: 'Lots Still Available', href: '/lots-still-available' },
-      { label: 'Past Sales', href: '/past-auctions' },
       { label: 'Future Auction Dates', href: '/auction-dates' },
-      { label: 'Register to Bid', href: '/register' },
       { label: 'BUYING GUIDES', href: '', isHeader: true },
       { label: 'Buying With Us', href: '/buy' },
       { label: 'Guide to Buying at Auction', href: '/guide/buying' },
@@ -44,12 +41,12 @@ const navItems: NavItem[] = [
   {
     label: 'Sell Property',
     dropdown: [
-      { label: 'Free Valuation', href: '/valuation' },
       { label: 'Sell With Us', href: '/sell' },
+      { label: 'Free Valuation', href: '/valuation' },
       { label: 'Guide to Selling', href: '/guide/selling' },
       { label: 'Corporate & Probate', href: '/probate' },
       { label: 'Get Instant Offer', href: '/instant-offer' },
-      { label: 'General Conditions', href: '/conditions' },
+      { label: 'Past Sales', href: '/past-auctions' },
     ],
   },
   { label: 'Instant Cash Offer', href: '/instant-offer' },

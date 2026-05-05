@@ -121,10 +121,10 @@ export default async function BlogSlugPage({
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
-              href="/current-auction"
+              href="/properties"
               className="bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-colors"
             >
-              View Current Lots →
+              Available Properties →
             </Link>
             <Link
               href="/valuation"

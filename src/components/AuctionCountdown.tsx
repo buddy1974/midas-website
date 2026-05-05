@@ -64,7 +64,7 @@ export default function AuctionCountdown({
       ) : (
         <div>
           <p className="text-[#C9A84C] text-sm uppercase tracking-widest mb-3">
-            We&apos;re live in
+            Coming up in
           </p>
           <div className="flex gap-4">
             {(
