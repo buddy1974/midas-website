@@ -94,7 +94,7 @@ export default function ProbatePage() {
                 will face. We understand that and approach every case with care.
               </p>
               <p>
-                The property cannot be sold until probate is granted — typically 8–12 weeks — but we
+                The property cannot be sold until probate is granted, typically 8 to 12 weeks, but we
                 can begin marketing immediately so you are ready to go the moment probate comes
                 through.
               </p>

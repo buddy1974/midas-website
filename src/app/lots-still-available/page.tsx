@@ -4,11 +4,11 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Lots Still Available | Post-Auction Properties You Can Still Buy',
   description:
-    'Properties that did not sell at auction are still available to purchase at or below guide price. Submit an offer today — we present it to the vendor immediately.',
+    'Properties that did not sell at auction are still available to purchase at or below guide price. Submit an offer today and we will present it to the vendor immediately.',
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/lots-still-available' },
   openGraph: {
     title: 'Lots Still Available | Post-Auction Properties You Can Still Buy',
-    description: 'Properties that did not sell at auction. Submit an offer today — presented to the vendor immediately.',
+    description: 'Properties that did not sell at auction. Submit an offer today and we will present it to the vendor immediately.',
     url: 'https://www.midaspropertyauctions.co.uk/lots-still-available',
   },
 }

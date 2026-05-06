@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    'Midas Property Auctions — a property brokerage connecting buyers, sellers and investors through established UK auction companies. HMOs, residential, commercial and development sites. Free to list. 2,847 active investors.',
+    'Midas Property Auctions. A property brokerage connecting buyers, sellers and investors through established UK auction companies. HMOs, residential, commercial and development sites. Free to list. 2,847 active investors.',
 
   keywords: [
     'property auctions London',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Midas Property Auctions — London Property Brokerage',
+        alt: 'Midas Property Auctions, London Property Brokerage',
       },
     ],
   },

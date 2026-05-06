@@ -4,7 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Private Treaty Sales | Discreet Off-Market Property Transactions',
   description:
-    'Confidential private treaty property sales for sensitive situations — probate, corporate disposals and complex transactions. Flexible timelines, discreet marketing and guaranteed confidentiality.',
+    'Confidential private treaty property sales for sensitive situations, including probate, corporate disposals and complex transactions. Flexible timelines, discreet marketing and guaranteed confidentiality.',
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/private-treaty' },
   openGraph: {
     title: 'Private Treaty Sales | Discreet Off-Market Property Transactions',
@@ -36,7 +36,7 @@ export default function PrivateTreatyPage() {
         </h1>
         <p className="text-[rgba(232,228,220,0.65)] text-xl max-w-2xl mx-auto mb-10">
           Some properties are better suited to private negotiation than public auction. We handle
-          both — with equal professionalism.
+          both, with equal professionalism.
         </p>
         <Link
           href="/contact"
@@ -59,7 +59,7 @@ export default function PrivateTreatyPage() {
             throughout.
           </p>
           <p className="text-[#E8E4DC] font-semibold">
-            This is not a less professional approach — it is often the smarter one.
+            This is not a less professional approach. It is often the smarter one.
           </p>
         </div>
       </section>
@@ -98,7 +98,7 @@ export default function PrivateTreatyPage() {
             <h3 className="text-[#E8E4DC] font-black text-lg mb-3">Free Valuation</h3>
             <p className="text-[rgba(232,228,220,0.65)] text-sm leading-relaxed">
               We assess your property and advise whether private treaty or auction is the right
-              approach. Sometimes it is both — auction first, then private treaty if unsold.
+              approach. Sometimes it is both: auction first, then private treaty if unsold.
             </p>
           </div>
 

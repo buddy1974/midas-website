@@ -55,7 +55,7 @@ export default function AmlPage() {
           </p>
           <p className="text-[rgba(232,228,220,0.75)] leading-relaxed">
             UK law requires all property professionals to verify the identity of all buyers before
-            they can bid or complete a purchase. This applies to all buyers — individuals, companies
+            they can bid or complete a purchase. This applies to all buyers: individuals, companies
             and trustees. We take these obligations seriously and all documentation is handled
             securely.
           </p>

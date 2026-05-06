@@ -300,7 +300,7 @@ export default function InstantOfferPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             <ReasonCard
               title="Sell in Days, Not Months"
-              body="Traditional sales take 4–6 months. Our instant offer process can complete in as little as 7 days — guaranteed."
+              body="Traditional sales take 4 to 6 months. Our instant offer process can complete in as little as 7 days, guaranteed."
             />
             <ReasonCard
               title="Inherited or Probate Property"

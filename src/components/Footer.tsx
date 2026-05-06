@@ -191,8 +191,8 @@ export default function Footer() {
 
             <div className="mt-8">
               <ColHeading>Opening Times</ColHeading>
-              <p className="text-[rgba(232,228,220,0.5)] text-sm">Mon – Fri: 9.00am – 6.00pm</p>
-              <p className="text-[rgba(232,228,220,0.35)] text-xs mt-1">Saturday: 10.00am – 2.00pm</p>
+              <p className="text-[rgba(232,228,220,0.5)] text-sm">Mon to Fri: 9.00am to 6.00pm</p>
+              <p className="text-[rgba(232,228,220,0.35)] text-xs mt-1">Saturday: 10.00am to 2.00pm</p>
             </div>
 
             <div className="mt-6 pt-4 border-t border-[rgba(201,168,76,0.1)]">
@@ -217,7 +217,7 @@ export default function Footer() {
             <Link href="/conditions" className="hover:text-[#C9A84C] transition-colors">General Conditions</Link>
           </div>
           <div className="flex items-center gap-2 text-[rgba(201,168,76,0.35)] text-xs italic">
-            <span>Site powered by ARIA — Midas Intelligence</span>
+            <span>Site powered by ARIA, Midas Intelligence</span>
             <span className="text-[rgba(232,228,220,0.2)]">·</span>
             <a
               href="https://maxpromo.digital"

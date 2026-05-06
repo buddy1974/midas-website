@@ -40,7 +40,7 @@ export default function ComplaintsPage() {
           {/* 2 — Stage 1 */}
           <div>
             <h2 className="font-bold text-[#1A1A1A] text-base mb-4">
-              2. Stage 1 — Contact Us Directly
+              2. Stage 1: Contact Us Directly
             </h2>
             <p className="text-[#555] text-sm leading-relaxed mb-4">
               In the first instance, please raise your complaint directly with us:
@@ -82,7 +82,7 @@ export default function ComplaintsPage() {
           {/* 3 — Stage 2 */}
           <div>
             <h2 className="font-bold text-[#1A1A1A] text-base mb-4">
-              3. Stage 2 — Escalation Within Midas
+              3. Stage 2: Escalation Within Midas
             </h2>
             <p className="text-[#555] text-sm leading-relaxed">
               If your complaint is not resolved to your satisfaction at Stage 1, you may request
@@ -94,7 +94,7 @@ export default function ComplaintsPage() {
           {/* 4 — Stage 3 */}
           <div>
             <h2 className="font-bold text-[#1A1A1A] text-base mb-4">
-              4. Stage 3 — The Property Ombudsman
+              4. Stage 3: The Property Ombudsman
             </h2>
             <p className="text-[#555] text-sm leading-relaxed mb-4">
               If you remain dissatisfied after exhausting our internal complaints procedure, you
@@ -103,7 +103,7 @@ export default function ComplaintsPage() {
             <div className="bg-[#F8F7F4] border border-[#E8E5DE] rounded-xl p-6 space-y-2 text-sm text-[#555]">
               <p className="font-semibold text-[#1A1A1A]">The Property Ombudsman</p>
               <p>Milford House</p>
-              <p>43–55 Milford Street</p>
+              <p>43 to 55 Milford Street</p>
               <p>Salisbury</p>
               <p>Wiltshire</p>
               <p>SP1 2BP</p>

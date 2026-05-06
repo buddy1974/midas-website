@@ -4,7 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Alternative Property Investments | Beyond Standard Auctions',
   description:
-    'Explore alternative property investment strategies with Midas — international opportunities, development finance, sale-and-leaseback and commercial assets. Diversify beyond traditional residential.',
+    'Explore alternative property investment strategies with Midas. International opportunities, development finance, sale-and-leaseback and commercial assets. Diversify beyond traditional residential.',
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/alternative-investments' },
   openGraph: {
     title: 'Alternative Property Investments | Beyond Standard Auctions',
@@ -32,7 +32,7 @@ const SERVICES: ServiceCard[] = [
   {
     icon: '✈️',
     title: 'International Relocations',
-    body: 'Investing from overseas? We assist international clients with the full process — from property selection to conveyancing, immigration and relocation support.',
+    body: 'Investing from overseas? We assist international clients with the full process, from property selection to conveyancing, immigration and relocation support.',
   },
   {
     icon: '🏦',
@@ -47,7 +47,7 @@ const SERVICES: ServiceCard[] = [
   {
     icon: '🤝',
     title: 'JV Partnerships',
-    body: 'Joint venture opportunities with experienced UK property investors and developers. We structure and facilitate JV partnerships for specific development projects.',
+    body: 'Joint venture opportunities with experienced UK property investors and developers. We structure and support JV partnerships for specific development projects.',
   },
 ]
 
@@ -67,7 +67,7 @@ export default function AlternativeInvestmentsPage() {
             Alternative Property Investments
           </h1>
           <p className="text-[rgba(232,228,220,0.65)] text-xl max-w-2xl mx-auto">
-            Specialist investment services for sophisticated investors — from Tier 1 visas to
+            Specialist investment services for sophisticated investors, from Tier 1 visas to
             international acquisitions.
           </p>
         </div>

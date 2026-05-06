@@ -114,7 +114,7 @@ export default function ContactPage() {
                     Send Message
                   </GoldButton>
                   <p className="text-center text-[#AAA] text-xs">
-                    Protected by reCAPTCHA — Google{' '}
+                    Protected by reCAPTCHA. Google{' '}
                     <a href="https://policies.google.com/privacy" className="underline hover:text-[#C9A84C]" target="_blank" rel="noopener noreferrer">Privacy</a>
                     {' '}·{' '}
                     <a href="https://policies.google.com/terms" className="underline hover:text-[#C9A84C]" target="_blank" rel="noopener noreferrer">Terms</a>
@@ -159,7 +159,7 @@ export default function ContactPage() {
               <div className="flex items-center gap-3">
                 <Smartphone className="text-[#C9A84C] flex-shrink-0" size={18} />
                 <div>
-                  <p className="text-[#1A1A1A] text-sm font-medium">Sam — Direct</p>
+                  <p className="text-[#1A1A1A] text-sm font-medium">Sam (Direct)</p>
                   <a
                     href={`tel:${company.mobile}`}
                     className="text-[#666] text-sm hover:text-[#C9A84C] transition-colors"
@@ -185,7 +185,7 @@ export default function ContactPage() {
               <div className="flex items-center gap-3">
                 <Mail className="text-[#C9A84C] flex-shrink-0" size={18} />
                 <div>
-                  <p className="text-[#1A1A1A] text-sm font-medium">Sam — Direct Email</p>
+                  <p className="text-[#1A1A1A] text-sm font-medium">Sam (Direct Email)</p>
                   <a
                     href={`mailto:${company.samEmail}`}
                     className="text-[#666] text-sm hover:text-[#C9A84C] transition-colors"
@@ -217,7 +217,7 @@ export default function ContactPage() {
                   className="flex items-center gap-3 text-[#666] text-sm hover:text-[#C9A84C] transition-colors"
                 >
                   <ExternalLink size={14} className="text-[#C9A84C]" />
-                  Facebook — MidasPropertyGroupUK
+                  Facebook: MidasPropertyGroupUK
                 </a>
                 <a
                   href={company.social.instagram}
@@ -226,7 +226,7 @@ export default function ContactPage() {
                   className="flex items-center gap-3 text-[#666] text-sm hover:text-[#C9A84C] transition-colors"
                 >
                   <ExternalLink size={14} className="text-[#C9A84C]" />
-                  Instagram — @midas_property_auctions
+                  Instagram: @midas_property_auctions
                 </a>
                 <a
                   href={company.social.linkedin}
@@ -235,7 +235,7 @@ export default function ContactPage() {
                   className="flex items-center gap-3 text-[#666] text-sm hover:text-[#C9A84C] transition-colors"
                 >
                   <ExternalLink size={14} className="text-[#C9A84C]" />
-                  LinkedIn — Sam Fongho
+                  LinkedIn: Sam Fongho
                 </a>
               </div>
             </div>
@@ -259,7 +259,7 @@ export default function ContactPage() {
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
             className="w-full rounded-xl border border-[rgba(201,168,76,0.2)]"
-            title="Midas Property Auctions — Stanmore"
+            title="Midas Property Auctions, Stanmore"
             style={{ border: 0 }}
           />
         </div>

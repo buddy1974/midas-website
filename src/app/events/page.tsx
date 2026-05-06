@@ -238,7 +238,7 @@ function EventCard({ event }: { event: OsEvent }) {
             </span>
             <span className="flex items-center gap-1.5">
               <Clock size={12} className="text-[#C9A84C]" />
-              {formatTime(event.eventDate)}{event.endTime ? ` – ${formatTime(event.endTime)}` : ''}
+              {formatTime(event.eventDate)}{event.endTime ? ` to ${formatTime(event.endTime)}` : ''}
             </span>
             {event.location && (
               <span className="flex items-center gap-1.5">

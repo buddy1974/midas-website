@@ -4,11 +4,11 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Guide to Buying at Timed Online Auction | Bid 24/7',
   description:
-    'Your complete guide to buying property at a timed online auction with Midas — bid 24/7 from anywhere in the world.',
+    'Your complete guide to buying property at a timed online auction with Midas. Bid 24/7 from anywhere in the world.',
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/guide/buying-timed' },
   openGraph: {
     title: 'Guide to Buying at Timed Online Auction | Bid 24/7',
-    description: 'Complete guide to buying property at timed auction — bid 24/7 from anywhere in the world.',
+    description: 'Complete guide to buying property at timed auction. Bid 24/7 from anywhere in the world.',
     url: 'https://www.midaspropertyauctions.co.uk/guide/buying-timed',
   },
 }
@@ -45,7 +45,7 @@ const glossary: { term: string; definition: string }[] = [
   {
     term: 'Proxy Bid',
     definition:
-      'A maximum bid submitted in advance — the system bids on your behalf up to this ceiling.',
+      'A maximum bid submitted in advance. The system bids on your behalf up to this ceiling.',
   },
   {
     term: 'Reserve Price',
@@ -67,18 +67,18 @@ const glossary: { term: string; definition: string }[] = [
 ]
 
 const comparisons: { feature: string; timed: string; livestream: string }[] = [
-  { feature: 'Bidding window', timed: '7–14 days, 24/7', livestream: 'Single scheduled day' },
+  { feature: 'Bidding window', timed: '7 to 14 days, 24/7', livestream: 'Single scheduled day' },
   { feature: 'Bidding method', timed: 'Proxy only', livestream: 'Proxy, phone or internet' },
   { feature: 'Exchange', timed: 'At auction close', livestream: 'At hammer fall' },
   { feature: 'Deposit', timed: 'Within 24 hours', livestream: 'Immediately at hammer fall' },
-  { feature: 'Legal framework', timed: 'Same — binding', livestream: 'Same — binding' },
+  { feature: 'Legal framework', timed: 'Same. Binding.', livestream: 'Same. Binding.' },
 ]
 
 const keyDifferences: string[] = [
-  'No scheduled auction day — bid anytime',
-  'Extended bidding periods (typically 7–14 days)',
+  'No scheduled auction day. Bid anytime.',
+  'Extended bidding periods (typically 7 to 14 days)',
   'Proxy bidding only (no telephone bidding)',
-  'Same legal framework — exchange at close of auction',
+  'Same legal framework. Exchange at close of auction.',
 ]
 
 export default function BuyingTimedGuidePage() {
@@ -89,7 +89,7 @@ export default function BuyingTimedGuidePage() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-            Buyer&apos;s Guide — Timed Auction
+            Buyer&apos;s Guide: Timed Auction
           </p>
           <h1 className="text-4xl md:text-5xl font-black text-[#E8E4DC] mb-6 leading-tight">
             Guide to Buying at{' '}
@@ -98,7 +98,7 @@ export default function BuyingTimedGuidePage() {
             </span>
           </h1>
           <p className="text-[rgba(232,228,220,0.55)] text-xl max-w-2xl mx-auto mb-10">
-            Timed auctions run 24/7 — bid at your convenience from anywhere in the world.
+            Timed auctions run 24/7. Bid at your convenience from anywhere in the world.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
@@ -179,7 +179,7 @@ export default function BuyingTimedGuidePage() {
             Step by Step
           </p>
           <h2 className="text-3xl md:text-4xl font-black text-[#E8E4DC] mb-12">
-            How to Buy — 5 Steps
+            How to Buy: 5 Steps
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {steps.map((step) => (

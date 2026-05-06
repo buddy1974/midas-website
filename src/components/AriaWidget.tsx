@@ -6,7 +6,7 @@ export default function AriaWidget() {
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState([
-    { role: 'aria', text: "Hi, I'm ARIA — the Midas Property AI assistant. Ask me anything about our properties, auction process or investment opportunities." }
+    { role: 'aria', text: "Hi, I'm ARIA, the Midas Property AI assistant. Ask me anything about our properties, auction process or investment opportunities." }
   ])
   const [loading, setLoading] = useState(false)
 

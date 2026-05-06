@@ -4,7 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Future Auction Dates 2026 | Upcoming Property Auctions',
   description:
-    'All upcoming Midas Property Auction dates for 2026. Livestream and timed online auctions across London and Essex. Register to bid — free and takes 2 minutes.',
+    'All upcoming Midas Property Auction dates for 2026. Livestream and timed online auctions across London and Essex. Register to bid free. Takes 2 minutes.',
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/auction-dates' },
   openGraph: {
     title: 'Future Auction Dates 2026 | Upcoming Property Auctions',
@@ -81,7 +81,7 @@ export default function AuctionDatesPage() {
             Future Auction Dates
           </h1>
           <p className="text-[rgba(232,228,220,0.65)] text-xl max-w-2xl mx-auto">
-            Plan ahead and register early. Auction events fill fast — register before the closing date.
+            Plan ahead and register early. Auction events fill fast, so register before the closing date.
           </p>
         </div>
 
@@ -94,7 +94,7 @@ export default function AuctionDatesPage() {
             Next Auction Event
           </h2>
           <p className="text-[#C9A84C] font-bold text-xl mt-2">
-            14th May 2026 — 12:00pm
+            14th May 2026, 12:00pm
           </p>
           <p className="text-[rgba(232,228,220,0.65)] text-sm mt-1 mb-6">
             12 Lots · Online Livestream

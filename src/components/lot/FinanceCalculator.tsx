@@ -54,7 +54,7 @@ export default function FinanceCalculator({ guidePrice, type }: Props) {
         <div>
           <div className="flex justify-between mb-1">
             <label className="text-[#666] text-xs">Deposit</label>
-            <span className="text-[#C9A84C] text-xs font-semibold">{depositPct}% — {fmt(deposit)}</span>
+            <span className="text-[#C9A84C] text-xs font-semibold">{depositPct}% ({fmt(deposit)})</span>
           </div>
           <input
             type="range"

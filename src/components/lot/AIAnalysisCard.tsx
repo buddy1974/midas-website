@@ -56,7 +56,7 @@ export default function AIAnalysisCard({ lot }: { lot: Lot }) {
         <span className="text-lg">🤖</span>
         <h3 className="text-[#1A1A1A] font-bold text-sm">AI Deal Analysis</h3>
       </div>
-      <p className="text-[#888] text-xs mb-4">Powered by ARIA — Midas AI</p>
+      <p className="text-[#888] text-xs mb-4">Powered by ARIA, Midas AI</p>
 
       {!result && !loading && (
         <button

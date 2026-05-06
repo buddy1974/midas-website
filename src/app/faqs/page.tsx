@@ -43,7 +43,7 @@ const glossaryItems: AccordionItem[] = [
     id: 'gloss-exchange',
     question: 'Exchange of Contracts',
     answer:
-      'The point at which the auction concludes. Contracts exchange at the fall of the hammer — legally binding.',
+      'The point at which the auction concludes. Contracts exchange at the fall of the hammer. Legally binding.',
   },
   {
     id: 'gloss-completion',
@@ -75,7 +75,7 @@ const glossaryItems: AccordionItem[] = [
   {
     id: 'gloss-memorandum',
     question: 'Memorandum of Sale',
-    answer: 'Document confirming the sale — issued immediately after the auction.',
+    answer: 'Document confirming the sale, issued immediately after the auction.',
   },
 ]
 
@@ -84,7 +84,7 @@ const buyerFaqs: AccordionItem[] = [
     id: 'buyer-view',
     question: 'How do I view a property?',
     answer:
-      'Viewing dates are listed on each lot page. Some properties allow open house viewings — no booking required. Others require appointment. Check the individual lot.',
+      'Viewing dates are listed on each lot page. Some properties allow open house viewings with no booking required. Others require an appointment. Check the individual lot.',
   },
   {
     id: 'buyer-guide-price',
@@ -158,7 +158,7 @@ const sellerFaqs: AccordionItem[] = [
     id: 'seller-how-fast',
     question: 'How fast can I sell at auction?',
     answer:
-      'We can have your property in auction within 4-6 weeks of instruction. Completion follows 28 days after the auction — so you can be fully sold within 10 weeks.',
+      'We can have your property in auction within 4 to 6 weeks of instruction. Completion follows 28 days after the auction, so you can be fully sold within 10 weeks.',
   },
   {
     id: 'seller-asking-price',
@@ -182,13 +182,13 @@ const sellerFaqs: AccordionItem[] = [
     id: 'seller-unsold',
     question: 'What if my property does not sell?',
     answer:
-      'If the property does not reach its reserve, it remains unsold. We will advise on next steps — often a post-auction sale at a negotiated price or inclusion in the next auction.',
+      'If the property does not reach its reserve, it remains unsold. We will advise on next steps, which often means a post-auction sale at a negotiated price or inclusion in the next auction.',
   },
   {
     id: 'seller-tenanted',
     question: 'Can you sell tenanted properties?',
     answer:
-      'Yes. Tenanted properties sell well at auction — investors value the immediate income. We market them specifically to our buy-to-let and HMO investor database.',
+      'Yes. Tenanted properties sell well at auction. Investors value the immediate income. We market them specifically to our buy-to-let and HMO investor database.',
   },
   {
     id: 'seller-marketing',

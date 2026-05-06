@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/past-auctions' },
   openGraph: {
     title: 'Previous Auction Results | Track Record & Sold Prices',
-    description: 'Transparent results from every Midas auction — lots offered, lots sold, success rates and total raised.',
+    description: 'Transparent results from every Midas auction. Lots offered, lots sold, success rates and total raised.',
     url: 'https://www.midaspropertyauctions.co.uk/past-auctions',
   },
 }

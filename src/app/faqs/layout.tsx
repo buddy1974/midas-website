@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/faqs' },
   openGraph: {
     title: 'Frequently Asked Questions | Property Auction FAQs',
-    description: 'Common questions about buying and selling property at auction — guide prices, legal packs, bidding, deposits and completion.',
+    description: 'Common questions about buying and selling property at auction. Guide prices, legal packs, bidding, deposits and completion explained.',
     url: 'https://www.midaspropertyauctions.co.uk/faqs',
   },
 }

@@ -74,7 +74,7 @@ export default function BuyPage() {
   const [submitted, setSubmitted] = useState(false)
 
   const propertyTypes = ['Residential BTL', 'HMO', 'Commercial', 'Land', 'Flip/Refurb', 'Any']
-  const budgets = ['Under £200k', '£200k–£400k', '£400k–£700k', '£700k–£1M', '£1M+']
+  const budgets = ['Under £200k', '£200k to £400k', '£400k to £700k', '£700k to £1M', '£1M+']
 
   const toggleType = (type: string) => {
     setForm((f) => ({
@@ -139,7 +139,7 @@ export default function BuyPage() {
         <div className="bg-[#F8F7F4] border border-[#E8E5DE] rounded-xl p-6 flex items-center justify-between gap-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
           <div>
             <p className="text-[#1A1A1A] font-bold text-sm mb-1">New to buying at auction?</p>
-            <p className="text-[#666] text-xs">Read our complete guide — what to bring, how bidding works, buyer&apos;s fees and more.</p>
+            <p className="text-[#666] text-xs">Read our complete guide: what to bring, how bidding works, buyer&apos;s fees and more.</p>
           </div>
           <a
             href="/guide/buying"

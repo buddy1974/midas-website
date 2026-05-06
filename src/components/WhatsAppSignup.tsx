@@ -63,8 +63,8 @@ export default function WhatsAppSignup() {
                 >
                   <option value="">Any budget</option>
                   <option>Under £250k</option>
-                  <option>£250k–£500k</option>
-                  <option>£500k–£1m</option>
+                  <option>£250k to £500k</option>
+                  <option>£500k to £1m</option>
                   <option>Over £1m</option>
                 </select>
                 <button

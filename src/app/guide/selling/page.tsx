@@ -168,7 +168,7 @@ export default function SellingGuidePage() {
               },
               {
                 title: 'Guide Prices',
-                desc: 'A guide price is agreed — aligned with a price you deem acceptable. Guide price is typically higher than the reserve.',
+                desc: 'A guide price is agreed, aligned with a price you deem acceptable. The guide price is typically higher than the reserve.',
               },
               {
                 title: 'Fees and Terms',
@@ -192,7 +192,7 @@ export default function SellingGuidePage() {
               },
               {
                 title: 'Auction Day and Completion',
-                desc: 'The hammer falls — binding contract formed. Buyer pays deposit immediately. Completion within the agreed timeframe.',
+                desc: 'The hammer falls. A binding contract is formed. The buyer pays the deposit immediately. Completion within the agreed timeframe.',
               },
             ].map(({ title, desc }, i) => (
               <div key={title} className="flex gap-5 pb-6">
@@ -288,7 +288,7 @@ export default function SellingGuidePage() {
               },
               {
                 title: 'Speed',
-                body: 'Instruction through to exchange of contracts can take just a few weeks — far faster than estate agent sales.',
+                body: 'Instruction through to exchange of contracts can take just a few weeks. Far faster than estate agent sales.',
               },
               {
                 title: 'Transparency',
@@ -332,10 +332,10 @@ export default function SellingGuidePage() {
             <tbody>
               {[
                 { label: 'Success Rate',           auction: '78%+',                         agent: '51%' },
-                { label: 'Sales Falling Through',  auction: '1–5%',                         agent: '25–40%' },
-                { label: 'Time to Sell',           auction: '3–4 weeks',                    agent: '14–23 weeks' },
+                { label: 'Sales Falling Through',  auction: '1 to 5%',                         agent: '25 to 40%' },
+                { label: 'Time to Sell',           auction: '3 to 4 weeks',                    agent: '14 to 23 weeks' },
                 { label: 'Sale Certainty',         auction: 'Legally binding at hammer',    agent: 'Can fall through anytime' },
-                { label: 'Negotiation Risk',       auction: 'None — price locked at hammer', agent: 'Always present' },
+                { label: 'Negotiation Risk',       auction: 'None. Price locked at hammer.', agent: 'Always present' },
               ].map(({ label, auction, agent }) => (
                 <tr key={label} className="border-b border-[#F0EDE6] hover:bg-[#FAFAF8] transition-colors">
                   <td className="py-3 px-5 text-[#444] font-medium">{label}</td>

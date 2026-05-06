@@ -68,7 +68,7 @@ export default function FinancePage() {
             {
               icon: Building2,
               title: 'Auction Bridging Finance',
-              desc: 'Specifically designed for auction purchases with 28-day completion requirements. We understand auction timelines better than any mainstream lender — our lenders move at auction speed.',
+              desc: 'Specifically designed for auction purchases with 28-day completion requirements. We understand auction timelines better than any mainstream lender. Our lenders move at auction speed.',
               features: ['Complete in 28 days', 'Rates from 0.75%/mo', 'Up to 75% LTV', 'Terms in 24 hours', 'Individual & corporate borrowers'],
             },
             {
@@ -80,8 +80,8 @@ export default function FinancePage() {
             {
               icon: Briefcase,
               title: 'Portfolio & Commercial Finance',
-              desc: 'For investors with multiple properties or commercial acquisitions. Bespoke structuring for complex transactions. We work with specialist commercial lenders to find terms that work.',
-              features: ['Mixed-use and commercial', 'Portfolio cross-charge', 'Developer terms available', 'Complex structures welcome', 'Bespoke case-by-case terms'],
+              desc: 'For investors with multiple properties or commercial acquisitions. Tailored structuring for complex transactions. We work with specialist commercial lenders to find terms that work.',
+              features: ['Mixed-use and commercial', 'Portfolio cross-charge', 'Developer terms available', 'Complex structures welcome', 'Custom terms on a case-by-case basis'],
             },
           ].map(({ icon: Icon, title, desc, features }) => (
             <div key={title} className="bg-white border border-[#E8E5DE] rounded-xl p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
@@ -167,10 +167,10 @@ export default function FinancePage() {
                   className="w-full bg-[#F8F7F4] border border-[#E0DDD4] rounded px-4 py-3 text-[#444] focus:outline-none focus:border-[#C9A84C] text-sm"
                 >
                   <option value="">Select term...</option>
-                  <option>1–3 months</option>
-                  <option>3–6 months</option>
-                  <option>6–12 months</option>
-                  <option>12–24 months</option>
+                  <option>1 to 3 months</option>
+                  <option>3 to 6 months</option>
+                  <option>6 to 12 months</option>
+                  <option>12 to 24 months</option>
                 </select>
               </div>
               <GoldButton variant="filled" type="submit" size="lg" className="w-full mt-2">

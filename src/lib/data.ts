@@ -33,7 +33,7 @@ export const lots: Lot[] = [
     description:
       'A vacant two-bedroom first-floor flat with planning permission to add a third bedroom via loft conversion. The property offers immediate vacant possession and the vendor has indicated openness to creative finance structures including delayed completion and vendor finance. Legal pack available now. Viewing by appointment.',
     features: [
-      'Planning Permission — Loft Conversion',
+      'Planning Permission for Loft Conversion',
       'Creative Finance Available',
       'Vacant Possession',
       'Legal Pack Ready',
@@ -60,7 +60,7 @@ export const lots: Lot[] = [
     features: [
       'Fully Licensed HMO',
       '£123,600/yr Verified Income',
-      '9 Rooms — All Occupied',
+      '9 Rooms, All Occupied',
       'Off-Street Parking (3 cars)',
       '100ft Rear Garden',
       'AST Tenancies in Place',
@@ -81,9 +81,9 @@ export const lots: Lot[] = [
     arv: 365000,
     status: 'live',
     description:
-      'A six-bedroom licensed HMO in a prime Barking location with excellent transport links to central London. Strong rental demand in the area with HMO rooms consistently achieving £650–£750 per month. The property is well-maintained and fully compliant. Ideal for experienced HMO investors looking to expand their portfolio.',
+      'A six-bedroom licensed HMO in a prime Barking location with excellent transport links to central London. Strong rental demand in the area with HMO rooms consistently achieving £650 to £750 per month. The property is well-maintained and fully compliant. Ideal for experienced HMO investors looking to expand their portfolio.',
     features: [
-      'Live Auction — Bid Now',
+      'Live Auction. Bid Now.',
       'Licensed 6-Room HMO',
       'Strong Rental Demand',
       'Excellent Transport Links',
@@ -106,12 +106,12 @@ export const lots: Lot[] = [
     arv: 220000,
     status: 'live',
     description:
-      'A three-bedroom mid-terraced house in a well-established residential street in Dagenham. The property requires modernisation throughout and represents an excellent opportunity for buy-to-let investors or developers looking for a straightforward refurbishment project. Strong local rental demand with comparable lets achieving £1,400–£1,600 per month.',
+      'A three-bedroom mid-terraced house in a well-established residential street in Dagenham. The property requires modernisation throughout and represents an excellent opportunity for buy-to-let investors or developers looking for a straightforward refurbishment project. Strong local rental demand with comparable lets achieving £1,400 to £1,600 per month.',
     features: [
-      'Live Auction — Bid Now',
+      'Live Auction. Bid Now.',
       '3 Bedrooms',
       'Refurbishment Opportunity',
-      'BTL Potential — £1,400+/mo',
+      'BTL Potential, £1,400+/mo',
       'Established Residential Street',
       'Good Transport Links',
     ],
@@ -135,7 +135,7 @@ export const lots: Lot[] = [
     features: [
       'Commercial Unit',
       'Conversion Potential',
-      'Ground and First Floor — c.2,200 sq ft',
+      'Ground and First Floor, c.2,200 sq ft',
       'Mixed-Use Area',
       'Strong Investor Demand',
       'Legal Pack Available',
@@ -156,7 +156,7 @@ export const lots: Lot[] = [
     arv: 340000,
     status: 'sourcing',
     description:
-      'A five-bedroom property in Newham with strong HMO potential. The area benefits from significant regeneration investment and excellent transport connectivity including Elizabeth Line access nearby. The property would suit an investor looking to convert and operate as a licensed HMO. Comparable HMO rooms in the area achieve £650–£750 per month.',
+      'A five-bedroom property in Newham with strong HMO potential. The area benefits from significant regeneration investment and excellent transport connectivity including Elizabeth Line access nearby. The property would suit an investor looking to convert and operate as a licensed HMO. Comparable HMO rooms in the area achieve £650 to £750 per month.',
     features: [
       'HMO Conversion Potential',
       '5 Bedrooms',
@@ -187,7 +187,7 @@ export const lots: Lot[] = [
       'Off-Market Opportunity',
       'Below Market Value',
       'Motivated Vendor',
-      'Detached — 5 Bedrooms',
+      'Detached, 5 Bedrooms',
       'Premier Harrow Location',
       'Pre-Qualified Investors Only',
     ],
@@ -245,7 +245,7 @@ export const marketData: Record<
     avgDaysOnMarket: 67,
     rentalDemand: 'High',
     avgRent: '£1,450/mo',
-    hmoRooms: '£650–£720/room',
+    hmoRooms: '£650 to £720/room',
   },
   RM9: {
     avgPrice: '£291,000',
@@ -254,7 +254,7 @@ export const marketData: Record<
     avgDaysOnMarket: 71,
     rentalDemand: 'High',
     avgRent: '£1,400/mo',
-    hmoRooms: '£640–£700/room',
+    hmoRooms: '£640 to £700/room',
   },
   RM10: {
     avgPrice: '£278,000',
@@ -263,7 +263,7 @@ export const marketData: Record<
     avgDaysOnMarket: 63,
     rentalDemand: 'High',
     avgRent: '£1,380/mo',
-    hmoRooms: '£620–£690/room',
+    hmoRooms: '£620 to £690/room',
   },
   HA1: {
     avgPrice: '£438,000',
@@ -272,7 +272,7 @@ export const marketData: Record<
     avgDaysOnMarket: 48,
     rentalDemand: 'Very High',
     avgRent: '£1,850/mo',
-    hmoRooms: '£780–£880/room',
+    hmoRooms: '£780 to £880/room',
   },
   HA2: {
     avgPrice: '£375,000',
@@ -281,7 +281,7 @@ export const marketData: Record<
     avgDaysOnMarket: 54,
     rentalDemand: 'High',
     avgRent: '£1,620/mo',
-    hmoRooms: '£700–£780/room',
+    hmoRooms: '£700 to £780/room',
   },
   HA3: {
     avgPrice: '£412,000',
@@ -290,7 +290,7 @@ export const marketData: Record<
     avgDaysOnMarket: 52,
     rentalDemand: 'Very High',
     avgRent: '£1,750/mo',
-    hmoRooms: '£750–£850/room',
+    hmoRooms: '£750 to £850/room',
   },
   HA7: {
     avgPrice: '£445,000',
@@ -299,7 +299,7 @@ export const marketData: Record<
     avgDaysOnMarket: 55,
     rentalDemand: 'High',
     avgRent: '£1,680/mo',
-    hmoRooms: '£720–£800/room',
+    hmoRooms: '£720 to £800/room',
   },
   IG11: {
     avgPrice: '£334,000',
@@ -308,7 +308,7 @@ export const marketData: Record<
     avgDaysOnMarket: 58,
     rentalDemand: 'Very High',
     avgRent: '£1,550/mo',
-    hmoRooms: '£680–£760/room',
+    hmoRooms: '£680 to £760/room',
   },
   E13: {
     avgPrice: '£378,000',
@@ -317,7 +317,7 @@ export const marketData: Record<
     avgDaysOnMarket: 44,
     rentalDemand: 'Exceptional',
     avgRent: '£1,900/mo',
-    hmoRooms: '£750–£850/room',
+    hmoRooms: '£750 to £850/room',
   },
   NW10: {
     avgPrice: '£510,000',
@@ -326,7 +326,7 @@ export const marketData: Record<
     avgDaysOnMarket: 44,
     rentalDemand: 'Very High',
     avgRent: '£2,050/mo',
-    hmoRooms: '£820–£920/room',
+    hmoRooms: '£820 to £920/room',
   },
   SE21: {
     avgPrice: '£524,000',
@@ -335,7 +335,7 @@ export const marketData: Record<
     avgDaysOnMarket: 55,
     rentalDemand: 'High',
     avgRent: '£2,100/mo',
-    hmoRooms: '£820–£950/room',
+    hmoRooms: '£820 to £950/room',
   },
   SE22: {
     avgPrice: '£685,000',
@@ -344,7 +344,7 @@ export const marketData: Record<
     avgDaysOnMarket: 38,
     rentalDemand: 'High',
     avgRent: '£2,400/mo',
-    hmoRooms: '£900–£1,050/room',
+    hmoRooms: '£900 to £1,050/room',
   },
 }
 
@@ -390,7 +390,7 @@ export const testimonials: Testimonial[] = [
   {
     name: 'James W.',
     location: 'London Property Investor',
-    text: "Sam's knowledge of the auction market is second to none. I have purchased three HMOs through Midas in the last 18 months — all below market value, all producing strong yields from day one. The off-market access alone has been worth more than I can put a number on.",
+    text: "Sam's knowledge of the auction market is second to none. I have purchased three HMOs through Midas in the last 18 months, all below market value, all producing strong yields from day one. The off-market access alone has been worth more than I can put a number on.",
     rating: 5,
   },
   {
@@ -414,7 +414,7 @@ export const testimonials: Testimonial[] = [
   {
     name: 'Marcus T.',
     location: 'HMO Investor, Harrow',
-    text: "Sam sourced three HMO properties for me in Harrow over 18 months. Every deal was exactly what he said it would be — licensed, compliant and cash flowing from day one. The off-market access is something you simply cannot get anywhere else.",
+    text: "Sam sourced three HMO properties for me in Harrow over 18 months. Every deal was exactly what he said it would be: licensed, compliant and cash flowing from day one. The off-market access is something you simply cannot get anywhere else.",
     rating: 5,
   },
   {
@@ -426,7 +426,7 @@ export const testimonials: Testimonial[] = [
   {
     name: 'Kwame A.',
     location: 'First Time Investor, London',
-    text: "As a first-time auction buyer I was nervous about the process. Sam and the team walked me through everything — the legal pack, the finance, the bidding. I bought my first BTL below market value and it has been tenanted ever since.",
+    text: "As a first-time auction buyer I was nervous about the process. Sam and the team walked me through everything: the legal pack, the finance, the bidding. I bought my first BTL below market value and it has been tenanted ever since.",
     rating: 5,
   },
   {
@@ -445,7 +445,7 @@ export const upcomingAuctions = [
     title: 'May Auction Event 2026',
     date: '14 May 2026',
     time: '12:00pm',
-    format: 'Online — Live Stream',
+    format: 'Online Live Stream',
     lots: 12,
     status: 'Registrations Open',
     description:
@@ -456,7 +456,7 @@ export const upcomingAuctions = [
     title: 'June Auction Event 2026',
     date: '25 June 2026',
     time: '12:00pm',
-    format: 'Online — Live Stream',
+    format: 'Online Live Stream',
     lots: 0,
     status: 'Accepting Instructions',
     description:
@@ -561,7 +561,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Guide',
     date: '18 April 2026',
     excerpt:
-      'Buying at auction for the first time can feel daunting. In this guide we break down everything you need to know — from reading legal packs to registering to bid.',
+      'Buying at auction for the first time can feel daunting. In this guide we break down everything you need to know, from reading legal packs to registering to bid.',
     slug: 'buying-first-property-at-auction',
   },
   {
@@ -577,7 +577,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Finance',
     date: '2 April 2026',
     excerpt:
-      'Most auction purchases complete in 28 days — too fast for a mortgage. Here is everything you need to know about bridging finance and how to arrange it quickly.',
+      'Most auction purchases complete in 28 days. Too fast for a standard mortgage. Here is everything you need to know about bridging finance and how to arrange it quickly.',
     slug: 'bridging-finance-guide-auction-buyers',
   },
   {
@@ -585,7 +585,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Investment',
     date: '25 March 2026',
     excerpt:
-      'Not every HMO is a good investment. In this guide we cover the key criteria — location, licensing, room size, yield calculation and common pitfalls to avoid.',
+      'Not every HMO is a good investment. In this guide we cover the key criteria: location, licensing, room size, yield calculation and common pitfalls to avoid.',
     slug: 'good-hmo-investment-2026',
   },
 ]
@@ -593,11 +593,11 @@ export const blogPosts: BlogPost[] = [
 // ── PRINCIPLES ────────────────────────────────────────────────────────────────
 
 export const principles = [
-  { title: 'Speed & Certainty', description: 'We deliver fast, legally binding sales. When the hammer falls, contracts exchange immediately — no chains, no fall-throughs, no delays.' },
+  { title: 'Speed & Certainty', description: 'We deliver fast, legally binding sales. When the hammer falls, contracts exchange immediately. No chains, no fall-throughs, no delays.' },
   { title: 'Transparency', description: 'Every lot is fully disclosed. Legal packs, guide prices and viewing information available before you bid.' },
   { title: 'Maximum Exposure', description: 'Your property reaches 2,847 active investors through email, WhatsApp and social media campaigns on day one.' },
   { title: 'Professional Excellence', description: 'Sam Fongho brings over 15 years of hands-on auction experience, working across a network of established UK auction companies.' },
-  { title: 'Client-First Approach', description: 'We stand in the middle — representing both buyers and sellers with equal professionalism.' },
+  { title: 'Client-First Approach', description: 'We stand in the middle, representing both buyers and sellers with equal professionalism.' },
 ]
 
 // ── SERVICE NAMES ─────────────────────────────────────────────────────────────
@@ -619,7 +619,7 @@ export const serviceNames = [
 
 export const accreditations = [
   'The Property Ombudsman',
-  'MPG — Midas Property Group',
+  'MPG, Midas Property Group',
   'Megamound Partner',
   'HomeLet Accredited',
   'TSI Approved Code',
@@ -637,7 +637,7 @@ export interface StaticEvent {
 }
 
 export const staticEvents: StaticEvent[] = [
-  { day: '14', month: 'MAY', year: '2026', title: 'Next Auction Event — May 2026', excerpt: 'Properties going to auction through our partner auction companies. Register to bid by 13th May.', href: '/current-auction' },
+  { day: '14', month: 'MAY', year: '2026', title: 'Next Auction Event, May 2026', excerpt: 'Properties going to auction through our partner auction companies. Register to bid by 13th May.', href: '/current-auction' },
   { day: '25', month: 'JUN', year: '2026', title: 'June Auction Event 2026', excerpt: 'Now accepting vendor instructions. Submit your property by 28th May.', href: '/auction-dates' },
   { day: '10', month: 'MAY', year: '2026', title: 'Midas Investor Networking Evening', excerpt: 'Monthly networking event for property investors, developers and landlords in London.', href: '/events' },
   { day: '30', month: 'APR', year: '2026', title: 'HMO Investment Strategy Webinar', excerpt: 'Online webinar covering HMO licensing, yields and the London market in 2026.', href: '/events' },
@@ -663,8 +663,8 @@ export const company = {
   email: 'info@midaspropertyauctions.co.uk',
   samEmail: 'Sam@MidasPropertyAuctions.co.uk',
   website: 'www.midaspropertyauctions.co.uk',
-  hours: 'Monday – Friday: 9:00am – 6:00pm · Saturday: 10:00am – 2:00pm',
-  sellerFee: 'Free — no charge to list with Midas',
+  hours: 'Monday to Friday: 9:00am to 6:00pm · Saturday: 10:00am to 2:00pm',
+  sellerFee: 'Free. No charge to list with Midas.',
   auctionPartners: 'We work with multiple established UK auction companies',
   social: {
     facebook: 'https://www.facebook.com/MidasPropertyGroupUK/',

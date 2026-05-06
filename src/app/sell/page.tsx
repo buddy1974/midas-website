@@ -17,7 +17,7 @@ const sellerFaqs = [
   },
   {
     title: 'What does it cost to list with Midas?',
-    content: 'Listing your property through Midas is completely free. We submit your property to our network of partner auction companies. You only pay the standard auction company fees — clearly communicated before you commit to anything.',
+    content: 'Listing your property through Midas is completely free. We submit your property to our network of partner auction companies. You only pay the standard auction company fees, clearly communicated before you commit to anything.',
   },
   {
     title: 'What happens after I agree to sell?',
@@ -103,12 +103,12 @@ export default function SellPage() {
         <SectionHeader eyebrow="Why Sell With Midas?" title="The Smarter Way to Sell" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { icon: Users,        claim: '2,847 active investors in our database', detail: 'Every property is marketed directly to our full investor database via email, WhatsApp and social media — on day one.' },
+            { icon: Users,        claim: '2,847 active investors in our database', detail: 'Every property is marketed directly to our full investor database via email, WhatsApp and social media on day one.' },
             { icon: TrendingUp,   claim: '98% of lots sold at or above reserve price', detail: 'Our auction format drives competitive bidding between qualified investors, consistently achieving strong results.' },
-            { icon: ClipboardList,claim: 'Legal pack preparation included', detail: 'We coordinate your solicitor and prepare your legal pack as part of the service — at no extra cost to you.' },
+            { icon: ClipboardList,claim: 'Legal pack preparation included', detail: 'We coordinate your solicitor and prepare your legal pack as part of the service, at no extra cost to you.' },
             { icon: Zap,         claim: '28-day completion from hammer fall', detail: 'On auction day contracts exchange immediately. You receive a 10% deposit on the day. Completion in 28 days.' },
-            { icon: Shield,      claim: 'Free to list — no Midas fees', detail: 'Listing with Midas costs nothing. We submit your property to our partner auction companies at no charge to you.' },
-            { icon: LinkIcon,    claim: 'No chain — clean transaction', detail: 'Auction sales are chain-free by design. No mortgage delays, no gazundering, no fall-throughs.' },
+            { icon: Shield,      claim: 'Free to list. No Midas fees.', detail: 'Listing with Midas costs nothing. We submit your property to our partner auction companies at no charge to you.' },
+            { icon: LinkIcon,    claim: 'No chain. Clean transaction.', detail: 'Auction sales are chain-free by design. No mortgage delays, no gazundering, no fall-throughs.' },
           ].map(({ icon: Icon, claim, detail }) => (
             <div key={claim} className="bg-white border border-[#E8E5DE] rounded-xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
               <div className="flex items-start gap-3 mb-3">
@@ -128,13 +128,13 @@ export default function SellPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { step: '01', title: 'Appraisal',           desc: 'We discuss whether auction is the best route for your property. You receive an estimated sale price and a recommended reserve price.' },
-              { step: '02', title: 'Guide Price',          desc: 'A guide price is agreed — aligned with a sale price you deem acceptable. The guide price is set higher than the agreed reserve.' },
+              { step: '02', title: 'Guide Price',          desc: 'A guide price is agreed, aligned with a sale price you deem acceptable. The guide price is set higher than the agreed reserve.' },
               { step: '03', title: 'Fees & Terms',         desc: 'All relevant terms and conditions are provided and agreed. These include any entry fees and the commission payable on a successful sale.' },
-              { step: '04', title: 'Identity Checks',      desc: 'Strict Anti-Money Laundering Regulations require proof of identity and address before marketing can begin — even when acting on behalf of the seller.' },
-              { step: '05', title: 'Property Inspection',  desc: 'A surveyor carries out an inspection — taking measurements and photographs. Draft sales particulars are prepared and your solicitor is requested to create the legal pack.' },
+              { step: '04', title: 'Identity Checks',      desc: 'Strict Anti-Money Laundering Regulations require proof of identity and address before marketing can begin, even when acting on behalf of the seller.' },
+              { step: '05', title: 'Property Inspection',  desc: 'A surveyor carries out an inspection, taking measurements and photographs. Draft sales particulars are prepared and your solicitor is requested to create the legal pack.' },
               { step: '06', title: 'Marketing',            desc: 'Your property is marketed through online catalogues, email campaigns to registered buyers, property portals, social media and targeted outreach to investors.' },
-              { step: '07', title: 'Reserve Price Meeting',desc: '2–3 days before auction, we discuss the reserve price based on marketing feedback. The guide price may be adjusted at this point.' },
-              { step: '08', title: 'Auction Day',          desc: 'When the hammer falls, a binding contract is formed. The buyer pays a deposit immediately. Completion takes place within the agreed timeframe — typically 28 days.' },
+              { step: '07', title: 'Reserve Price Meeting',desc: '2 to 3 days before auction, we discuss the reserve price based on marketing feedback. The guide price may be adjusted at this point.' },
+              { step: '08', title: 'Auction Day',          desc: 'When the hammer falls, a binding contract is formed. The buyer pays a deposit immediately. Completion takes place within the agreed timeframe, typically 28 days.' },
             ].map(({ step, title, desc }) => (
               <div key={step} className="bg-white border border-[#E8E5DE] rounded-xl p-6 relative shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
                 <div className="text-[rgba(201,168,76,0.12)] text-7xl font-black absolute top-4 right-4 leading-none select-none">
@@ -170,8 +170,8 @@ export default function SellPage() {
             <tbody>
               {[
                 { label: 'Success Rate',           auction: '78%+',           agent: '51%' },
-                { label: 'Sales Falling Through',  auction: '1–5%',           agent: '25–40%' },
-                { label: 'Time to Sell',           auction: '3–4 weeks',      agent: '14–23 weeks' },
+                { label: 'Sales Falling Through',  auction: '1 to 5%',           agent: '25 to 40%' },
+                { label: 'Time to Sell',           auction: '3 to 4 weeks',      agent: '14 to 23 weeks' },
                 { label: 'Certainty',              auction: 'Legally binding at hammer', agent: 'Can fall through anytime' },
               ].map(({ label, auction, agent }) => (
                 <tr key={label} className="border-b border-[#F0EDE6]">
@@ -212,7 +212,7 @@ export default function SellPage() {
         <SectionHeader eyebrow="Who Is This For?" title="Who Can Sell at Auction?" />
         <div className="bg-white border border-[#E8E5DE] rounded-2xl p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)] space-y-4">
           <p className="text-[#444] text-sm leading-relaxed">
-            A wide range of sellers can sell both residential and commercial properties at auction —
+            A wide range of sellers can sell both residential and commercial properties at auction,
             including private investors, property companies, receivers, trustees, banks, local
             authorities and owner-occupiers.
           </p>
@@ -232,13 +232,13 @@ export default function SellPage() {
               <span className="text-[#C9A84C] font-bold">★ Listing your property through Midas is completely free.</span>
               <br /><br />
               We submit your property to our network of partner auction companies across the UK.
-              The only fees you pay are the standard auction company charges — clearly communicated
+              The only fees you pay are the standard auction company charges, clearly communicated
               before you commit to anything.
             </p>
           </div>
           <div className="space-y-4">
             {[
-              'Free to list — no charge from Midas whatsoever.',
+              'Free to list. No charge from Midas whatsoever.',
               'We handle the entire submission process on your behalf.',
               'You choose which auction company to proceed with.',
             ].map((item) => (
@@ -287,7 +287,7 @@ export default function SellPage() {
             <p className="text-[#1A1A1A] text-sm leading-relaxed">
               <span className="text-[#C9A84C] font-bold">★ Listing your property through Midas is completely free.</span>
               {' '}There are no upfront fees to list with us. The above buyer&apos;s fees are paid by
-              the buyer on the day — not by you as the seller.
+              the buyer on the day, not by you as the seller.
             </p>
           </div>
         </div>
@@ -298,7 +298,7 @@ export default function SellPage() {
         <div className="bg-[#F8F7F4] border border-[#E8E5DE] rounded-xl p-6 flex items-center justify-between gap-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
           <div>
             <p className="text-[#1A1A1A] font-bold text-sm mb-1">Want the full selling process explained?</p>
-            <p className="text-[#666] text-xs">Step-by-step guide using Sam&apos;s own words — from appraisal to completion.</p>
+            <p className="text-[#666] text-xs">Step-by-step guide using Sam&apos;s own words, from appraisal to completion.</p>
           </div>
           <a
             href="/guide/selling"

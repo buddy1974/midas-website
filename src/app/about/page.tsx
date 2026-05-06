@@ -6,11 +6,11 @@ import { Shield, Eye, Zap, Star } from 'lucide-react'
 export const metadata: Metadata = {
   title: 'About Midas Property Auctions | Founded by Sam Fongho',
   description:
-    'Learn about Midas Property Group — founded by Sam Fongho, former IT consultant to Goldman Sachs, JP Morgan and CitiBank. 15+ years at the heart of London property auctions.',
+    'Learn about Midas Property Group, founded by Sam Fongho, former IT consultant to Goldman Sachs, JP Morgan and CitiBank. 15+ years at the heart of London property auctions.',
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/about' },
   openGraph: {
     title: 'About Midas Property Auctions | Founded by Sam Fongho',
-    description: 'Founded by Sam Fongho — former IT consultant to Goldman Sachs, JP Morgan and CitiBank. 15+ years at the heart of London property auctions.',
+    description: 'Founded by Sam Fongho, former IT consultant to Goldman Sachs, JP Morgan and CitiBank. 15+ years at the heart of London property auctions.',
     url: 'https://www.midaspropertyauctions.co.uk/about',
   },
 }
@@ -74,7 +74,7 @@ export default function AboutPage() {
               overseas to help implement investment strategies that underpin and support their goals.
             </p>
             <p>
-              We strive to work with clients who want to invest in property — with our foresight and
+              We strive to work with clients who want to invest in property. With our foresight and
               network of contacts, we can assist clients in all aspects of property investments.
               Whether you are taking that first step on your property investment journey or you want
               to expand your portfolio, we are with you every step of the way.
@@ -91,7 +91,7 @@ export default function AboutPage() {
             <p>
               We have gained a reputation as one of the leading companies when it comes to working
               with investors. We don&apos;t just help investors with the acquisition and disposal of
-              assets — we now offer a complete acquisition and disposal service through auction.
+              assets. We now offer a complete acquisition and disposal service through auction.
             </p>
             <p>
               Through a dynamic approach, we offer high-quality auction facilities for both corporate
@@ -108,7 +108,7 @@ export default function AboutPage() {
           <SectionHeader eyebrow="Our Approach" title="How We Do It" />
           <div className="space-y-5 text-[#444] text-sm leading-relaxed">
             <p>
-              We have a strong ethos and a desire to provide a turn-key solution — we work closely
+              We have a strong ethos and a desire to provide a turn-key solution. We work closely
               with each client, build strong relationships and understand their exact needs.
             </p>
             <p>
@@ -140,7 +140,7 @@ export default function AboutPage() {
               },
               {
                 title: 'Helping clients sell',
-                desc: 'Through auction or off-market — fast, certain and at the best price.',
+                desc: 'Through auction or off-market. Fast, certain and at the best price.',
               },
               {
                 title: 'Connecting investors to opportunities',
@@ -236,7 +236,7 @@ export default function AboutPage() {
               {
                 icon: Star,
                 title: 'Expertise',
-                desc: '15+ years of market knowledge. We know what a deal looks like — and we share that with you.',
+                desc: '15+ years of market knowledge. We know what a deal looks like and we share that with you.',
               },
             ].map(({ icon: Icon, title, desc }) => (
               <div

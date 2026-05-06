@@ -79,7 +79,7 @@ export default function ComparePage() {
                 className="w-full bg-[#F8F7F4] border border-[#E0DDD4] rounded px-4 py-3 text-[#333] focus:outline-none focus:border-[#C9A84C] text-sm"
               >
                 {publicLots.map((l) => (
-                  <option key={l.id} value={l.id}>{l.address} — {l.area}</option>
+                  <option key={l.id} value={l.id}>{l.address}, {l.area}</option>
                 ))}
               </select>
             </div>

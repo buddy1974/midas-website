@@ -57,7 +57,7 @@ export default function BuyingGuidePage() {
         </div>
       </section>
 
-      {/* Section 1 — Browse */}
+      {/* Section 1 - Browse */}
       <section className="max-w-4xl mx-auto px-6 py-16">
         <div className="flex gap-5 items-start">
           <span className="text-4xl flex-shrink-0">🔍</span>
@@ -80,7 +80,7 @@ export default function BuyingGuidePage() {
         </div>
       </section>
 
-      {/* Section 2 — Register */}
+      {/* Section 2 - Register */}
       <section className="bg-[#F8F7F4] py-16">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex gap-5 items-start">
@@ -113,7 +113,7 @@ export default function BuyingGuidePage() {
         </div>
       </section>
 
-      {/* Section 3 — Unable to Attend */}
+      {/* Section 3 - Unable to Attend */}
       <section className="max-w-4xl mx-auto px-6 py-16">
         <div className="flex gap-5 items-start mb-8">
           <span className="text-4xl flex-shrink-0">📱</span>
@@ -139,7 +139,7 @@ export default function BuyingGuidePage() {
             },
             {
               label: 'Online',
-              body: 'Where possible, you can make bids online should that be necessary — from anywhere in the world.',
+              body: 'Where possible, you can make bids online should that be necessary. Bid from anywhere in the world.',
             },
           ].map(({ label, body }) => (
             <div
@@ -158,20 +158,20 @@ export default function BuyingGuidePage() {
         </div>
       </section>
 
-      {/* Section 4 — Auction Day */}
+      {/* Section 4 - Auction Day */}
       <section className="bg-[#F8F7F4] py-16">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex gap-5 items-start mb-8">
             <span className="text-4xl flex-shrink-0">📋</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1A1A1A]">
-              The Day of the Auction — What to Bring
+              The Day of the Auction: What to Bring
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
             {[
               {
                 title: 'Photo ID',
-                body: 'You will need to bring the same ID used when you submitted your registration to bid. This must be the original document — no photocopies accepted.',
+                body: 'You will need to bring the same ID used when you submitted your registration to bid. This must be the original document. No photocopies accepted.',
               },
               {
                 title: 'Deposit Payment & Buyer\'s Fee',
@@ -200,14 +200,14 @@ export default function BuyingGuidePage() {
               <p className="text-[#1A1A1A] font-bold mb-1">Check the Addendum</p>
               <p className="text-[#555] text-sm leading-relaxed">
                 Prior to bidding, take a look at the printed Addendum and listen for announcements
-                about any last-minute changes — these become part of the contract.
+                about any last-minute changes, as these become part of the contract.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Section 5 — The Auction */}
+      {/* Section 5 - The Auction */}
       <section className="max-w-4xl mx-auto px-6 py-16">
         <div className="flex gap-5 items-start mb-8">
           <span className="text-4xl flex-shrink-0">🔨</span>
@@ -218,10 +218,10 @@ export default function BuyingGuidePage() {
         <div className="space-y-4 mb-8">
           {[
             'The auctioneer opens with information about the procedure and announces any last-minute changes.',
-            'Your lot number is announced. Listen carefully — the auctioneer begins bidding at a set opening amount.',
+            'Your lot number is announced. Listen carefully. The auctioneer begins bidding at a set opening amount.',
             'To bid, raise your hand or catalogue clearly. This constitutes a legally binding offer at that price.',
             'The auctioneer controls bidding in increments. Properties are offered with an undisclosed reserve price.',
-            '\'Going once, going twice, sold\' — the hammer falls. If you made the final bid, the property is yours. This is a legally binding contract.',
+            '\'Going once, going twice, sold.\' The hammer falls. If you made the final bid, the property is yours. This is a legally binding contract.',
           ].map((step, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-full bg-[#C9A84C] flex items-center justify-center text-[#080809] font-black text-sm flex-shrink-0">
@@ -235,12 +235,12 @@ export default function BuyingGuidePage() {
           <p className="text-[#1A1A1A] text-sm leading-relaxed">
             <span className="font-bold">⚠️ Important:</span> Once the hammer falls, you are legally
             obligated to complete the purchase. Properties are NOT sold subject to finance, survey or
-            contract — the sale is binding immediately.
+            contract. The sale is binding immediately.
           </p>
         </div>
       </section>
 
-      {/* Section 6 — Successful Bidder */}
+      {/* Section 6 - Successful Bidder */}
       <section className="bg-[#F8F7F4] py-16">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex gap-5 items-start mb-8">
@@ -313,7 +313,7 @@ export default function BuyingGuidePage() {
         </div>
       </section>
 
-      {/* Section 7 — Memorandum */}
+      {/* Section 7 - Memorandum */}
       <section className="max-w-4xl mx-auto px-6 py-16">
         <div className="flex gap-5 items-start">
           <span className="text-4xl flex-shrink-0">📄</span>
@@ -340,7 +340,7 @@ export default function BuyingGuidePage() {
         </div>
       </section>
 
-      {/* Section 8 — Pros and Cons */}
+      {/* Section 8 - Pros and Cons */}
       <section className="bg-[#F8F7F4] py-16">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-10">
@@ -358,7 +358,7 @@ export default function BuyingGuidePage() {
               </h3>
               <div className="space-y-3">
                 {[
-                  'No chain — no risk of collapsed sales',
+                  'No chain and no risk of collapsed sales',
                   'High chance of finding good value property',
                   'Quick and efficient process',
                   'Legally binding at hammer fall',
@@ -376,7 +376,7 @@ export default function BuyingGuidePage() {
               </h3>
               <div className="space-y-3">
                 {[
-                  'Can be competitive — prices can rise',
+                  'Can be competitive. Prices can rise.',
                   'Easy to bid beyond your planned budget',
                   'Hidden costs if not fully researched',
                 ].map((item) => (

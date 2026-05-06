@@ -116,7 +116,7 @@ export default function YieldingRegistrationForm() {
           style={{ ...selectStyle, color: form.maxBudget ? 'white' : 'rgba(232,228,220,0.4)' }}
         >
           <option value="" disabled>Maximum Budget</option>
-          {['Under £300k', '£300k–£500k', '£500k–£1m', 'Over £1m'].map(v => (
+          {['Under £300k', '£300k to £500k', '£500k to £1m', 'Over £1m'].map(v => (
             <option key={v} value={v} style={{ backgroundColor: '#0F0F14', color: 'white' }}>{v}</option>
           ))}
         </select>

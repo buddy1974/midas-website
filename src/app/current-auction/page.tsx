@@ -355,7 +355,7 @@ export default function CurrentAuctionPage() {
               companies. All lots are fully vetted by the Midas team. Remote bidding available.
             </p>
 
-            <p className="text-[#C9A84C] text-2xl font-bold mb-4">14th May 2026 — 12:00pm</p>
+            <p className="text-[#C9A84C] text-2xl font-bold mb-4">14th May 2026, 12:00pm</p>
 
             <div className="h-px bg-[rgba(201,168,76,0.2)] mb-4" />
 
@@ -385,7 +385,7 @@ export default function CurrentAuctionPage() {
             <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.2)] rounded-2xl p-8">
               <AuctionCountdown
                 targetDate="2026-05-14T12:00:00"
-                auctionName="Next Auction Event — May 2026"
+                auctionName="Next Auction Event, May 2026"
                 lotCount={12}
               />
             </div>

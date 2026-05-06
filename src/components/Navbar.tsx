@@ -381,7 +381,7 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="block text-center text-xs text-[rgba(232,228,220,0.4)] py-3 border-t border-[rgba(201,168,76,0.1)] hover:text-[#C9A84C] transition-colors"
               >
-                Team Login — Midas OS →
+                Team Login, Midas OS →
               </a>
             </div>
           </nav>

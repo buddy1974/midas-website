@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/guide/selling-timed' },
   openGraph: {
     title: 'Guide to Selling at Timed Auction | Reach Bidders 24/7',
-    description: 'Reach bidders 24/7 with a timed auction listing. Contracts exchange at close — same legal certainty as livestream.',
+    description: 'Reach bidders 24/7 with a timed auction listing. Contracts exchange at close. Same legal certainty as a livestream auction.',
     url: 'https://www.midaspropertyauctions.co.uk/guide/selling-timed',
   },
 }
@@ -17,12 +17,12 @@ const benefits: { icon: string; title: string; body: string }[] = [
   {
     icon: '🕐',
     title: 'Longer exposure period',
-    body: 'Properties listed for 7–14 days attract more bidders than a single auction day.',
+    body: 'Properties listed for 7 to 14 days attract more bidders than a single auction day.',
   },
   {
     icon: '✅',
     title: 'Same legal certainty at close',
-    body: 'Contracts exchange automatically at auction close — the same binding outcome as livestream.',
+    body: 'Contracts exchange automatically at auction close. The same binding outcome as a livestream event.',
   },
   {
     icon: '📱',
@@ -37,7 +37,7 @@ const benefits: { icon: string; title: string; body: string }[] = [
   {
     icon: '🌍',
     title: 'International bidders welcome',
-    body: 'Bidders from anywhere in the world can participate — no geographic restriction on your buyer pool.',
+    body: 'Bidders from anywhere in the world can participate. There is no geographic restriction on your buyer pool.',
   },
 ]
 
@@ -55,12 +55,12 @@ const steps: { number: string; title: string; body: string }[] = [
   {
     number: '03',
     title: 'Marketing period',
-    body: '14-day marketing period to our 2,847-strong investor database.',
+    body: '14-day marketing period to our investor database of 2,847 registered buyers.',
   },
   {
     number: '04',
     title: 'Bidding period',
-    body: '7–14 day live bidding period. Watch bids in real time.',
+    body: '7 to 14 day live bidding period. Watch bids in real time.',
   },
   {
     number: '05',
@@ -84,7 +84,7 @@ export default function SellingTimedGuidePage() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-            Seller&apos;s Guide — Timed Auction
+            Seller&apos;s Guide: Timed Auction
           </p>
           <h1 className="text-4xl md:text-5xl font-black text-[#E8E4DC] mb-6 leading-tight">
             Guide to Selling at{' '}
@@ -135,7 +135,7 @@ export default function SellingTimedGuidePage() {
             Step by Step
           </p>
           <h2 className="text-3xl md:text-4xl font-black text-[#E8E4DC] mb-12">
-            The Selling Process — 5 Steps
+            The Selling Process: 5 Steps
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {steps.map((step) => (
@@ -186,8 +186,7 @@ export default function SellingTimedGuidePage() {
           <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.2)] rounded-xl p-8">
             <p className="text-5xl md:text-6xl font-black text-[#C9A84C] mb-4">2% + VAT</p>
             <p className="text-[rgba(232,228,220,0.7)] text-lg leading-relaxed">
-              of the final hammer price. Payable at completion only. No upfront costs. No sale — no
-              fee.
+              of the final hammer price. Payable at completion only. No upfront costs. No sale, no fee.
             </p>
           </div>
         </div>

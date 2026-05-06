@@ -84,7 +84,7 @@ export default function HomePage() {
         <div className="relative max-w-4xl mx-auto px-6 text-center">
           {/* Eyebrow */}
           <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.3em] mb-4">
-            PROPERTY BROKERAGE — LONDON, ESSEX &amp; NATIONWIDE
+            PROPERTY BROKERAGE. LONDON, ESSEX &amp; NATIONWIDE
           </p>
 
           {/* H1 */}
@@ -96,7 +96,7 @@ export default function HomePage() {
           {/* Gold-bordered intro box */}
           <div className="bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.5)] rounded-lg px-8 py-6 max-w-2xl mx-auto mb-8">
             <p className="text-[rgba(232,228,220,0.85)] text-lg leading-relaxed">
-              Standing in the middle — connecting buyers, sellers and investors across the UK through
+              Standing in the middle, connecting buyers, sellers and investors across the UK through
               our network of established auction companies and exclusive off-market services.
             </p>
           </div>
@@ -138,7 +138,7 @@ export default function HomePage() {
             </p>
             <AuctionCountdown
               targetDate="2026-05-14T12:00:00"
-              auctionName="Next Auction Event — May 2026"
+              auctionName="Next Auction Event, May 2026"
               lotCount={12}
             />
             <p className="text-[#C9A84C] text-xs mt-4 text-right">
@@ -199,7 +199,7 @@ export default function HomePage() {
             <div>
               <p className="text-[#C9A84C] text-[10px] uppercase tracking-widest font-bold mb-2">UPCOMING</p>
               <h2 className="text-[#E8E4DC] font-black text-xl mb-1">Properties Going to Auction</h2>
-              <p className="text-[#C9A84C] font-semibold text-sm mb-3">14th May 2026 — 12:00pm</p>
+              <p className="text-[#C9A84C] font-semibold text-sm mb-3">14th May 2026, 12:00pm</p>
               <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-6">
                 Browse properties we are currently listing through our network of partner
                 auction companies across London and Essex.
@@ -228,7 +228,7 @@ export default function HomePage() {
               <h2 className="text-[#E8E4DC] font-black text-xl mb-1">Timed Auction</h2>
               <p className="text-[rgba(232,228,220,0.5)] text-xs mb-3">Weekly Online Auctions</p>
               <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-6">
-                View all properties in our upcoming online weekly auction — bid from anywhere, any time.
+                View all properties in our upcoming online weekly auction. Bid from anywhere, any time.
               </p>
             </div>
             <div>
@@ -295,14 +295,14 @@ export default function HomePage() {
           </h2>
           <p className="text-[rgba(232,228,220,0.75)] text-lg max-w-3xl mx-auto mb-10 leading-relaxed">
             Midas Property Auctions connects buyers, sellers and investors across London, Essex and
-            nationwide — working with a network of established UK auction companies to deliver fast,
+            nationwide, working with a network of established UK auction companies to deliver fast,
             transparent and professional results.
           </p>
 
           {/* Bullet points */}
           <ul className="max-w-2xl mx-auto text-left space-y-4">
             {[
-              'Standing in the middle — connecting buyers to sellers, investors to opportunities, and clients to the professionals they need.',
+              'Standing in the middle, connecting buyers to sellers, investors to opportunities, and clients to the professionals they need.',
               'A trusted name in UK property auctions since 2015, with over 340 properties sold.',
               'An active database of 2,847 investors with maximum exposure through email, WhatsApp and social media campaigns.',
               'Specialising in residential, HMO, commercial and development opportunities across London and Essex.',
@@ -378,7 +378,7 @@ export default function HomePage() {
               {
                 address: '5 Weald Lane',
                 area: 'Harrow, HA3 5EU',
-                type: 'HMO — 9 Rooms',
+                type: 'HMO, 9 Rooms',
                 yield: '13.0%',
                 monthly: '£10,300/mo',
                 price: '£895,000',
@@ -387,7 +387,7 @@ export default function HomePage() {
               {
                 address: '88 Ripple Road',
                 area: 'Barking, IG11 7NS',
-                type: 'HMO — 6 Rooms',
+                type: 'HMO, 6 Rooms',
                 yield: '16.3%',
                 monthly: '£4,200/mo',
                 price: '£310,000',

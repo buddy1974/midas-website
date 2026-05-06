@@ -7,7 +7,7 @@ const DEMO_SUMMARY = {
   tenure: 'Vacant Possession',
   restrictions: 'Standard residential covenants apply. Permitted development rights intact.',
   searches: 'Local authority, drainage and water searches complete.',
-  costs: 'Estimated legal fees: £1,200–£1,800 + VAT. SDLT applicable on purchase price.',
+  costs: 'Estimated legal fees: £1,200 to £1,800 + VAT. SDLT applicable on purchase price.',
 }
 
 export default function AILegalPack() {

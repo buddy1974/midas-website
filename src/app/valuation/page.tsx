@@ -266,9 +266,9 @@ export default function ValuationPage() {
                       className={inputClass}
                     >
                       <option value="">Select time...</option>
-                      <option>Morning (9am–12pm)</option>
-                      <option>Afternoon (12pm–5pm)</option>
-                      <option>Evening (5pm–8pm)</option>
+                      <option>Morning (9am to 12pm)</option>
+                      <option>Afternoon (12pm to 5pm)</option>
+                      <option>Evening (5pm to 8pm)</option>
                       <option>Any time</option>
                     </select>
                   </div>
@@ -292,7 +292,7 @@ export default function ValuationPage() {
               <ul className="space-y-3 mb-10">
                 {[
                   'Completion typically within 28 days',
-                  'Legally binding at hammer fall — no fall-throughs',
+                  'Legally binding at hammer fall. No fall-throughs.',
                   'Access to 2,847 active investors',
                   'Our listing service is completely free',
                 ].map((point) => (

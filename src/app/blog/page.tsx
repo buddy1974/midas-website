@@ -27,7 +27,7 @@ const posts: BlogPost[] = [
     category: 'Guide',
     date: '18 April 2026',
     excerpt:
-      'Buying at auction for the first time can feel daunting. In this guide we break down everything you need to know — from reading legal packs to registering to bid.',
+      'Buying at auction for the first time can feel daunting. In this guide we break down everything you need to know, from reading legal packs to registering to bid.',
     slug: 'buying-first-property-at-auction',
   },
   {
@@ -43,7 +43,7 @@ const posts: BlogPost[] = [
     category: 'Finance',
     date: '2 April 2026',
     excerpt:
-      'Most auction purchases complete in 28 days — too fast for a mortgage. Here is everything you need to know about bridging finance and how to arrange it quickly.',
+      'Most auction purchases complete in 28 days. Too fast for a standard mortgage. Here is everything you need to know about bridging finance and how to arrange it quickly.',
     slug: 'bridging-finance-guide-auction-buyers',
   },
   {
@@ -51,7 +51,7 @@ const posts: BlogPost[] = [
     category: 'Investment',
     date: '25 March 2026',
     excerpt:
-      'Not every HMO is a good investment. In this guide we cover the key criteria — location, licensing, room size, yield calculation and common pitfalls to avoid.',
+      'Not every HMO is a good investment. In this guide we cover the key criteria: location, licensing, room size, yield calculation and common pitfalls to avoid.',
     slug: 'good-hmo-investment-2026',
   },
 ]

@@ -118,7 +118,7 @@ export default function OffMarketPage() {
         <div className="bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.3)] rounded-xl px-6 py-4 flex items-center gap-3 mb-10">
           <Lock className="text-[#C9A84C] flex-shrink-0" size={18} />
           <p className="text-[#C9A84C] text-sm font-medium">
-            🔐 Confidential — Please do not share these details publicly.
+            🔐 Confidential. Please do not share these details publicly.
           </p>
         </div>
 

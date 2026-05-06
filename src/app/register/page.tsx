@@ -7,7 +7,7 @@ import { CheckCircle } from 'lucide-react'
 type Step = 1 | 2 | 3
 
 const propertyTypes = ['BTL Residential', 'HMO', 'Commercial', 'Development Sites', 'Below Market Value', 'Off-Market']
-const budgets = ['Under £100k', '£100k–£250k', '£250k–£500k', '£500k–£1m', 'Over £1m']
+const budgets = ['Under £100k', '£100k to £250k', '£250k to £500k', '£500k to £1m', 'Over £1m']
 const areas = ['London', 'Essex', 'Nationwide', 'Other']
 const contactPrefs = ['Email', 'WhatsApp', 'Phone']
 
@@ -68,7 +68,7 @@ export default function RegisterPage() {
           {/* STEP 1 */}
           {step === 1 && (
             <div className="space-y-4">
-              <h2 className="text-[#1A1A1A] font-bold text-lg mb-5">Step 1 — Contact Details</h2>
+              <h2 className="text-[#1A1A1A] font-bold text-lg mb-5">Step 1: Contact Details</h2>
               {[
                 { key: 'name', label: 'Full Name', type: 'text', placeholder: 'John Smith' },
                 { key: 'email', label: 'Email Address', type: 'email', placeholder: 'john@example.com' },
@@ -100,7 +100,7 @@ export default function RegisterPage() {
           {/* STEP 2 */}
           {step === 2 && (
             <div className="space-y-5">
-              <h2 className="text-[#1A1A1A] font-bold text-lg mb-5">Step 2 — Investment Criteria</h2>
+              <h2 className="text-[#1A1A1A] font-bold text-lg mb-5">Step 2: Investment Criteria</h2>
 
               <div>
                 <label className="text-[#666] text-xs uppercase tracking-wider mb-2 block">
@@ -185,7 +185,7 @@ export default function RegisterPage() {
                 </GoldButton>
               </div>
               <p className="text-center text-[#999] text-[10px] mt-2">
-                Protected by reCAPTCHA —{' '}
+                Protected by reCAPTCHA.{' '}
                 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C9A84C]">Privacy</a>
                 {' '}·{' '}
                 <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C9A84C]">Terms</a>
@@ -193,7 +193,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* STEP 3 — Confirmation */}
+          {/* STEP 3 - Confirmation */}
           {step === 3 && (
             <div className="text-center py-4">
               <CheckCircle className="text-[#C9A84C] mx-auto mb-4" size={48} />

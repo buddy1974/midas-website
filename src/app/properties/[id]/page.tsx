@@ -87,7 +87,7 @@ export async function generateMetadata({
   const { id } = await params
   const lot = await getLot(id)
   if (!lot) return { title: 'Property Lot' }
-  const title = `${lot.address}${lot.area ? ', ' + lot.area : ''} — ${lot.type}`
+  const title = `${lot.address}${lot.area ? ', ' + lot.area : ''}, ${lot.type}`
   const description = `${lot.type} at auction. Guide price ${new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 }).format(lot.guidePrice)}. Legal pack available. Register to bid with Midas Property Auctions.`
   const canonical = `https://www.midaspropertyauctions.co.uk/properties/${id}`
   return {

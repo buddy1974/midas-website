@@ -5,11 +5,11 @@ import RegisterYieldForm from './RegisterYieldForm'
 export const metadata: Metadata = {
   title: 'Yielding Investments | Tenanted Properties With Verified Income',
   description:
-    'Tenanted properties with verified rental income — producing yield from day one. HMOs and BTLs with existing tenancy agreements. Yields from 8.5% to 16.3%.',
+    'Tenanted properties with verified rental income, producing yield from day one. HMOs and BTLs with existing tenancy agreements. Yields from 8.5 to 16.3 percent.',
   alternates: { canonical: 'https://www.midaspropertyauctions.co.uk/yielding-investments' },
   openGraph: {
     title: 'Yielding Investments | Tenanted Properties With Verified Income',
-    description: 'Income-producing properties with tenants in place. Yields from 8.5% to 16.3%. Immediate rental income from completion.',
+    description: 'Income-producing properties with tenants in place. Yields from 8.5 to 16.3 percent. Immediate rental income from completion.',
     url: 'https://www.midaspropertyauctions.co.uk/yielding-investments',
   },
 }
@@ -19,31 +19,31 @@ const yieldingProperties = [
     id: 'yi-1',
     address: '5 Weald Lane',
     area: 'Harrow HA3 5EU',
-    type: 'HMO — 9 Rooms',
+    type: 'HMO, 9 Rooms',
     badge: 'Fully Licensed',
     guidePrice: '£895,000',
     monthlyRent: '£10,300',
     annualIncome: '£123,600',
     yieldPct: '13.0%',
-    tenancy: 'Individual ASTs — all occupied',
+    tenancy: 'Individual ASTs, all occupied',
     gradient: 'from-[#1a1208] to-[#0d0d14]',
   },
   {
     id: 'yi-2',
     address: '88 Ripple Road',
     area: 'Barking IG11 7NS',
-    type: 'HMO — 6 Rooms',
+    type: 'HMO, 6 Rooms',
     badge: 'Licensed',
     guidePrice: '£310,000',
     monthlyRent: '£4,200',
     annualIncome: '£50,400',
     yieldPct: '16.3%',
-    tenancy: 'Licensed HMO — fully occupied',
+    tenancy: 'Licensed HMO, fully occupied',
     gradient: 'from-[#0a1220] to-[#0d0d14]',
   },
   {
     id: 'yi-3',
-    address: 'Portfolio — 3 x BTL',
+    address: 'Portfolio: 3 x BTL',
     area: 'Barking & Dagenham',
     type: 'BTL Portfolio',
     badge: 'Tenants in Situ',
@@ -51,7 +51,7 @@ const yieldingProperties = [
     monthlyRent: '£3,600',
     annualIncome: '£43,200',
     yieldPct: '8.5%',
-    tenancy: 'Tenants in situ — ASTs',
+    tenancy: 'Tenants in situ, ASTs',
     gradient: 'from-[#0d1a0d] to-[#0d0d14]',
   },
 ]
@@ -78,7 +78,7 @@ export default function YieldingInvestmentsPage() {
             Yielding <span className="text-[#C9A84C]">Investments</span>
           </h1>
           <p className="text-[rgba(232,228,220,0.8)] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-            Tenanted properties with verified rental income — producing yield from day one.
+            Tenanted properties with verified rental income, producing yield from day one.
             No void periods. No setup required. Just a proven income stream.
           </p>
 
@@ -132,7 +132,7 @@ export default function YieldingInvestmentsPage() {
               </p>
               <p>
                 Midas sources and lists yielding investment properties across London, Essex and
-                nationwide — from single BTL properties to fully occupied HMOs.
+                nationwide, from single BTL properties to fully occupied HMOs.
               </p>
             </div>
           </div>
@@ -143,7 +143,7 @@ export default function YieldingInvestmentsPage() {
               { icon: '💰', title: 'Immediate Rental Income', desc: 'No waiting for tenants. Income starts from completion.' },
               { icon: '📋', title: 'Existing Tenancy Agreements', desc: 'ASTs already in place. All documentation provided with the legal pack.' },
               { icon: '🏠', title: 'HMOs and BTLs', desc: 'Single lets, multi-room HMOs and portfolio opportunities.' },
-              { icon: '📊', title: 'Verified Income Figures', desc: 'Rental income independently verified — no inflated estimates.' },
+              { icon: '📊', title: 'Verified Income Figures', desc: 'Rental income independently verified. No inflated estimates.' },
             ].map(b => (
               <div
                 key={b.title}
@@ -274,7 +274,7 @@ export default function YieldingInvestmentsPage() {
               <ul className="space-y-3">
                 {[
                   '⏳ Wait to find tenants',
-                  '⚠️ Void period — no income',
+                  '⚠️ Void period with no income',
                   '📊 Estimated rental projections only',
                   '📝 New tenancy to arrange',
                   '❓ Unknown actual yield',
@@ -313,8 +313,8 @@ export default function YieldingInvestmentsPage() {
             Have a tenanted property to sell?
           </h2>
           <p className="text-[rgba(232,228,220,0.6)] text-base leading-relaxed mb-8">
-            We specialise in selling tenanted properties discreetly. Your tenants stay in place —
-            the sale is simple, certain and fast.
+            We specialise in selling tenanted properties discreetly. Your tenants stay in place.
+            The sale is simple, certain and fast.
           </p>
           <Link
             href="/contact"

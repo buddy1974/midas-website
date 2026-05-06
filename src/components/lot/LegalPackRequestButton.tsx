@@ -28,7 +28,7 @@ export default function LegalPackRequestButton({ lotId, lotAddress }: Props) {
         phone,
         source: 'legal_pack_request',
         lot_id: lotId,
-        interest: `Legal Pack Request — ${lotAddress}`,
+        interest: `Legal Pack Request for ${lotAddress}`,
       }),
     })
     setLoading(false)
@@ -60,7 +60,7 @@ export default function LegalPackRequestButton({ lotId, lotAddress }: Props) {
 
             <h3 className="text-[#E8E4DC] font-bold text-xl mb-2">Request Legal Pack</h3>
             <p className="text-[rgba(232,228,220,0.5)] text-sm mb-6">
-              {lotAddress} — we&apos;ll send the full legal pack to your email within 24 hours.
+              {lotAddress}. We&apos;ll send the full legal pack to your email within 24 hours.
             </p>
 
             {submitted ? (
