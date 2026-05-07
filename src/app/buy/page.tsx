@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SectionHeader from '@/components/SectionHeader'
 import GoldButton from '@/components/GoldButton'
 import { ChevronDown, ChevronUp } from 'lucide-react'
@@ -72,6 +72,17 @@ export default function BuyPage() {
     name: '', email: '', phone: '', budget: '', lookingFor: [] as string[],
   })
   const [submitted, setSubmitted] = useState(false)
+  const [pc, setPc] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    fetch('/api/public/page-content?page=buy')
+      .then(r => r.json())
+      .then((data: Record<string, string>) => setPc(data))
+      .catch(() => {/* use static fallback */})
+  }, [])
+
+  const get = (section: string, field: string, fallback: string): string =>
+    pc[`${section}.${field}`] ?? fallback
 
   const propertyTypes = ['Residential BTL', 'HMO', 'Commercial', 'Land', 'Flip/Refurb', 'Any']
   const budgets = ['Under £200k', '£200k to £400k', '£400k to £700k', '£700k to £1M', '£1M+']
@@ -100,13 +111,13 @@ export default function BuyPage() {
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-6 text-center py-16">
         <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-          Buy With Midas
+          {get('hero', 'eyebrow', 'BUY WITH MIDAS')}
         </p>
         <h1 className="text-4xl md:text-5xl font-black text-[#1A1A1A] mb-6">
-          Buy Property at Auction
+          {get('hero', 'title', 'Buy Property at Auction')}
         </h1>
         <p className="text-[#666] text-xl mb-8">
-          Below-market-value opportunities. Transparent process. Fast completion.
+          {get('hero', 'subtitle', 'Below-market-value opportunities. Transparent process. Fast completion.')}
         </p>
         <GoldButton href="#register" variant="filled" size="lg">
           Register as a Bidder

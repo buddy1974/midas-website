@@ -9,6 +9,17 @@ export default function ContactPage() {
   const [form, setForm] = useState({
     name: '', email: '', phone: '', message: '', subject: '',
   })
+  const [pc, setPc] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    fetch('/api/public/page-content?page=contact')
+      .then(r => r.json())
+      .then((data: Record<string, string>) => setPc(data))
+      .catch(() => {/* use static fallback */})
+  }, [])
+
+  const get = (section: string, field: string, fallback: string): string =>
+    pc[`${section}.${field}`] ?? fallback
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -39,11 +50,11 @@ export default function ContactPage() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center py-16">
           <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-            Get in Touch
+            {get('hero', 'title', 'Get in Touch')}
           </p>
           <h1 className="text-4xl md:text-5xl font-black text-[#1A1A1A] mb-6">Contact Midas</h1>
           <p className="text-[#666] text-lg">
-            We respond to all enquiries within 24 hours. For urgent matters, call us directly.
+            {get('hero', 'subtitle', 'We respond to all enquiries within 24 hours. For urgent matters, call us directly.')}
           </p>
         </div>
 
@@ -133,12 +144,8 @@ export default function ContactPage() {
                 <MapPin className="text-[#C9A84C] mt-0.5 flex-shrink-0" size={18} />
                 <div>
                   <p className="text-[#1A1A1A] text-sm font-medium mb-1">Office</p>
-                  <p className="text-[#666] text-sm">
-                    {company.address.line1}
-                    <br />
-                    {company.address.line2}
-                    <br />
-                    {company.address.city}, {company.address.postcode}
+                  <p className="text-[#666] text-sm whitespace-pre-line">
+                    {get('info', 'address', `${company.address.line1}\n${company.address.line2}\n${company.address.city}, ${company.address.postcode}`)}
                   </p>
                 </div>
               </div>
@@ -148,10 +155,10 @@ export default function ContactPage() {
                 <div>
                   <p className="text-[#1A1A1A] text-sm font-medium">Main Office</p>
                   <a
-                    href={`tel:${company.phone.replace(/\s/g, '')}`}
+                    href={`tel:${get('info', 'phone', company.phone).replace(/\s/g, '')}`}
                     className="text-[#666] text-sm hover:text-[#C9A84C] transition-colors"
                   >
-                    {company.phone}
+                    {get('info', 'phone', company.phone)}
                   </a>
                 </div>
               </div>
@@ -161,10 +168,10 @@ export default function ContactPage() {
                 <div>
                   <p className="text-[#1A1A1A] text-sm font-medium">Sam (Direct)</p>
                   <a
-                    href={`tel:${company.mobile}`}
+                    href={`tel:${get('info', 'mobile', company.mobile).replace(/\s/g, '')}`}
                     className="text-[#666] text-sm hover:text-[#C9A84C] transition-colors"
                   >
-                    {company.mobile}
+                    {get('info', 'mobile', company.mobile)}
                   </a>
                 </div>
               </div>
@@ -174,10 +181,10 @@ export default function ContactPage() {
                 <div>
                   <p className="text-[#1A1A1A] text-sm font-medium">General Enquiries</p>
                   <a
-                    href={`mailto:${company.email}`}
+                    href={`mailto:${get('info', 'email', company.email)}`}
                     className="text-[#666] text-sm hover:text-[#C9A84C] transition-colors"
                   >
-                    {company.email}
+                    {get('info', 'email', company.email)}
                   </a>
                 </div>
               </div>
@@ -200,7 +207,7 @@ export default function ContactPage() {
                 <div>
                   <p className="text-[#1A1A1A] text-sm font-medium">Office Hours</p>
                   <p className="text-[#666] text-sm whitespace-pre-line">
-                    {company.hours}
+                    {get('info', 'hours', company.hours)}
                   </p>
                 </div>
               </div>

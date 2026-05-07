@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SectionHeader from '@/components/SectionHeader'
 import GoldButton from '@/components/GoldButton'
 import { testimonials } from '@/lib/data'
@@ -70,6 +70,17 @@ export default function SellPage() {
     name: '', email: '', phone: '', address: '', type: '', value: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [pc, setPc] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    fetch('/api/public/page-content?page=sell')
+      .then(r => r.json())
+      .then((data: Record<string, string>) => setPc(data))
+      .catch(() => {/* use static fallback */})
+  }, [])
+
+  const get = (section: string, field: string, fallback: string): string =>
+    pc[`${section}.${field}`] ?? fallback
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -88,13 +99,13 @@ export default function SellPage() {
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-6 text-center py-16">
         <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-          Sell With Midas
+          {get('hero', 'eyebrow', 'SELL WITH MIDAS')}
         </p>
         <h1 className="text-4xl md:text-5xl font-black text-[#1A1A1A] mb-6">
-          Sell Your Property at Auction
+          {get('hero', 'title', 'Sell Your Property at Auction')}
         </h1>
         <p className="text-[#666] text-xl">
-          Fast. Certain. At the best price.
+          {get('hero', 'subtitle', 'Fast. Certain. At the best price.')}
         </p>
       </section>
 

@@ -2,6 +2,18 @@ import type { Metadata } from 'next'
 import SectionHeader from '@/components/SectionHeader'
 import { team, services, company } from '@/lib/data'
 import { Shield, Eye, Zap, Star } from 'lucide-react'
+import { getSql } from '@/lib/db'
+
+async function getPageContent(page: string): Promise<Record<string, string>> {
+  try {
+    const sql = getSql()
+    const rows = await sql<{ section: string; field: string; value: string }[]>`
+      SELECT section, field, value FROM page_content WHERE page = ${page}`
+    return Object.fromEntries(rows.map(r => [`${r.section}.${r.field}`, r.value]))
+  } catch {
+    return {}
+  }
+}
 
 export const metadata: Metadata = {
   title: 'About Midas Property Auctions | Founded by Sam Fongho',
@@ -15,19 +27,23 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getPageContent('about')
+  const get = (section: string, field: string, fallback: string): string =>
+    content[`${section}.${field}`] ?? fallback
+
   return (
     <div className="min-h-screen bg-white pt-24 pb-20">
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-6 text-center py-16">
         <p className="text-[#C9A84C] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-          About Midas
+          {get('hero', 'eyebrow', 'About Midas')}
         </p>
         <h1 className="text-4xl md:text-5xl font-black text-[#1A1A1A] mb-6">
-          15+ Years at the Heart of UK Property Auctions
+          {get('hero', 'title', '15+ Years at the Heart of UK Property Auctions')}
         </h1>
         <p className="text-[#666] text-xl">
-          Built on expertise, trust, and an unrivalled investor network.
+          {get('hero', 'subtitle', 'Built on expertise, trust, and an unrivalled investor network.')}
         </p>
       </section>
 
@@ -58,26 +74,19 @@ export default function AboutPage() {
       {/* Company description */}
       <section className="bg-[#F8F7F4] py-16">
         <div className="max-w-4xl mx-auto px-6">
-          <SectionHeader eyebrow="Who We Are" title="A Team of Dedicated Experts" />
+          <SectionHeader eyebrow={get('who_we_are', 'eyebrow', 'Who We Are')} title={get('who_we_are', 'title', 'A Team of Dedicated Experts')} />
           <p className="text-center text-[#C9A84C] font-bold text-base mb-10 -mt-8">
-            That&apos;s The Midas Touch
+            {get('who_we_are', 'tagline', "That's The Midas Touch")}
           </p>
           <div className="space-y-5 text-[#444] text-sm leading-relaxed">
             <p>
-              At Midas Property Group, we focus on ensuring we deliver a professional service for
-              each of our clients. We are experts in Property Investment as well as land and property
-              sourcing, residential acquisitions and disposals, and auction acquisitions and disposals.
+              {get('who_we_are', 'para_1', 'At Midas Property Group, we focus on ensuring we deliver a professional service for each of our clients. We are experts in Property Investment as well as land and property sourcing, residential acquisitions and disposals, and auction acquisitions and disposals.')}
             </p>
             <p>
-              Our team has a drive and a vision to help Midas Property Group become one of the leaders
-              in our industry. We work closely with investors and developers throughout the UK and
-              overseas to help implement investment strategies that underpin and support their goals.
+              {get('who_we_are', 'para_2', 'Our team has a drive and a vision to help Midas Property Group become one of the leaders in our industry. We work closely with investors and developers throughout the UK and overseas to help implement investment strategies that underpin and support their goals.')}
             </p>
             <p>
-              We strive to work with clients who want to invest in property. With our foresight and
-              network of contacts, we can assist clients in all aspects of property investments.
-              Whether you are taking that first step on your property investment journey or you want
-              to expand your portfolio, we are with you every step of the way.
+              {get('who_we_are', 'para_3', 'We strive to work with clients who want to invest in property. With our foresight and network of contacts, we can assist clients in all aspects of property investments. Whether you are taking that first step on your property investment journey or you want to expand your portfolio, we are with you every step of the way.')}
             </p>
           </div>
         </div>
@@ -108,14 +117,10 @@ export default function AboutPage() {
           <SectionHeader eyebrow="Our Approach" title="How We Do It" />
           <div className="space-y-5 text-[#444] text-sm leading-relaxed">
             <p>
-              We have a strong ethos and a desire to provide a turn-key solution. We work closely
-              with each client, build strong relationships and understand their exact needs.
+              {get('how_we_do_it', 'para_1', 'We have a strong ethos and a desire to provide a turn-key solution. We work closely with each client, build strong relationships and understand their exact needs.')}
             </p>
             <p>
-              Due diligence and research are part of what we do because we only offer stock backed
-              by data and analysis. We manage the risk of investment for each client, giving them
-              complete confidence in every decision they make.
-            </p>
+              {get('how_we_do_it', 'para_2', 'Due diligence and research are part of what we do because we only offer stock backed by data and analysis. We manage the risk of investment for each client, giving them complete confidence in every decision they make.')}</p>
             <p>
               Every purchase and sale benefits from our extensive knowledge and our ability to work
               closely with mortgage brokers, solicitors, private lenders, estate agents and developers.

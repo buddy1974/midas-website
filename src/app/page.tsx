@@ -54,16 +54,23 @@ function dbPropertyToLot(p: PropertyRow): Lot {
 export default async function HomePage() {
   let publicLots: Lot[] = lots.filter(l => l.showOnWebsite && !l.isOffMarket)
   let cfg: Record<string, string> = {}
+  let pc: Record<string, string> = {}
 
   try {
     const sql = getSql()
-    const [dbProps, content] = await Promise.all([
+    const [dbProps, content, pageContent] = await Promise.all([
       sql<PropertyRow[]>`SELECT * FROM properties WHERE show_on_website = true AND is_off_market = false ORDER BY is_featured DESC, created_at DESC LIMIT 4`,
       sql<{ key: string; value: string }[]>`SELECT key, value FROM site_content`,
+      sql<{ section: string; field: string; value: string }[]>`SELECT section, field, value FROM page_content WHERE page = 'home'`,
     ])
     if (dbProps.length > 0) publicLots = dbProps.map(dbPropertyToLot)
     cfg = Object.fromEntries(content.map(r => [r.key, r.value]))
+    pc = Object.fromEntries(pageContent.map(r => [`${r.section}.${r.field}`, r.value]))
   } catch { /* DB not yet configured — static fallback */ }
+
+  // page_content takes priority over site_content, then static fallback
+  const get = (section: string, field: string, fallback: string): string =>
+    pc[`${section}.${field}`] ?? fallback
 
   const eventsData = staticEvents
   const principlesData = principles
@@ -99,7 +106,7 @@ export default async function HomePage() {
           {/* Gold-bordered intro box */}
           <div className="bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.5)] rounded-lg px-8 py-6 max-w-2xl mx-auto mb-8">
             <p className="text-[rgba(232,228,220,0.85)] text-lg leading-relaxed">
-              {cfg['hero_subtitle'] ?? 'Standing in the middle, connecting buyers, sellers and investors across the UK through our network of established auction companies and exclusive off-market services.'}
+              {get('hero', 'subtitle', cfg['hero_subtitle'] ?? 'Standing in the middle, connecting buyers, sellers and investors across the UK through our network of established auction companies and exclusive off-market services.')}
             </p>
           </div>
 
@@ -160,7 +167,7 @@ export default async function HomePage() {
             <Phone className="text-[#C9A84C] flex-shrink-0" size={18} />
             <div>
               <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.15em] font-semibold">PHONE NUMBER</p>
-              <p className="text-[#E8E4DC] text-sm font-medium">+44 (0) 2072062691</p>
+              <p className="text-[#E8E4DC] text-sm font-medium">{get('contact', 'phone', cfg['contact_phone'] ?? '+44 (0) 2072062691')}</p>
             </div>
           </div>
           {/* Mobile */}
@@ -168,7 +175,7 @@ export default async function HomePage() {
             <Smartphone className="text-[#C9A84C] flex-shrink-0" size={18} />
             <div>
               <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.15em] font-semibold">MOBILE NUMBER</p>
-              <p className="text-[#E8E4DC] text-sm font-medium">+44 (0) 7413041372</p>
+              <p className="text-[#E8E4DC] text-sm font-medium">{get('contact', 'mobile', cfg['contact_mobile'] ?? '+44 (0) 7413041372')}</p>
             </div>
           </div>
           {/* Email */}
@@ -176,7 +183,7 @@ export default async function HomePage() {
             <Mail className="text-[#C9A84C] flex-shrink-0" size={18} />
             <div>
               <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.15em] font-semibold">EMAIL</p>
-              <p className="text-[#E8E4DC] text-sm font-medium">info@midaspropertyauctions.co.uk</p>
+              <p className="text-[#E8E4DC] text-sm font-medium">{get('contact', 'email', cfg['contact_email'] ?? 'info@midaspropertyauctions.co.uk')}</p>
             </div>
           </div>
           {/* Hours */}
@@ -184,7 +191,7 @@ export default async function HomePage() {
             <Clock className="text-[#C9A84C] flex-shrink-0" size={18} />
             <div>
               <p className="text-[#C9A84C] text-[10px] uppercase tracking-[0.15em] font-semibold">OPENING TIMES</p>
-              <p className="text-[#E8E4DC] text-sm font-medium">Mon - Fri: 9.00 - 18:00</p>
+              <p className="text-[#E8E4DC] text-sm font-medium">{get('contact', 'hours', cfg['contact_hours'] ?? 'Mon to Fri: 9.00 to 18.00')}</p>
             </div>
           </div>
         </div>
@@ -564,9 +571,9 @@ export default async function HomePage() {
       <section className="bg-[#0D0D14] border-y border-[rgba(201,168,76,0.2)] py-12 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
           {[
-            { value: '340+', label: 'Properties Sold' },
-            { value: '2,847', label: 'Active Investors' },
-            { value: '15+', label: 'Years Experience' },
+            { value: get('stats', 'properties', cfg['stats_properties'] ?? '340+'), label: 'Properties Sold' },
+            { value: get('stats', 'investors', cfg['stats_investors'] ?? '2,847'), label: 'Active Investors' },
+            { value: get('stats', 'experience', cfg['stats_experience'] ?? '15+'), label: 'Years Experience' },
           ].map(stat => (
             <div key={stat.label} className="text-center">
               <p className="text-4xl md:text-5xl font-black text-[#C9A84C] tabular-nums">{stat.value}</p>
