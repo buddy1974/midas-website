@@ -71,3 +71,26 @@ INSERT INTO site_content (key, value) VALUES
   ('contact_email', 'info@midaspropertyauctions.co.uk'),
   ('contact_hours', 'Mon to Fri: 9.00 to 18.00')
 ON CONFLICT (key) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS page_content (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  page TEXT NOT NULL,
+  section TEXT NOT NULL,
+  field TEXT NOT NULL,
+  value TEXT NOT NULL,
+  content_type TEXT DEFAULT 'text',
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(page, section, field)
+);
+
+CREATE TABLE IF NOT EXISTS menu_config (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  config JSONB NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS pages_config (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  config JSONB NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
