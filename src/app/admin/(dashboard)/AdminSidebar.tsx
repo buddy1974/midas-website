@@ -4,13 +4,13 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
 const NAV = [
-  { href: '/admin', label: 'Dashboard', icon: '⬡' },
-  { href: '/admin/editor', label: 'Content Editor', icon: '🎨' },
+  { href: '/admin',          label: 'Dashboard',    icon: '⬡' },
+  { href: '/admin/builder',  label: 'Page Builder',  icon: '🧱' },
   { href: '/admin/properties', label: 'Properties', icon: '🏠' },
-  { href: '/admin/blog', label: 'Blog Posts', icon: '📝' },
-  { href: '/admin/events', label: 'Events', icon: '📅' },
-  { href: '/admin/content', label: 'Site Content', icon: '✏️' },
-  { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
+  { href: '/admin/blog',     label: 'Blog Posts',   icon: '📝' },
+  { href: '/admin/events',   label: 'Events',       icon: '📅' },
+  { href: '/admin/content',  label: 'Site Content', icon: '✏️' },
+  { href: '/admin/settings', label: 'Settings',     icon: '⚙️' },
 ]
 
 export default function AdminSidebar() {

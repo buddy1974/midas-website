@@ -1,0 +1,23 @@
+interface Props { data: Record<string, string>; bg?: string }
+
+export default function RichTextSection({ data, bg }: Props) {
+  const isDark = bg === 'dark'
+  const cols = data.columns === '2' ? 2 : 1
+  const align = data.alignment || 'left'
+
+  return (
+    <section style={{ background: isDark ? '#0d0d0d' : bg === 'cream' ? '#fdf9f0' : '#fff', padding: '64px 24px' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        {data.heading && (
+          <h2 style={{ color: isDark ? '#fff' : '#1a1209', fontSize: 30, fontWeight: 300, marginBottom: 28, textAlign: align as 'left' | 'center' | 'right' }}>
+            {data.heading}
+          </h2>
+        )}
+        <div
+          style={{ columnCount: cols, columnGap: 48, color: isDark ? 'rgba(255,255,255,0.7)' : '#555', fontSize: 16, lineHeight: 1.75, textAlign: align as 'left' | 'center' | 'right' }}
+          dangerouslySetInnerHTML={{ __html: data.content || '<p>Add your content in the properties panel.</p>' }}
+        />
+      </div>
+    </section>
+  )
+}

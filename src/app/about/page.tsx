@@ -27,7 +27,13 @@ export const metadata: Metadata = {
   },
 }
 
+import { getBuilderLayout } from '@/lib/builder-render'
+import { PageRenderer } from '@/components/builder/SectionRenderer'
+
 export default async function AboutPage() {
+  const builderLayout = await getBuilderLayout('about')
+  if (builderLayout) return <main><PageRenderer sections={builderLayout.sections} /></main>
+
   const content = await getPageContent('about')
   const get = (section: string, field: string, fallback: string): string =>
     content[`${section}.${field}`] ?? fallback

@@ -14,6 +14,8 @@ import {
   type LotStatus,
 } from '@/lib/data'
 import { getSql, type PropertyRow } from '@/lib/db'
+import { getBuilderLayout } from '@/lib/builder-render'
+import { PageRenderer } from '@/components/builder/SectionRenderer'
 
 // ── DB-to-Lot mapper (fallback shape for LotCard) ────────────────────────────
 
@@ -52,6 +54,11 @@ function dbPropertyToLot(p: PropertyRow): Lot {
 // ── Page component ────────────────────────────────────────────────────────────
 
 export default async function HomePage() {
+  // ── Builder override: if a layout exists in the Page Builder, use it ─────
+  const builderLayout = await getBuilderLayout('home')
+  if (builderLayout) {
+    return <main><PageRenderer sections={builderLayout.sections} /></main>
+  }
   let publicLots: Lot[] = lots.filter(l => l.showOnWebsite && !l.isOffMarket)
   let cfg: Record<string, string> = {}
   let pc: Record<string, string> = {}
