@@ -1,6 +1,3 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Phone, Smartphone, Mail, Clock } from 'lucide-react'
 import LotCard from '@/components/LotCard'
@@ -16,54 +13,60 @@ import {
   type Lot,
   type LotStatus,
 } from '@/lib/data'
+import { getSql, type PropertyRow } from '@/lib/db'
 
-// ── OS Integration ────────────────────────────────────────────────────────────
+// ── DB-to-Lot mapper (fallback shape for LotCard) ────────────────────────────
 
-interface OsLot {
-  id: string; address: string; guidePrice: number; arv: number | null
-  bedrooms: number | null; propertyType: string | null; pipelineStage: string
-  isOffMarket: boolean; notes: string | null
+function stageToStatus(stage: string): LotStatus {
+  const map: Record<string, LotStatus> = {
+    'Legal Pack': 'legal_pack',
+    'Going to Auction': 'live',
+    'Live': 'live',
+    'Sold': 'unsold',
+  }
+  return map[stage] ?? 'sourcing'
 }
 
-function mapOsLot(l: OsLot): Lot {
-  const parts = l.address.split(',')
-  const stageMap: Record<string, LotStatus> = { live: 'live', legal_pack: 'legal_pack' }
+function dbPropertyToLot(p: PropertyRow): Lot {
+  let features: string[] = []
+  try { features = p.features ? (JSON.parse(p.features) as string[]) : [] } catch { features = [] }
   return {
-    id: l.id, address: parts[0].trim(),
-    area: parts.length > 1 ? parts.slice(1).join(',').trim() : '',
-    type: l.propertyType ?? 'Residential', bedrooms: l.bedrooms ?? 0,
-    guidePrice: l.guidePrice, arv: l.arv ?? 0,
-    status: stageMap[l.pipelineStage] ?? 'sourcing',
-    description: l.notes ?? '', features: [],
-    auctionDate: 'Contact for details', auctionTime: '',
-    isOffMarket: l.isOffMarket, showOnWebsite: true, postcode: '',
+    id: p.id,
+    address: p.title,
+    area: p.area,
+    type: p.property_type,
+    bedrooms: p.bedrooms ?? 0,
+    guidePrice: p.guide_price,
+    arv: 0,
+    status: stageToStatus(p.stage),
+    description: p.description ?? '',
+    features,
+    auctionDate: p.auction_date ?? 'Contact for details',
+    auctionTime: '',
+    isOffMarket: p.is_off_market,
+    showOnWebsite: p.show_on_website,
+    postcode: '',
   }
 }
 
 // ── Page component ────────────────────────────────────────────────────────────
 
-export default function HomePage() {
-  const [liveLots, setLiveLots] = useState<Lot[] | null>(null)
+export default async function HomePage() {
+  let publicLots: Lot[] = lots.filter(l => l.showOnWebsite && !l.isOffMarket)
+  let cfg: Record<string, string> = {}
 
-  useEffect(() => {
-    const osUrl = process.env.NEXT_PUBLIC_OS_URL
-    if (!osUrl) return
-    fetch(`${osUrl}/api/public/lots`)
-      .then(r => r.ok ? r.json() : Promise.reject())
-      .then((data: { lots: OsLot[] }) => {
-        if (Array.isArray(data?.lots)) setLiveLots(data.lots.map(mapOsLot))
-      })
-      .catch(() => {})
-  }, [])
-
-  const publicLots = (liveLots ?? lots.filter(l => l.showOnWebsite)).filter(l => !l.isOffMarket)
-
-  // ── Inline data for three-column section ─────────────────────────────────
+  try {
+    const sql = getSql()
+    const [dbProps, content] = await Promise.all([
+      sql<PropertyRow[]>`SELECT * FROM properties WHERE show_on_website = true AND is_off_market = false ORDER BY is_featured DESC, created_at DESC LIMIT 4`,
+      sql<{ key: string; value: string }[]>`SELECT key, value FROM site_content`,
+    ])
+    if (dbProps.length > 0) publicLots = dbProps.map(dbPropertyToLot)
+    cfg = Object.fromEntries(content.map(r => [r.key, r.value]))
+  } catch { /* DB not yet configured — static fallback */ }
 
   const eventsData = staticEvents
-
   const principlesData = principles
-
   const servicesData = serviceNames
 
   return (
@@ -96,8 +99,7 @@ export default function HomePage() {
           {/* Gold-bordered intro box */}
           <div className="bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.5)] rounded-lg px-8 py-6 max-w-2xl mx-auto mb-8">
             <p className="text-[rgba(232,228,220,0.85)] text-lg leading-relaxed">
-              Standing in the middle, connecting buyers, sellers and investors across the UK through
-              our network of established auction companies and exclusive off-market services.
+              {cfg['hero_subtitle'] ?? 'Standing in the middle, connecting buyers, sellers and investors across the UK through our network of established auction companies and exclusive off-market services.'}
             </p>
           </div>
 

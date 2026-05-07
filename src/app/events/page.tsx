@@ -70,15 +70,13 @@ function RegistrationForm({ event, onClose }: RegFormProps) {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
 
-  const osUrl = process.env.NEXT_PUBLIC_OS_URL
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!name.trim() || (!email.trim() && fields !== 'name_phone' && fields !== 'name_only')) return
     setSubmitting(true)
     setError('')
     try {
-      const res = await fetch(`${osUrl}/api/events/${event.id}/register`, {
+      const res = await fetch(`/api/admin/events/${event.id}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -314,9 +312,7 @@ export default function EventsPage() {
   const [liveData, setLiveData] = useState(false)
 
   useEffect(() => {
-    const osUrl = process.env.NEXT_PUBLIC_OS_URL
-    if (!osUrl) { setLoading(false); return }
-    fetch(`${osUrl}/api/public/events`)
+    fetch('/api/public/events-db')
       .then(r => r.ok ? r.json() : Promise.reject())
       .then((data: { events?: OsEvent[] }) => {
         if (!Array.isArray(data?.events)) return

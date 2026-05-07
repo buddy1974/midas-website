@@ -216,14 +216,14 @@ export default function Footer() {
             <span>·</span>
             <Link href="/conditions" className="hover:text-[#C9A84C] transition-colors">General Conditions</Link>
           </div>
-          <div className="flex items-center gap-2 text-[rgba(201,168,76,0.35)] text-xs italic">
-            <span>Site powered by ARIA, Midas Intelligence</span>
-            <span className="text-[rgba(232,228,220,0.2)]">·</span>
+          <div className="flex items-center gap-2 text-[rgba(232,228,220,0.25)] text-xs">
+            <span>© 2026 Midas Property Group Ltd</span>
+            <span className="text-[rgba(232,228,220,0.15)]">·</span>
             <a
               href="https://maxpromo.digital"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[rgba(232,228,220,0.3)] not-italic hover:text-[#C9A84C] transition-colors"
+              className="hover:text-[#C9A84C] transition-colors"
             >
               Developed by maxpromo.digital
             </a>

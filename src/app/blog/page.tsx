@@ -1,5 +1,7 @@
 import { type Metadata } from 'next'
 import Link from 'next/link'
+import { getSql, type BlogPostRow } from '@/lib/db'
+import { blogPosts as staticPosts } from '@/lib/data'
 
 export const metadata: Metadata = {
   title: 'Property Blog | Market Insights, Investment Guides & Auction News',
@@ -13,50 +15,45 @@ export const metadata: Metadata = {
   },
 }
 
-interface BlogPost {
+interface DisplayPost {
   title: string
   category: string
   date: string
   excerpt: string
   slug: string
+  coverImage?: string | null
 }
 
-const posts: BlogPost[] = [
-  {
-    title: 'How to Buy Your First Property at Auction',
-    category: 'Guide',
-    date: '18 April 2026',
-    excerpt:
-      'Buying at auction for the first time can feel daunting. In this guide we break down everything you need to know, from reading legal packs to registering to bid.',
-    slug: 'buying-first-property-at-auction',
-  },
-  {
-    title: 'London HMO Market Report 2026',
-    category: 'Market Report',
-    date: '10 April 2026',
-    excerpt:
-      'HMO yields in London remain among the strongest in the UK. This report covers demand trends, licensing updates and the best boroughs for HMO investment.',
-    slug: 'london-hmo-market-report-2026',
-  },
-  {
-    title: 'Bridging Finance Explained: A Guide for Auction Buyers',
-    category: 'Finance',
-    date: '2 April 2026',
-    excerpt:
-      'Most auction purchases complete in 28 days. Too fast for a standard mortgage. Here is everything you need to know about bridging finance and how to arrange it quickly.',
-    slug: 'bridging-finance-guide-auction-buyers',
-  },
-  {
-    title: 'What Makes a Good HMO Investment in 2026?',
-    category: 'Investment',
-    date: '25 March 2026',
-    excerpt:
-      'Not every HMO is a good investment. In this guide we cover the key criteria: location, licensing, room size, yield calculation and common pitfalls to avoid.',
-    slug: 'good-hmo-investment-2026',
-  },
-]
+function formatDate(iso: string | null): string {
+  if (!iso) return ''
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+}
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  let posts: DisplayPost[] = staticPosts.map(p => ({
+    title: p.title,
+    category: p.category,
+    date: p.date,
+    excerpt: p.excerpt,
+    slug: p.slug,
+  }))
+
+  try {
+    const sql = getSql()
+    const dbPosts = await sql<BlogPostRow[]>`
+      SELECT * FROM blog_posts WHERE status = 'published' ORDER BY published_at DESC`
+    if (dbPosts.length > 0) {
+      posts = dbPosts.map(p => ({
+        title: p.title,
+        category: p.category,
+        date: formatDate(p.published_at),
+        excerpt: p.excerpt ?? '',
+        slug: p.slug,
+        coverImage: p.cover_image,
+      }))
+    }
+  } catch { /* DB not yet configured */ }
+
   return (
     <main>
       {/* Hero */}
@@ -83,14 +80,19 @@ export default function BlogPage() {
                 key={post.slug}
                 className="bg-white border border-[#E8E5DE] rounded-xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
               >
-                {/* Image placeholder */}
-                <div className="bg-gradient-to-br from-[#0F0F14] to-[#1a1a2e] h-48 w-full flex items-center justify-center">
-                  <span className="text-[#C9A84C] text-sm font-semibold uppercase tracking-widest">
-                    {post.category}
-                  </span>
+                <div
+                  className="h-48 w-full flex items-center justify-center"
+                  style={post.coverImage
+                    ? { backgroundImage: `url(${post.coverImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+                    : { background: 'linear-gradient(135deg, #0F0F14, #1a1a2e)' }
+                  }
+                >
+                  {!post.coverImage && (
+                    <span className="text-[#C9A84C] text-sm font-semibold uppercase tracking-widest">
+                      {post.category}
+                    </span>
+                  )}
                 </div>
-
-                {/* Body */}
                 <div className="p-6">
                   <span className="inline-block bg-[rgba(201,168,76,0.1)] text-[#C9A84C] text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
                     {post.category}
@@ -98,7 +100,7 @@ export default function BlogPage() {
                   <h2 className="font-bold text-[#1A1A1A] text-lg mt-3 mb-2 leading-snug">
                     {post.title}
                   </h2>
-                  <p className="text-[#888] text-xs mb-3">{post.date}</p>
+                  {post.date && <p className="text-[#888] text-xs mb-3">{post.date}</p>}
                   <p className="text-[#666] text-sm leading-relaxed mb-4">{post.excerpt}</p>
                   <Link
                     href={`/blog/${post.slug}`}
@@ -118,8 +120,7 @@ export default function BlogPage() {
         <div className="max-w-xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-black text-[#1A1A1A] mb-4">Stay in the Know</h2>
           <p className="text-[#666] text-base leading-relaxed mb-8">
-            Subscribe to our investor list to receive new articles, market reports and exclusive
-            opportunities.
+            Subscribe to our investor list to receive new articles, market reports and exclusive opportunities.
           </p>
           <Link
             href="/register"
