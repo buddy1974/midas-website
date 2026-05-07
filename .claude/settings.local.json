@@ -30,7 +30,10 @@
       "PowerShell(Copy-Item *)",
       "Bash(curl *)",
       "Bash(python3 -m json.tool)",
-      "Bash(git remote *)"
+      "Bash(git remote *)",
+      "Bash(Get-Content \"C:\\\\Users\\\\loneb\\\\Documents\\\\ai-software-dev\\\\projects\\\\midas-website\\\\.env.local\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -First 15)",
+      "Bash(npm list *)"
     ]
   }
 }
