@@ -11,6 +11,7 @@ interface GoldButtonProps {
   size?: 'sm' | 'md' | 'lg'
   className?: string
   type?: 'button' | 'submit'
+  disabled?: boolean
 }
 
 export default function GoldButton({
@@ -21,6 +22,7 @@ export default function GoldButton({
   size = 'md',
   className = '',
   type = 'button',
+  disabled = false,
 }: GoldButtonProps) {
   const sizeClasses = {
     sm: 'px-4 py-2 text-sm',
@@ -44,7 +46,7 @@ export default function GoldButton({
   }
 
   return (
-    <button type={type} onClick={onClick} className={baseClasses}>
+    <button type={type} onClick={onClick} disabled={disabled} className={`${baseClasses} ${disabled ? 'opacity-60 cursor-not-allowed hover:scale-100' : ''}`}>
       {children}
     </button>
   )

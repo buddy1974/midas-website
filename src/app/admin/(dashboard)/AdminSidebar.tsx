@@ -9,6 +9,7 @@ const NAV = [
   { href: '/admin/blog', label: 'Blog Posts', icon: '📝' },
   { href: '/admin/events', label: 'Events', icon: '📅' },
   { href: '/admin/content', label: 'Site Content', icon: '✏️' },
+  { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
 ]
 
 export default function AdminSidebar() {

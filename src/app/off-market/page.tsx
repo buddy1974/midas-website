@@ -6,25 +6,36 @@ import GoldButton from '@/components/GoldButton'
 import { lots } from '@/lib/data'
 import { Lock, AlertTriangle } from 'lucide-react'
 
-const ACCESS_CODE = 'MIDAS2026'
-
 export default function OffMarketPage() {
   const [unlocked, setUnlocked] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [checking, setChecking] = useState(false)
   const [reqName, setReqName] = useState('')
   const [reqEmail, setReqEmail] = useState('')
   const [reqSent, setReqSent] = useState(false)
 
   const offMarketLots = lots.filter((l) => l.isOffMarket)
 
-  const handleUnlock = (e: React.FormEvent) => {
+  const handleUnlock = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (password === ACCESS_CODE) {
-      setUnlocked(true)
-      setError('')
-    } else {
-      setError('Incorrect code. Contact Sam to request access.')
+    setChecking(true)
+    setError('')
+    try {
+      const res = await fetch('/api/off-market/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      })
+      if (res.ok) {
+        setUnlocked(true)
+      } else {
+        setError('Incorrect code. Contact Sam to request access.')
+      }
+    } catch {
+      setError('Unable to verify. Please try again.')
+    } finally {
+      setChecking(false)
     }
   }
 
@@ -57,8 +68,8 @@ export default function OffMarketPage() {
                 {error}
               </div>
             )}
-            <GoldButton variant="filled" type="submit" className="w-full" size="lg">
-              Access Properties →
+            <GoldButton variant="filled" type="submit" className="w-full" size="lg" disabled={checking}>
+              {checking ? 'Checking...' : 'Access Properties →'}
             </GoldButton>
           </form>
 
