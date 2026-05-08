@@ -5,12 +5,7 @@ import { NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
 import { SECTION_DEFAULTS, SECTION_SCHEMAS as _ } from '@/lib/builder-defaults'
 import { DEFAULT_SETTINGS } from '@/lib/builder-types'
-import { cookies } from 'next/headers'
-
-async function auth() {
-  const store = await cookies()
-  return store.get('admin_session')?.value === process.env.ADMIN_PASSWORD || 'london2026'
-}
+import { isAdminLoggedIn } from '@/lib/admin-auth'
 
 // ── Seed data: maps existing pages to builder layouts ─────────────────────────
 
@@ -100,6 +95,7 @@ const SEED_PAGES = [
 ]
 
 export async function POST() {
+  if (!(await isAdminLoggedIn())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
     const sql = getSql()
 

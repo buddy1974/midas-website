@@ -9,6 +9,9 @@ export function getSql() {
     }
     _sql = postgres(process.env.WEBSITE_DATABASE_URL, {
       ssl: 'require',
+      max: 1,            // serverless: one connection per function instance
+      idle_timeout: 20,  // release idle connections after 20s
+      connect_timeout: 10,
     })
   }
   return _sql

@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
-import { cookies } from 'next/headers'
-
-async function requireAdmin() {
-  const store = await cookies()
-  return store.get('admin_session')?.value === (process.env.ADMIN_PASSWORD || 'london2026')
-}
+import { isAdminLoggedIn } from '@/lib/admin-auth'
 
 async function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder()
@@ -15,7 +10,7 @@ async function hashPassword(password: string): Promise<string> {
 }
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  if (!(await requireAdmin())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!(await isAdminLoggedIn())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id } = await params
   const body = await req.json() as { password?: string; role?: string }
   try {
@@ -34,7 +29,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 }
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  if (!(await requireAdmin())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!(await isAdminLoggedIn())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id } = await params
   try {
     const sql = getSql()
