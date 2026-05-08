@@ -18,7 +18,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ slu
       title: row.title,
       metaTitle: row.meta_title,
       metaDesc: row.meta_desc,
-      sections: row.sections,
+      sections: typeof row.sections === 'string' ? JSON.parse(row.sections) : (row.sections ?? []),
     })
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 })

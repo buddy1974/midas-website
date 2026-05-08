@@ -22,15 +22,21 @@ export async function getBuilderLayout(slug: string): Promise<BuilderLayout | nu
     if (rows.length === 0) return null
 
     const row = rows[0]
+    // Parse sections — Neon JSONB may return a string instead of an array
+    const sections: BuilderSection[] = Array.isArray(row.sections)
+      ? row.sections
+      : typeof row.sections === 'string'
+        ? JSON.parse(row.sections)
+        : []
     // Only return if the layout actually has sections (not just a stub)
-    if (!row.sections || row.sections.length === 0) return null
+    if (sections.length === 0) return null
 
     return {
       slug: row.slug,
       title: row.title,
       metaTitle: row.meta_title,
       metaDesc: row.meta_desc,
-      sections: row.sections,
+      sections,
     }
   } catch {
     return null

@@ -57,7 +57,12 @@ export default function SectionRenderer({ section, preview }: Props) {
 }
 
 // Full page renderer
-export function PageRenderer({ sections }: { sections: BuilderSection[] }) {
+export function PageRenderer({ sections: rawSections }: { sections: BuilderSection[] | string }) {
+  const sections: BuilderSection[] = Array.isArray(rawSections)
+    ? rawSections
+    : typeof rawSections === 'string'
+      ? JSON.parse(rawSections)
+      : []
   return (
     <>
       {sections
