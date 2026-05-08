@@ -53,7 +53,15 @@ export default function BuilderPage() {
     setLayout(null); setSelected(null); setUndoStack([]); setRedoStack([])
     fetch(`/api/admin/builder/${activeSlug}`)
       .then(r => r.json())
-      .then((d: PageBuilderLayout) => setLayout(d))
+      .then((d: PageBuilderLayout & { error?: string }) => {
+        if (d.error) { console.error('[builder] load error:', d.error); return }
+        const sections = Array.isArray(d.sections)
+          ? d.sections
+          : typeof d.sections === 'string'
+            ? JSON.parse(d.sections)
+            : []
+        setLayout({ ...d, sections })
+      })
       .catch(console.error)
   }, [activeSlug, setupDone])
 
