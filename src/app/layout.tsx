@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import ConditionalNavbar from '@/components/ConditionalNavbar'
+import ConditionalFooter from '@/components/ConditionalFooter'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -118,9 +118,9 @@ export default function RootLayout({
           gtag('js', new Date());
           gtag('config', 'G-QHFW6H6W5H');
         `}</Script>
-        <Navbar />
+        <ConditionalNavbar />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   )
