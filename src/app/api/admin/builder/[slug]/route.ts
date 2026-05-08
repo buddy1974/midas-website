@@ -3,6 +3,7 @@
 // DELETE /api/admin/builder/[slug]  — delete page (non-system only)
 
 import { NextResponse, NextRequest } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { getSql } from '@/lib/db'
 
 const SYSTEM_PAGES = ['home', 'about', 'sell', 'buy', 'contact', 'register']
@@ -51,6 +52,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ slug
         updated_at = NOW()
       WHERE slug = ${slug}
     `
+
+    // Revalidate the public page so ISR picks up new content immediately
+    const publicPath = slug === 'home' ? '/' : `/${slug}`
+    revalidatePath(publicPath)
 
     return NextResponse.json({ ok: true })
   } catch (err) {

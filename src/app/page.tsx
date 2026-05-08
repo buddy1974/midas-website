@@ -17,6 +17,8 @@ import { getSql, type PropertyRow } from '@/lib/db'
 import { getBuilderLayout } from '@/lib/builder-render'
 import { PageRenderer } from '@/components/builder/SectionRenderer'
 
+export const revalidate = 60
+
 // ── DB-to-Lot mapper (fallback shape for LotCard) ────────────────────────────
 
 function stageToStatus(stage: string): LotStatus {

@@ -30,6 +30,8 @@ export const metadata: Metadata = {
 import { getBuilderLayout } from '@/lib/builder-render'
 import { PageRenderer } from '@/components/builder/SectionRenderer'
 
+export const revalidate = 60
+
 export default async function AboutPage() {
   const builderLayout = await getBuilderLayout('about')
   if (builderLayout) return <main><PageRenderer sections={builderLayout.sections} /></main>

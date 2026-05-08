@@ -4,6 +4,8 @@ import { getBuilderLayout } from '@/lib/builder-render'
 import { PageRenderer } from '@/components/builder/SectionRenderer'
 import ContactClientPage from './ContactClientPage'
 
+export const revalidate = 60
+
 export default async function ContactPage() {
   const builderLayout = await getBuilderLayout('contact')
   if (builderLayout) return <main><PageRenderer sections={builderLayout.sections} /></main>

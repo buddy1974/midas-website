@@ -4,6 +4,8 @@ import { getBuilderLayout } from '@/lib/builder-render'
 import { PageRenderer } from '@/components/builder/SectionRenderer'
 import SellClientPage from './SellClientPage'
 
+export const revalidate = 60
+
 export default async function SellPage() {
   const builderLayout = await getBuilderLayout('sell')
   if (builderLayout) return <main><PageRenderer sections={builderLayout.sections} /></main>
