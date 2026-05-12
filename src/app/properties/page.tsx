@@ -115,8 +115,42 @@ export default function PropertiesPage() {
       )
       .catch(() => [] as Lot[])
 
-    Promise.all([fetchOs, fetchMri]).then(([osLots, mriLots]) => {
-      const combined = [...osLots, ...mriLots]
+    // Fetch from the website's own admin DB
+    const fetchLocal = fetch('/api/public/properties')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then((data: { properties: Array<{
+        id: string; title: string; address: string; area: string;
+        guidePrice: number; bedrooms: number | null; propertyType: string;
+        stage: string; coverImage: string | null; description: string | null;
+        features: string | null; auctionDate: string | null; isOffMarket: boolean; createdAt: string;
+      }> }) =>
+        Array.isArray(data?.properties)
+          ? data.properties.map(p => ({
+              id: p.id,
+              address: p.address.split(',')[0].trim(),
+              area: p.area,
+              type: p.propertyType ?? 'Residential',
+              bedrooms: p.bedrooms ?? 0,
+              guidePrice: p.guidePrice,
+              arv: 0,
+              status: 'sourcing' as LotStatus,
+              description: p.description ?? '',
+              features: p.features ? p.features.split('\n').filter(Boolean) : [],
+              auctionDate: p.auctionDate ?? 'Contact for details',
+              auctionTime: '',
+              isOffMarket: p.isOffMarket,
+              showOnWebsite: true,
+              postcode: '',
+            }))
+          : [] as Lot[]
+      )
+      .catch(() => [] as Lot[])
+
+    Promise.all([fetchOs, fetchMri, fetchLocal]).then(([osLots, mriLots, localLots]) => {
+      // Deduplicate: local DB is authoritative, OS lots fill the rest
+      const localIds = new Set(localLots.map(l => l.id))
+      const uniqueOs = osLots.filter(l => !localIds.has(l.id))
+      const combined = [...localLots, ...uniqueOs, ...mriLots]
       if (combined.length > 0) {
         setLiveLots(combined)
         setMriCount(mriLots.length)

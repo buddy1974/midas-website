@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { getSql } from '@/lib/db'
 import { isAdminLoggedIn } from '@/lib/admin-auth'
 
@@ -20,6 +21,13 @@ export async function PATCH(req: NextRequest) {
       VALUES (${key}, ${value}, NOW())
       ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()`
   }
+
+  // Flush ISR cache for all pages that may consume site_content
+  revalidatePath('/')
+  revalidatePath('/about')
+  revalidatePath('/buy')
+  revalidatePath('/sell')
+  revalidatePath('/contact')
 
   return NextResponse.json({ ok: true })
 }
