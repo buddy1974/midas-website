@@ -9,15 +9,23 @@ export function getSql() {
     }
     _sql = postgres(process.env.WEBSITE_DATABASE_URL, {
       ssl: 'require',
-      max: 1,            // serverless: one connection per function instance
-      idle_timeout: 20,  // release idle connections after 20s
+      max: 1,
+      idle_timeout: 20,
       connect_timeout: 10,
     })
   }
   return _sql
 }
 
-// ── Shared row types ──────────────────────────────────────────────────────────
+export interface MediaImage {
+  url: string
+  caption?: string
+}
+
+export interface MediaEmbed {
+  url: string
+  title?: string
+}
 
 export interface PropertyRow {
   id: string
@@ -32,6 +40,8 @@ export interface PropertyRow {
   features: string | null
   image_url: string | null
   video_url: string | null
+  images: MediaImage[]
+  embeds: MediaEmbed[]
   auction_date: string | null
   tenure: string
   is_featured: boolean
@@ -67,6 +77,8 @@ export interface EventRow {
   cost_type: string
   cost_amount: number
   image_url: string | null
+  images: MediaImage[]
+  embeds: MediaEmbed[]
   registration_url: string | null
   is_featured: boolean
   created_at: string

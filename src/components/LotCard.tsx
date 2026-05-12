@@ -37,8 +37,14 @@ function formatPrice(price: number): string {
 
 export default function LotCard({ lot, lotNumber }: LotCardProps) {
   const [wishlisted, setWishlisted] = useState(false)
+  const [imgError, setImgError] = useState(false)
   const gradient = typeGradient[lot.type] ?? 'from-gray-900 to-[#080809]'
   const status = statusConfig[lot.status]
+
+  // Resolve cover image: images array first, then imageUrl legacy field
+  const coverImage = !imgError
+    ? (lot.images?.[0]?.url || lot.imageUrl || null)
+    : null
 
   useEffect(() => {
     try {
@@ -71,28 +77,39 @@ export default function LotCard({ lot, lotNumber }: LotCardProps) {
     <div className="bg-[#0F0F14] border border-[rgba(201,168,76,0.18)] rounded-xl overflow-hidden hover:border-[rgba(201,168,76,0.45)] transition-all duration-300 hover:-translate-y-1 flex flex-col shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
 
       {/* Image / gradient area */}
-      <div className={`relative h-44 bg-gradient-to-br ${gradient} flex-shrink-0`}>
+      <div className={`relative h-44 flex-shrink-0 overflow-hidden ${!coverImage ? `bg-gradient-to-br ${gradient}` : 'bg-[#080809]'}`}>
 
-        {/* LOT badge — top-left */}
+        {/* Cover image */}
+        {coverImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={coverImage}
+            alt={lot.address}
+            onError={() => setImgError(true)}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+
+        {/* LOT badge */}
         {lotNumber !== undefined && (
           <span className="absolute top-0 left-0 z-10 bg-[#C9A84C] text-[#080809] text-[10px] font-black px-3 py-1.5 rounded-br-lg">
             LOT {lotNumber}
           </span>
         )}
 
-        {/* Status badge — top-right */}
+        {/* Status badge */}
         <span className={`absolute top-3 right-3 z-10 text-[10px] font-bold px-2 py-1 rounded ${status.classes}`}>
           {status.label}
         </span>
 
         {/* Off-market overlay */}
         {lot.isOffMarket && (
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-10">
             <span className="text-5xl opacity-60">🔐</span>
           </div>
         )}
 
-        {/* Guide price strip — bottom of image */}
+        {/* Guide price strip */}
         <div className="absolute bottom-0 left-0 right-0 z-10 bg-[rgba(201,168,76,0.95)] px-3 py-1.5">
           <span className="text-[#080809] text-xs font-bold">
             Guide Price: {formatPrice(lot.guidePrice)}
@@ -107,7 +124,6 @@ export default function LotCard({ lot, lotNumber }: LotCardProps) {
         </h3>
         <p className="text-[#C9A84C] text-xs mb-3">{lot.area}</p>
 
-        {/* Meta badges */}
         <div className="flex flex-wrap gap-1.5 mb-3">
           <span className="text-[10px] bg-[rgba(201,168,76,0.1)] text-[rgba(232,228,220,0.6)] border border-[rgba(201,168,76,0.15)] px-2 py-0.5 rounded">
             {lot.type}
@@ -119,15 +135,13 @@ export default function LotCard({ lot, lotNumber }: LotCardProps) {
           )}
         </div>
 
-        {/* Description */}
         {lot.description && (
           <p className="text-[rgba(232,228,220,0.5)] text-xs leading-relaxed mb-3 line-clamp-2 flex-1">
             {lot.description}
           </p>
         )}
 
-        {/* Features */}
-        {lot.features.length > 0 && (
+        {lot.features && lot.features.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-3">
             {lot.features.slice(0, 2).map(f => (
               <span key={f} className="text-[10px] text-[#C9A84C] border border-[rgba(201,168,76,0.25)] px-2 py-0.5 rounded">
@@ -137,13 +151,11 @@ export default function LotCard({ lot, lotNumber }: LotCardProps) {
           </div>
         )}
 
-        {/* Auction date */}
         <div className="flex items-center gap-1.5 text-[rgba(232,228,220,0.35)] text-xs mb-4">
           <Calendar size={11} />
           <span>{lot.auctionDate}</span>
         </div>
 
-        {/* Action buttons */}
         <div className="flex gap-2 mt-auto">
           <button
             onClick={toggleWishlist}

@@ -1,5 +1,15 @@
 export type LotStatus = 'legal_pack' | 'live' | 'sourcing' | 'unsold'
 
+export interface LotImage {
+  url: string
+  caption?: string
+}
+
+export interface LotEmbed {
+  url: string
+  title?: string
+}
+
 export interface Lot {
   id: string
   address: string
@@ -16,6 +26,10 @@ export interface Lot {
   isOffMarket: boolean
   showOnWebsite: boolean
   postcode: string
+  imageUrl?: string
+  images?: LotImage[]
+  embeds?: LotEmbed[]
+  videoUrl?: string
 }
 
 // ── LOTS ──────────────────────────────────────────────────────────────────────

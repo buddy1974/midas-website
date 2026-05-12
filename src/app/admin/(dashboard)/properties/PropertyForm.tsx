@@ -3,43 +3,24 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { PropertyRow } from '@/lib/db'
-import ImageUpload from '@/components/admin/ImageUpload'
+import MediaGalleryEditor, { type GalleryImage } from '@/components/admin/MediaGalleryEditor'
+import EmbedEditor, { type Embed } from '@/components/admin/EmbedEditor'
 
 const inputStyle: React.CSSProperties = {
-  width: '100%',
-  background: '#0d0d0d',
-  border: '1px solid #2a2a2a',
-  color: '#e0e0e0',
-  borderRadius: 6,
-  padding: '9px 12px',
-  fontSize: 13,
-  outline: 'none',
-  boxSizing: 'border-box',
+  width: '100%', background: '#0d0d0d', border: '1px solid #2a2a2a',
+  color: '#e0e0e0', borderRadius: 6, padding: '9px 12px', fontSize: 13,
+  outline: 'none', boxSizing: 'border-box',
 }
-
 const labelStyle: React.CSSProperties = {
-  display: 'block',
-  color: '#666',
-  fontSize: 11,
-  letterSpacing: 1,
-  textTransform: 'uppercase',
-  marginBottom: 5,
+  display: 'block', color: '#666', fontSize: 11,
+  letterSpacing: 1, textTransform: 'uppercase', marginBottom: 5,
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div style={{ marginBottom: 16 }}>
-      <label style={labelStyle}>{label}</label>
-      {children}
-    </div>
-  )
+  return <div style={{ marginBottom: 16 }}><label style={labelStyle}>{label}</label>{children}</div>
 }
 
-interface Props {
-  initial?: PropertyRow
-}
-
-export default function PropertyForm({ initial }: Props) {
+export default function PropertyForm({ initial }: { initial?: PropertyRow }) {
   const router = useRouter()
   const isEdit = !!initial
 
@@ -53,7 +34,6 @@ export default function PropertyForm({ initial }: Props) {
     guide_price: initial?.guide_price?.toString() ?? '0',
     description: initial?.description ?? '',
     features: initial?.features ?? '',
-    image_url: initial?.image_url ?? '',
     video_url: initial?.video_url ?? '',
     auction_date: initial?.auction_date ?? '',
     tenure: initial?.tenure ?? 'Freehold',
@@ -62,6 +42,15 @@ export default function PropertyForm({ initial }: Props) {
     is_off_market: initial?.is_off_market ?? false,
     stage: initial?.stage ?? 'Sourcing',
   })
+
+  const [images, setImages] = useState<GalleryImage[]>(
+    Array.isArray(initial?.images) && initial.images.length > 0
+      ? initial.images as GalleryImage[]
+      : initial?.image_url ? [{ url: initial.image_url, caption: '' }] : []
+  )
+  const [embeds, setEmbeds] = useState<Embed[]>(
+    Array.isArray(initial?.embeds) ? initial.embeds as Embed[] : []
+  )
 
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -74,32 +63,27 @@ export default function PropertyForm({ initial }: Props) {
 
   const handleSave = async () => {
     if (!form.title.trim() || !form.area.trim()) { setError('Title and area are required.'); return }
-    setSaving(true)
-    setError('')
+    setSaving(true); setError('')
     const payload = {
       ...form,
       bedrooms: form.bedrooms ? parseInt(form.bedrooms) : null,
       guide_price: parseInt(form.guide_price) || 0,
+      image_url: images[0]?.url ?? null,
+      images,
+      embeds,
     }
     const url = isEdit ? `/api/admin/properties/${initial!.id}` : '/api/admin/properties'
     const method = isEdit ? 'PATCH' : 'POST'
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    if (res.ok) {
-      router.push('/admin/properties')
-      router.refresh()
-    } else {
-      const data = await res.json() as { error?: string }
-      setError(data.error ?? 'Save failed.')
-      setSaving(false)
-    }
+    if (res.ok) { router.push('/admin/properties'); router.refresh() }
+    else { const d = await res.json() as { error?: string }; setError(d.error ?? 'Save failed.'); setSaving(false) }
   }
 
   const handleDelete = async () => {
     if (!confirm('Delete this property? This cannot be undone.')) return
     setDeleting(true)
     await fetch(`/api/admin/properties/${initial!.id}`, { method: 'DELETE' })
-    router.push('/admin/properties')
-    router.refresh()
+    router.push('/admin/properties'); router.refresh()
   }
 
   return (
@@ -132,32 +116,30 @@ export default function PropertyForm({ initial }: Props) {
         <Field label="Bedrooms">
           <input type="number" value={form.bedrooms} onChange={set('bedrooms')} placeholder="0" style={inputStyle} min={0} />
         </Field>
-        <Field label="Guide Price">
+        <Field label="Guide Price (£)">
           <input type="number" value={form.guide_price} onChange={set('guide_price')} placeholder="0" style={inputStyle} min={0} />
         </Field>
         <Field label="Auction Date">
           <input value={form.auction_date} onChange={set('auction_date')} placeholder="e.g. 14 May 2026" style={inputStyle} />
         </Field>
-        <div style={{ gridColumn: '1 / -1' }}>
-          <Field label="Cover Image">
-            <ImageUpload
-              value={form.image_url}
-              onChange={url => setForm(f => ({ ...f, image_url: url }))}
-              folder="properties"
-              label="property photo"
-            />
-          </Field>
-        </div>
+        <Field label="Video URL">
+          <input value={form.video_url} onChange={set('video_url')} placeholder="https://youtube.com/..." style={inputStyle} />
+        </Field>
       </div>
 
       <Field label="Description">
         <textarea value={form.description} onChange={set('description')} rows={5} placeholder="Property description..." style={{ ...inputStyle, resize: 'vertical' }} />
       </Field>
       <Field label="Key Features (one per line)">
-        <textarea value={form.features} onChange={set('features')} rows={4} placeholder="Planning permission&#10;Vacant possession&#10;Legal pack ready" style={{ ...inputStyle, resize: 'vertical' }} />
+        <textarea value={form.features} onChange={set('features')} rows={4} placeholder={"Planning permission\nVacant possession\nLegal pack ready"} style={{ ...inputStyle, resize: 'vertical' }} />
       </Field>
-      <Field label="Video URL">
-        <input value={form.video_url} onChange={set('video_url')} placeholder="https://youtube.com/..." style={inputStyle} />
+
+      <Field label="Photos (first = cover image)">
+        <MediaGalleryEditor images={images} onChange={setImages} folder="properties" />
+      </Field>
+
+      <Field label="Videos & Embeds (YouTube or iframe URL)">
+        <EmbedEditor embeds={embeds} onChange={setEmbeds} />
       </Field>
 
       <div style={{ display: 'flex', gap: 24, marginBottom: 24 }}>
@@ -180,9 +162,7 @@ export default function PropertyForm({ initial }: Props) {
         <button onClick={handleSave} disabled={saving} style={{ background: saving ? '#555' : '#C9A84C', color: '#000', border: 'none', borderRadius: 6, padding: '10px 24px', fontSize: 13, fontWeight: 700, cursor: saving ? 'not-allowed' : 'pointer' }}>
           {saving ? 'Saving...' : isEdit ? 'Save Changes' : 'Create Property'}
         </button>
-        <button onClick={() => router.back()} style={{ background: 'none', border: '1px solid #2a2a2a', color: '#888', borderRadius: 6, padding: '10px 20px', fontSize: 13, cursor: 'pointer' }}>
-          Cancel
-        </button>
+        <button onClick={() => router.back()} style={{ background: 'none', border: '1px solid #2a2a2a', color: '#888', borderRadius: 6, padding: '10px 20px', fontSize: 13, cursor: 'pointer' }}>Cancel</button>
         {isEdit && (
           <button onClick={handleDelete} disabled={deleting} style={{ marginLeft: 'auto', background: 'none', border: '1px solid #3f1010', color: '#ef4444', borderRadius: 6, padding: '10px 20px', fontSize: 13, cursor: deleting ? 'not-allowed' : 'pointer' }}>
             {deleting ? 'Deleting...' : 'Delete'}

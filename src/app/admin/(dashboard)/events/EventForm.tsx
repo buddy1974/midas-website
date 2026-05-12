@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { EventRow } from '@/lib/db'
-import ImageUpload from '@/components/admin/ImageUpload'
+import MediaGalleryEditor, { type GalleryImage } from '@/components/admin/MediaGalleryEditor'
+import EmbedEditor, { type Embed } from '@/components/admin/EmbedEditor'
 
 const inputStyle: React.CSSProperties = { width: '100%', background: '#0d0d0d', border: '1px solid #2a2a2a', color: '#e0e0e0', borderRadius: 6, padding: '9px 12px', fontSize: 13, outline: 'none', boxSizing: 'border-box' }
 const labelStyle: React.CSSProperties = { display: 'block', color: '#666', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 5 }
@@ -25,10 +26,19 @@ export default function EventForm({ initial }: { initial?: EventRow }) {
     event_type: initial?.event_type ?? 'webinar',
     cost_type: initial?.cost_type ?? 'free',
     cost_amount: initial?.cost_amount?.toString() ?? '0',
-    image_url: initial?.image_url ?? '',
     registration_url: initial?.registration_url ?? '',
     is_featured: initial?.is_featured ?? false,
   })
+
+  const [images, setImages] = useState<GalleryImage[]>(
+    Array.isArray(initial?.images) && initial.images.length > 0
+      ? initial.images as GalleryImage[]
+      : initial?.image_url ? [{ url: initial.image_url, caption: '' }] : []
+  )
+  const [embeds, setEmbeds] = useState<Embed[]>(
+    Array.isArray(initial?.embeds) ? initial.embeds as Embed[] : []
+  )
+
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState('')
@@ -41,7 +51,13 @@ export default function EventForm({ initial }: { initial?: EventRow }) {
   const handleSave = async () => {
     if (!form.name.trim() || !form.event_date.trim()) { setError('Name and date are required.'); return }
     setSaving(true); setError('')
-    const payload = { ...form, cost_amount: parseInt(form.cost_amount) || 0 }
+    const payload = {
+      ...form,
+      cost_amount: parseInt(form.cost_amount) || 0,
+      image_url: images[0]?.url ?? null,
+      images,
+      embeds,
+    }
     const url = isEdit ? `/api/admin/events/${initial!.id}` : '/api/admin/events'
     const method = isEdit ? 'PATCH' : 'POST'
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
@@ -80,7 +96,7 @@ export default function EventForm({ initial }: { initial?: EventRow }) {
           </select>
         </Field>
         {form.cost_type === 'paid' && (
-          <Field label="Cost Amount">
+          <Field label="Cost Amount (£)">
             <input type="number" value={form.cost_amount} onChange={set('cost_amount')} placeholder="0" style={inputStyle} min={0} />
           </Field>
         )}
@@ -90,27 +106,29 @@ export default function EventForm({ initial }: { initial?: EventRow }) {
         <Field label="Registration URL">
           <input value={form.registration_url} onChange={set('registration_url')} placeholder="https://..." style={inputStyle} />
         </Field>
-        <div style={{ gridColumn: '1 / -1' }}>
-          <Field label="Cover Image">
-            <ImageUpload
-              value={form.image_url}
-              onChange={url => setForm(f => ({ ...f, image_url: url }))}
-              folder="events"
-              label="event photo"
-            />
-          </Field>
-        </div>
       </div>
+
       <Field label="Description">
         <textarea value={form.description} onChange={set('description')} rows={5} placeholder="Event description..." style={{ ...inputStyle, resize: 'vertical' }} />
       </Field>
+
+      <Field label="Photos (first = cover image)">
+        <MediaGalleryEditor images={images} onChange={setImages} folder="events" />
+      </Field>
+
+      <Field label="Videos & Embeds (YouTube or iframe URL)">
+        <EmbedEditor embeds={embeds} onChange={setEmbeds} />
+      </Field>
+
       <div style={{ marginBottom: 20 }}>
         <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#888', cursor: 'pointer' }}>
           <input type="checkbox" checked={form.is_featured} onChange={set('is_featured')} style={{ accentColor: '#C9A84C' }} />
           Featured event
         </label>
       </div>
+
       {error && <p style={{ color: '#ef4444', fontSize: 13, marginBottom: 16 }}>{error}</p>}
+
       <div style={{ display: 'flex', gap: 10 }}>
         <button onClick={handleSave} disabled={saving} style={{ background: saving ? '#555' : '#C9A84C', color: '#000', border: 'none', borderRadius: 6, padding: '10px 24px', fontSize: 13, fontWeight: 700, cursor: saving ? 'not-allowed' : 'pointer' }}>
           {saving ? 'Saving...' : isEdit ? 'Save Changes' : 'Create Event'}

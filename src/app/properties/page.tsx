@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import LotCard from '@/components/LotCard'
 import SectionHeader from '@/components/SectionHeader'
-import { lots as staticLots, pastAuctions, type Lot, type LotStatus } from '@/lib/data'
+import { lots as staticLots, pastAuctions, type Lot, type LotStatus, type LotImage, type LotEmbed } from '@/lib/data'
 import { Lock, TrendingUp } from 'lucide-react'
 import type { MRIProperty } from '@/lib/mri-feed'
 
@@ -66,6 +66,7 @@ function mapOsLot(l: OsLot): Lot {
     isOffMarket: l.isOffMarket,
     showOnWebsite: true,
     postcode: '',
+    imageUrl: l.coverImage ?? undefined,
   }
 }
 
@@ -115,14 +116,15 @@ export default function PropertiesPage() {
       )
       .catch(() => [] as Lot[])
 
-    // Fetch from the website's own admin DB
     const fetchLocal = fetch('/api/public/properties')
       .then(r => r.ok ? r.json() : Promise.reject())
       .then((data: { properties: Array<{
         id: string; title: string; address: string; area: string;
         guidePrice: number; bedrooms: number | null; propertyType: string;
-        stage: string; coverImage: string | null; description: string | null;
-        features: string | null; auctionDate: string | null; isOffMarket: boolean; createdAt: string;
+        stage: string; coverImage: string | null; videoUrl: string | null;
+        images: LotImage[]; embeds: LotEmbed[];
+        description: string | null; features: string | null;
+        auctionDate: string | null; isOffMarket: boolean; createdAt: string;
       }> }) =>
         Array.isArray(data?.properties)
           ? data.properties.map(p => ({
@@ -141,13 +143,16 @@ export default function PropertiesPage() {
               isOffMarket: p.isOffMarket,
               showOnWebsite: true,
               postcode: '',
+              imageUrl: p.coverImage ?? (p.images?.[0]?.url) ?? undefined,
+              images: p.images ?? [],
+              embeds: p.embeds ?? [],
+              videoUrl: p.videoUrl ?? undefined,
             }))
           : [] as Lot[]
       )
       .catch(() => [] as Lot[])
 
     Promise.all([fetchOs, fetchMri, fetchLocal]).then(([osLots, mriLots, localLots]) => {
-      // Deduplicate: local DB is authoritative, OS lots fill the rest
       const localIds = new Set(localLots.map(l => l.id))
       const uniqueOs = osLots.filter(l => !localIds.has(l.id))
       const combined = [...localLots, ...uniqueOs, ...mriLots]
@@ -171,7 +176,6 @@ export default function PropertiesPage() {
     .sort((a, b) => {
       if (sort === 'price_asc') return a.guidePrice - b.guidePrice
       if (sort === 'price_desc') return b.guidePrice - a.guidePrice
-      // newest: numeric IDs sort desc; UUIDs preserve API order (already sorted by createdAt asc)
       const aNum = parseInt(a.id)
       const bNum = parseInt(b.id)
       if (!isNaN(aNum) && !isNaN(bNum)) return bNum - aNum
@@ -202,7 +206,6 @@ export default function PropertiesPage() {
           </div>
         )}
 
-        {/* Stats bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 bg-[#F8F7F4] border border-[#E8E5DE] rounded-xl p-5">
           {[
             { value: '28 days', label: 'Average time to completion' },
@@ -217,7 +220,6 @@ export default function PropertiesPage() {
           ))}
         </div>
 
-        {/* Filter + Sort bar */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
           <div className="flex flex-wrap gap-2">
             {filters.map(f => (
@@ -245,7 +247,6 @@ export default function PropertiesPage() {
           </select>
         </div>
 
-        {/* Lot grid */}
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filtered.map(lot => (
@@ -258,7 +259,6 @@ export default function PropertiesPage() {
           </div>
         )}
 
-        {/* Off-market teaser */}
         <div className="mt-12 border border-[#D8D4CC] rounded-xl p-8 bg-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
           <div className="flex items-center gap-4">
             <Lock className="text-[#C9A84C] flex-shrink-0" size={32} />
@@ -279,7 +279,6 @@ export default function PropertiesPage() {
           </Link>
         </div>
 
-        {/* Past results */}
         <div className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <TrendingUp className="text-[#C9A84C]" size={18} />

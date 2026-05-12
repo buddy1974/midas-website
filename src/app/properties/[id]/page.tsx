@@ -2,6 +2,7 @@ import { type Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { lots, type Lot, type LotStatus } from '@/lib/data'
+import { getSql, type PropertyRow } from '@/lib/db'
 import { Bed, Calendar, Clock, Phone, Eye } from 'lucide-react'
 import RegisterInterestForm from './RegisterInterestForm'
 import AIAnalysisCard from '@/components/lot/AIAnalysisCard'
@@ -41,10 +42,53 @@ const stageMap: Record<string, LotStatus> = {
   unsold: 'sourcing',
 }
 
+function getYouTubeId(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
+  return m ? m[1] : null
+}
+
 async function getLot(id: string): Promise<Lot | null> {
+  // 1. Static data
   const staticLot = lots.find((l) => l.id === id)
   if (staticLot) return staticLot
 
+  // 2. Website DB — handles UUID IDs from admin panel
+  try {
+    const sql = getSql()
+    const [row] = await sql<PropertyRow[]>`
+      SELECT * FROM properties WHERE id = ${id} AND show_on_website = true LIMIT 1`
+    if (row) {
+      const displayAddress = row.address_visible && row.address
+        ? `${row.address}, ${row.area}`
+        : row.area
+      const coverImage = (row.images as {url:string;caption?:string}[])?.[0]?.url ?? row.image_url ?? undefined
+      return {
+        id: row.id,
+        address: row.address?.split(',')[0]?.trim() ?? row.title,
+        area: row.area,
+        type: row.property_type ?? 'Residential',
+        bedrooms: row.bedrooms ?? 0,
+        guidePrice: row.guide_price,
+        arv: 0,
+        status: stageMap[row.stage?.toLowerCase().replace(' ', '_') ?? ''] ?? 'sourcing',
+        description: row.description ?? 'Property details available on request.',
+        features: row.features ? row.features.split('\n').filter(Boolean) : [],
+        auctionDate: row.auction_date ?? 'Contact for details',
+        auctionTime: '',
+        isOffMarket: row.is_off_market,
+        showOnWebsite: row.show_on_website,
+        postcode: displayAddress.match(/[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}/i)?.[0] ?? '',
+        imageUrl: coverImage,
+        images: (row.images as {url:string;caption?:string}[]) ?? [],
+        embeds: (row.embeds as {url:string;title?:string}[]) ?? [],
+        videoUrl: row.video_url ?? undefined,
+      }
+    }
+  } catch {
+    // DB unavailable — fall through to OS
+  }
+
+  // 3. Midas OS API
   try {
     const osUrl = process.env.NEXT_PUBLIC_OS_URL
     if (!osUrl) return null
@@ -71,6 +115,7 @@ async function getLot(id: string): Promise<Lot | null> {
       isOffMarket: found.isOffMarket ?? found.is_off_market ?? false,
       showOnWebsite: true,
       postcode: (found.address as string).match(/[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}/i)?.[0] ?? '',
+      imageUrl: found.coverImage ?? undefined,
     }
   } catch {
     return null
@@ -98,6 +143,7 @@ export async function generateMetadata({
       title: `${title} | Midas Property Auctions`,
       description,
       url: canonical,
+      ...(lot.imageUrl ? { images: [{ url: lot.imageUrl }] } : {}),
     },
   }
 }
@@ -114,6 +160,9 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
 
   const gradient = typeGradient[lot.type] ?? 'from-gray-900 to-[#080809]'
   const status = statusConfig[lot.status]
+  const coverImage = lot.images?.[0]?.url ?? lot.imageUrl ?? null
+  const galleryImages = lot.images ?? []
+  const embeds = lot.embeds ?? []
 
   return (
     <div className="min-h-screen bg-white pt-20 pb-20">
@@ -130,10 +179,7 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
         {/* First-time buyer nudge */}
         <div className="mb-6 flex items-center justify-between bg-[#F8F7F4] border border-[#E8E5DE] rounded-lg px-5 py-3">
           <p className="text-[#666] text-xs">First time buying at auction?</p>
-          <Link
-            href="/guide/buying"
-            className="text-[#C9A84C] text-xs font-semibold hover:text-[#E8C96A] transition-colors"
-          >
+          <Link href="/guide/buying" className="text-[#C9A84C] text-xs font-semibold hover:text-[#E8C96A] transition-colors">
             Read our guide →
           </Link>
         </div>
@@ -141,8 +187,13 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
           {/* Left column */}
           <div className="lg:col-span-3">
+
             {/* Hero image */}
-            <div className={`relative h-72 rounded-xl bg-gradient-to-br ${gradient} overflow-hidden mb-8`}>
+            <div className={`relative h-72 rounded-xl overflow-hidden mb-4 ${coverImage ? 'bg-[#080809]' : `bg-gradient-to-br ${gradient}`}`}>
+              {coverImage && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={coverImage} alt={lot.address} className="w-full h-full object-cover" />
+              )}
               <span className={`absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded ${status.classes}`}>
                 {status.label}
               </span>
@@ -150,6 +201,23 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
                 {lot.type}
               </span>
             </div>
+
+            {/* Image gallery — additional photos */}
+            {galleryImages.length > 1 && (
+              <div className="grid grid-cols-3 gap-2 mb-6">
+                {galleryImages.slice(1).map((img, i) => (
+                  <div key={i} className="relative aspect-video rounded-lg overflow-hidden bg-[#080809]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img.url} alt={img.caption ?? `Photo ${i + 2}`} className="w-full h-full object-cover" />
+                    {img.caption && (
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1">
+                        <p className="text-white text-[10px] truncate">{img.caption}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Title */}
             <h1 className="text-2xl md:text-3xl font-black text-[#1A1A1A] mb-2">{lot.address}</h1>
@@ -162,17 +230,46 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
             </div>
 
             {/* Features */}
-            <div className="bg-white border border-[#E8E5DE] rounded-xl p-6 mb-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-              <h2 className="text-[#1A1A1A] font-bold text-lg mb-4">Key Features</h2>
-              <div className="grid grid-cols-2 gap-3">
-                {lot.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] flex-shrink-0" />
-                    <span className="text-[#444] text-sm">{feature}</span>
-                  </div>
-                ))}
+            {lot.features.length > 0 && (
+              <div className="bg-white border border-[#E8E5DE] rounded-xl p-6 mb-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                <h2 className="text-[#1A1A1A] font-bold text-lg mb-4">Key Features</h2>
+                <div className="grid grid-cols-2 gap-3">
+                  {lot.features.map((feature) => (
+                    <div key={feature} className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] flex-shrink-0" />
+                      <span className="text-[#444] text-sm">{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* Embeds — YouTube videos and iframes */}
+            {embeds.length > 0 && (
+              <div className="mb-6 space-y-4">
+                {embeds.map((embed, i) => {
+                  const ytId = getYouTubeId(embed.url)
+                  return (
+                    <div key={i} className="bg-white border border-[#E8E5DE] rounded-xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                      {embed.title && (
+                        <div className="px-6 pt-4 pb-2">
+                          <h3 className="text-[#1A1A1A] font-bold text-sm">{embed.title}</h3>
+                        </div>
+                      )}
+                      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                        <iframe
+                          src={ytId ? `https://www.youtube.com/embed/${ytId}` : embed.url}
+                          className="absolute inset-0 w-full h-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          title={embed.title ?? `Video ${i + 1}`}
+                        />
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
 
             {/* About the area */}
             <div className="bg-white border border-[#E8E5DE] rounded-xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
@@ -191,18 +288,13 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
             <div className="sticky top-24 space-y-6">
               {/* Price card */}
               <div className="bg-white border border-[#D8D4CC] rounded-xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-                <p className="text-[#666] text-xs uppercase tracking-wider mb-2">
-                  Guide Price
-                </p>
+                <p className="text-[#666] text-xs uppercase tracking-wider mb-2">Guide Price</p>
                 <div className="text-4xl font-black text-[#C9A84C] mb-1">
                   {formatPrice(lot.guidePrice)}+
                 </div>
                 {lot.arv > 0 && (
-                  <p className="text-[#888] text-sm mb-4">
-                    ARV: {formatPrice(lot.arv)}
-                  </p>
+                  <p className="text-[#888] text-sm mb-4">ARV: {formatPrice(lot.arv)}</p>
                 )}
-
                 <div className="border-t border-[#F0EDE6] pt-4 space-y-2">
                   <div className="flex items-center gap-2 text-sm text-[#666]">
                     <Calendar size={14} className="text-[#C9A84C]" />
@@ -223,7 +315,6 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
                 </div>
               </div>
 
-              {/* Action buttons */}
               <div className="space-y-3">
                 <LegalPackRequestButton lotId={lot.id} lotAddress={lot.address} />
                 <Link
@@ -240,22 +331,14 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
                 </a>
               </div>
 
-              {/* AI Deal Analysis */}
               <AIAnalysisCard lot={lot} />
-
-              {/* Finance Calculator */}
               <FinanceCalculator guidePrice={lot.guidePrice} type={lot.type} />
-
-              {/* AI Legal Pack Summary */}
               <AILegalPack />
-
-              {/* Register interest form */}
               <RegisterInterestForm lotId={lot.id} lotAddress={lot.address} />
             </div>
           </div>
         </div>
 
-        {/* Market Data — full width below columns */}
         <div className="mt-10">
           <MarketData postcodeArea={lot.area} />
         </div>

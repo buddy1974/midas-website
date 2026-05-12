@@ -13,9 +13,17 @@ export async function POST(req: NextRequest) {
   if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   const body = await req.json() as Record<string, unknown>
   const sql = getSql()
+
+  const images = Array.isArray(body.images) ? body.images
+    : (body.image_url ? [{ url: body.image_url, caption: '' }] : [])
+  const embeds = Array.isArray(body.embeds) ? body.embeds : []
+
   const [row] = await sql`
-    INSERT INTO events (name, event_date, event_time, location, description, event_type, cost_type, cost_amount, image_url, registration_url, is_featured)
-    VALUES (
+    INSERT INTO events (
+      name, event_date, event_time, location, description,
+      event_type, cost_type, cost_amount, image_url,
+      images, embeds, registration_url, is_featured
+    ) VALUES (
       ${body.name as string},
       ${body.event_date as string},
       ${(body.event_time as string) ?? null},
@@ -25,6 +33,8 @@ export async function POST(req: NextRequest) {
       ${(body.cost_type as string) ?? 'free'},
       ${(body.cost_amount as number) ?? 0},
       ${(body.image_url as string) ?? null},
+      ${JSON.stringify(images)},
+      ${JSON.stringify(embeds)},
       ${(body.registration_url as string) ?? null},
       ${(body.is_featured as boolean) ?? false}
     )

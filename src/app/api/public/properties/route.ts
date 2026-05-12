@@ -11,6 +11,10 @@ function toPublicProperty(row: PropertyRow) {
     ? `${row.address}, ${row.area}`
     : row.area
 
+  const images = Array.isArray(row.images) ? row.images : []
+  const embeds = Array.isArray(row.embeds) ? row.embeds : []
+  const coverImage = images[0]?.url ?? row.image_url ?? null
+
   return {
     id:            row.id,
     title:         row.title,
@@ -21,8 +25,10 @@ function toPublicProperty(row: PropertyRow) {
     propertyType:  row.property_type,
     tenure:        row.tenure,
     pipelineStage: row.stage,
-    coverImage:    row.image_url,
+    coverImage,
     videoUrl:      row.video_url,
+    images,
+    embeds,
     description:   row.description,
     features:      row.features,
     auctionDate:   row.auction_date,
