@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { EventRow } from '@/lib/db'
+import ImageUpload from '@/components/admin/ImageUpload'
 
 const inputStyle: React.CSSProperties = { width: '100%', background: '#0d0d0d', border: '1px solid #2a2a2a', color: '#e0e0e0', borderRadius: 6, padding: '9px 12px', fontSize: 13, outline: 'none', boxSizing: 'border-box' }
 const labelStyle: React.CSSProperties = { display: 'block', color: '#666', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 5 }
@@ -79,7 +80,7 @@ export default function EventForm({ initial }: { initial?: EventRow }) {
           </select>
         </Field>
         {form.cost_type === 'paid' && (
-          <Field label="Cost Amount (£)">
+          <Field label="Cost Amount">
             <input type="number" value={form.cost_amount} onChange={set('cost_amount')} placeholder="0" style={inputStyle} min={0} />
           </Field>
         )}
@@ -89,9 +90,16 @@ export default function EventForm({ initial }: { initial?: EventRow }) {
         <Field label="Registration URL">
           <input value={form.registration_url} onChange={set('registration_url')} placeholder="https://..." style={inputStyle} />
         </Field>
-        <Field label="Cover Image URL">
-          <input value={form.image_url} onChange={set('image_url')} placeholder="https://..." style={inputStyle} />
-        </Field>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <Field label="Cover Image">
+            <ImageUpload
+              value={form.image_url}
+              onChange={url => setForm(f => ({ ...f, image_url: url }))}
+              folder="events"
+              label="event photo"
+            />
+          </Field>
+        </div>
       </div>
       <Field label="Description">
         <textarea value={form.description} onChange={set('description')} rows={5} placeholder="Event description..." style={{ ...inputStyle, resize: 'vertical' }} />

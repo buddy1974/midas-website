@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { PropertyRow } from '@/lib/db'
+import ImageUpload from '@/components/admin/ImageUpload'
 
 const inputStyle: React.CSSProperties = {
   width: '100%',
@@ -131,15 +132,22 @@ export default function PropertyForm({ initial }: Props) {
         <Field label="Bedrooms">
           <input type="number" value={form.bedrooms} onChange={set('bedrooms')} placeholder="0" style={inputStyle} min={0} />
         </Field>
-        <Field label="Guide Price (£)">
+        <Field label="Guide Price">
           <input type="number" value={form.guide_price} onChange={set('guide_price')} placeholder="0" style={inputStyle} min={0} />
         </Field>
         <Field label="Auction Date">
           <input value={form.auction_date} onChange={set('auction_date')} placeholder="e.g. 14 May 2026" style={inputStyle} />
         </Field>
-        <Field label="Image URL">
-          <input value={form.image_url} onChange={set('image_url')} placeholder="https://..." style={inputStyle} />
-        </Field>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <Field label="Cover Image">
+            <ImageUpload
+              value={form.image_url}
+              onChange={url => setForm(f => ({ ...f, image_url: url }))}
+              folder="properties"
+              label="property photo"
+            />
+          </Field>
+        </div>
       </div>
 
       <Field label="Description">
