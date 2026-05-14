@@ -1,18 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { intakeRegisterInvestor } from '@/lib/os-intake'
+import { getSql } from '@/lib/db'
 
-// This route is called by the homepage NewsletterForm (userType-based signup).
-// It routes to the same OS endpoint as register-investor since both create
-// a contact + newsletter subscriber with investor profile data.
 export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const result = await intakeRegisterInvestor({
-    firstName: body.firstName,
-    lastName: body.lastName,
-    email: body.email,
-    phone: body.phone,
-    userType: body.userType,
-    source: body.source ?? 'whatsapp_signup',
-  })
-  return NextResponse.json({ success: true, _forwarded: result.ok })
+  try {
+    const body = await req.json() as Record<string, string | null | undefined>
+    const sql = getSql()
+    const name = [body.firstName, body.lastName].filter(Boolean).join(' ') || null
+    await sql`
+      INSERT INTO leads (type, name, email, phone, source, data)
+      VALUES (
+        'whatsapp_signup',
+        ${name},
+        ${body.email ?? null},
+        ${body.phone ?? null},
+        ${body.source ?? 'whatsapp_signup'},
+        ${sql.json({ userType: body.userType ?? null })}
+      )`
+  } catch (err) {
+    console.error('[whatsapp-signup]', err)
+  }
+  return NextResponse.json({ success: true })
 }

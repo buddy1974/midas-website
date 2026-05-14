@@ -1,16 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { intakeRegisterInterest } from '@/lib/os-intake'
+import { getSql } from '@/lib/db'
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const result = await intakeRegisterInterest({
-    name: body.name,
-    email: body.email,
-    phone: body.phone,
-    interest: body.interest,
-    lotId: body.lotId,
-    lotAddress: body.lotAddress,
-  })
-  // Always return success to the browser — failures are logged server-side
-  return NextResponse.json({ success: true, _forwarded: result.ok })
+  try {
+    const body = await req.json() as Record<string, string | null | undefined>
+    const sql = getSql()
+    await sql`
+      INSERT INTO leads (type, name, email, phone, source, data)
+      VALUES (
+        'register_interest',
+        ${body.name ?? null},
+        ${body.email ?? null},
+        ${body.phone ?? null},
+        'website_property',
+        ${sql.json({
+          interest:   body.interest   ?? 'Buyer',
+          lotId:      body.lotId      ?? null,
+          lotAddress: body.lotAddress ?? null,
+        })}
+      )`
+  } catch (err) {
+    console.error('[register-interest]', err)
+  }
+  return NextResponse.json({ success: true })
 }

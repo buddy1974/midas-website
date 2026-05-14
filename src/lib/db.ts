@@ -89,3 +89,14 @@ export interface SiteContentRow {
   value: string
   updated_at: string
 }
+
+export interface LeadRow {
+  id: string
+  type: string
+  name: string | null
+  email: string | null
+  phone: string | null
+  source: string
+  data: Record<string, unknown>
+  created_at: string
+}

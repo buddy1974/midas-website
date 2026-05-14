@@ -9,6 +9,7 @@ const NAV = [
   { href: '/admin/properties', label: 'Properties',  icon: '🏠' },
   { href: '/admin/blog',       label: 'Blog Posts',  icon: '📝' },
   { href: '/admin/events',     label: 'Events',      icon: '📅' },
+  { href: '/admin/leads',      label: 'Leads',        icon: '📋' },
   { href: '/admin/content',    label: 'Site Content', icon: '✏️' },
   { href: '/admin/users',      label: 'Users',       icon: '👥' },
   { href: '/admin/settings',   label: 'Settings',    icon: '⚙️' },
@@ -82,7 +83,7 @@ export default function AdminSidebar() {
         <button
           onClick={handleLogout}
           style={{ background: 'none', border: '1px solid #2a2a2a', color: '#666', borderRadius: 4, padding: '6px 12px', fontSize: 11, cursor: 'pointer', width: '100%' }}
-          >
+        >
           Sign out
         </button>
       </div>

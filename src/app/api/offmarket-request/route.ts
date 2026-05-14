@@ -1,11 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { intakeOffmarketRequest } from '@/lib/os-intake'
+import { getSql } from '@/lib/db'
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const result = await intakeOffmarketRequest({
-    name: body.name,
-    email: body.email,
-  })
-  return NextResponse.json({ success: true, _forwarded: result.ok })
+  try {
+    const body = await req.json() as Record<string, string | null | undefined>
+    const sql = getSql()
+    await sql`
+      INSERT INTO leads (type, name, email, phone, source, data)
+      VALUES (
+        'offmarket_request',
+        ${body.name ?? null},
+        ${body.email ?? null},
+        ${null},
+        'website_offmarket',
+        ${sql.json({})}
+      )`
+  } catch (err) {
+    console.error('[offmarket-request]', err)
+  }
+  return NextResponse.json({ success: true })
 }

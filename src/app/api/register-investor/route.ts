@@ -1,26 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { intakeRegisterInvestor } from '@/lib/os-intake'
+import { getSql } from '@/lib/db'
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const result = await intakeRegisterInvestor({
-    name: body.name,
-    firstName: body.firstName,
-    lastName: body.lastName,
-    email: body.email,
-    phone: body.phone,
-    whatsapp: body.whatsapp,
-    userType: body.userType,
-    lookingFor: body.lookingFor,
-    budget: body.budget,
-    preferredAreas: body.preferredAreas,
-    contactPreference: body.contactPreference,
-    whatsappOptIn: body.whatsappOptIn,
-    source: 'website_register',
-  })
-  return NextResponse.json({
-    success: true,
-    message: 'Welcome to the Midas investor network',
-    _forwarded: result.ok,
-  })
+  try {
+    const body = await req.json() as Record<string, string | string[] | boolean | null | undefined>
+    const sql = getSql()
+    const name = [body.firstName, body.lastName].filter(Boolean).join(' ') || (body.name as string) || null
+    await sql`
+      INSERT INTO leads (type, name, email, phone, source, data)
+      VALUES (
+        'register_investor',
+        ${name},
+        ${(body.email as string) ?? null},
+        ${(body.phone as string) ?? null},
+        ${(body.source as string) ?? 'website_register'},
+        ${sql.json({
+          userType:          (body.userType as string)          ?? null,
+          lookingFor:        (body.lookingFor as string[])      ?? [],
+          budget:            (body.budget as string)            ?? null,
+          preferredAreas:    (body.preferredAreas as string[])  ?? [],
+          contactPreference: (body.contactPreference as string[]) ?? [],
+          whatsappOptIn:     (body.whatsappOptIn as boolean)    ?? false,
+          whatsapp:          (body.whatsapp as string)          ?? null,
+        })}
+      )`
+  } catch (err) {
+    console.error('[register-investor]', err)
+  }
+  return NextResponse.json({ success: true, message: 'Welcome to the Midas investor network' })
 }
