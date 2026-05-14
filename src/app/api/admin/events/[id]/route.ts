@@ -31,8 +31,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       cost_type         = COALESCE(${body.cost_type as string ?? null}, cost_type),
       cost_amount       = COALESCE(${body.cost_amount as number ?? null}, cost_amount),
       image_url         = ${(body.image_url as string) ?? null},
-      images            = COALESCE(${images !== undefined ? JSON.stringify(images) : null}::jsonb, images),
-      embeds            = COALESCE(${embeds !== undefined ? JSON.stringify(embeds) : null}::jsonb, embeds),
+      images            = COALESCE(${images !== undefined ? sql.json(images) : null}::jsonb, images),
+      embeds            = COALESCE(${embeds !== undefined ? sql.json(embeds) : null}::jsonb, embeds),
       registration_url  = ${(body.registration_url as string) ?? null},
       is_featured       = COALESCE(${body.is_featured as boolean ?? null}, is_featured)
     WHERE id = ${id}

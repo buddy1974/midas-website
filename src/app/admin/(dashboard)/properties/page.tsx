@@ -9,7 +9,9 @@ export default async function PropertiesAdminPage() {
   try {
     const sql = getSql()
     rows = await sql<PropertyRow[]>`SELECT * FROM properties ORDER BY created_at DESC`
-  } catch { /* DB not yet set up */ }
+  } catch (err) {
+    console.error('[admin/properties] DB query failed:', err)
+  }
 
   return (
     <div>

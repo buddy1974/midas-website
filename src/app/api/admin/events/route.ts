@@ -33,8 +33,8 @@ export async function POST(req: NextRequest) {
       ${(body.cost_type as string) ?? 'free'},
       ${(body.cost_amount as number) ?? 0},
       ${(body.image_url as string) ?? null},
-      ${JSON.stringify(images)},
-      ${JSON.stringify(embeds)},
+      ${sql.json(images)},
+      ${sql.json(embeds)},
       ${(body.registration_url as string) ?? null},
       ${(body.is_featured as boolean) ?? false}
     )

@@ -56,7 +56,7 @@ async function getLot(id: string): Promise<Lot | null> {
   try {
     const sql = getSql()
     const [row] = await sql<PropertyRow[]>`
-      SELECT * FROM properties WHERE id = ${id} AND show_on_website = true LIMIT 1`
+      SELECT * FROM properties WHERE id = ${id} LIMIT 1`
     if (row) {
       const displayAddress = row.address_visible && row.address
         ? `${row.address}, ${row.area}`
@@ -84,8 +84,8 @@ async function getLot(id: string): Promise<Lot | null> {
         videoUrl: row.video_url ?? undefined,
       }
     }
-  } catch {
-    // DB unavailable — fall through to OS
+  } catch (err) {
+    console.error('[property detail] DB lookup failed:', err)
   }
 
   // 3. Midas OS API
