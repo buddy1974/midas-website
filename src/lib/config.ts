@@ -1,6 +1,6 @@
 import { team as defaultTeam, testimonials as defaultTestimonials, blogPosts as defaultBlogPosts, company } from '@/lib/data'
 
-// ── Shared CMS types (compatible with both data.ts and OS API) ────────────────
+// ── Shared CMS types ──────────────────────────────────────────────────────────
 
 export interface CmsTeamMember {
   id?: string
@@ -47,7 +47,7 @@ export interface PublicData {
   posts: CmsBlogPost[]
 }
 
-// ── Default config (fallback when OS is unreachable) ─────────────────────────
+// ── Default config ────────────────────────────────────────────────────────────
 
 const defaultConfig: SiteConfigMap = {
   'site.name': company.name,
@@ -98,28 +98,10 @@ const defaultConfig: SiteConfigMap = {
   'analytics.google_id': '',
 }
 
-// ── Fetcher ───────────────────────────────────────────────────────────────────
+// ── Public data — always returns from static defaults ─────────────────────────
 
-export async function getPublicData(): Promise<PublicData> {
-  try {
-    const osUrl = process.env.NEXT_PUBLIC_OS_URL
-    if (!osUrl) return getDefaultData()
-
-    const res = await fetch(`${osUrl}/api/public/config`, {
-      next: { revalidate: 30 },
-    })
-    if (!res.ok) return getDefaultData()
-
-    const data = await res.json() as Partial<PublicData>
-    return {
-      config: data.config ?? defaultConfig,
-      team: data.team ?? getDefaultData().team,
-      testimonials: data.testimonials ?? getDefaultData().testimonials,
-      posts: data.posts ?? getDefaultData().posts,
-    }
-  } catch {
-    return getDefaultData()
-  }
+export function getPublicData(): PublicData {
+  return getDefaultData()
 }
 
 function getDefaultData(): PublicData {

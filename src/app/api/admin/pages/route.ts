@@ -15,9 +15,8 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   const { config } = await req.json() as { config: unknown }
-  const configJson = JSON.stringify(config)
   const sql = getSql()
   await sql`DELETE FROM pages_config`
-  await sql`INSERT INTO pages_config (config) VALUES (${configJson}::jsonb)`
+  await sql`INSERT INTO pages_config (config) VALUES (${sql.json(config as Parameters<typeof sql.json>[0])})`
   return NextResponse.json({ ok: true })
 }

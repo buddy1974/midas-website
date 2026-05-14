@@ -48,7 +48,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ slug
         title      = COALESCE(${body.title ?? null}, title),
         meta_title = COALESCE(${body.metaTitle ?? null}, meta_title),
         meta_desc  = COALESCE(${body.metaDesc ?? null}, meta_desc),
-        sections   = COALESCE(${body.sections ? JSON.stringify(body.sections) : null}::jsonb, sections),
+        sections   = COALESCE(${body.sections ? sql.json(body.sections as Parameters<typeof sql.json>[0]) : null}, sections),
         updated_at = NOW()
       WHERE slug = ${slug}
     `

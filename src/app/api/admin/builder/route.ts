@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
 
     await sql`
       INSERT INTO page_builder_layouts (slug, title, meta_title, meta_desc, sections)
-      VALUES (${cleanSlug}, ${title}, ${title}, '', ${JSON.stringify(starterSections)})
+      VALUES (${cleanSlug}, ${title}, ${title}, '', ${sql.json(starterSections as unknown as Parameters<typeof sql.json>[0])})
     `
 
     return NextResponse.json({ slug: cleanSlug, title })

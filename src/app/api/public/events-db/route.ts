@@ -6,11 +6,22 @@ const CORS = {
   'Cache-Control': 'public, s-maxage=60',
 }
 
+/** Convert "6:30pm", "6:30 PM", "18:30", "6pm" → "18:30" 24-hr */
+function parseTime(t: string): string {
+  const m = t.trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?$/i)
+  if (!m) return '00:00'
+  let h = parseInt(m[1])
+  const min = m[2] ? parseInt(m[2]) : 0
+  const period = m[3]?.toLowerCase()
+  if (period === 'pm' && h !== 12) h += 12
+  if (period === 'am' && h === 12) h = 0
+  return `${h.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`
+}
+
 function toOsEvent(row: EventRow) {
-  // Combine event_date (TEXT e.g. "2026-06-15") + event_time (e.g. "18:30") into ISO string
-  const eventDate = row.event_time
-    ? `${row.event_date}T${row.event_time.includes(':') ? row.event_time.padStart(5, '0') : '00:00'}`
-    : `${row.event_date}T00:00`
+  // Combine event_date (TEXT e.g. "2026-06-15") + event_time (e.g. "6:30pm" or "18:30")
+  const time = row.event_time ? parseTime(row.event_time) : '00:00'
+  const eventDate = `${row.event_date}T${time}`
 
   return {
     id:               row.id,

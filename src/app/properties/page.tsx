@@ -23,53 +23,6 @@ function matchesFilter(type: string, filter: FilterType): boolean {
   return true
 }
 
-interface OsLot {
-  id: string
-  address: string
-  guidePrice: number
-  soldPrice: number | null
-  arv: number | null
-  bedrooms: number | null
-  propertyType: string | null
-  pipelineStage: string
-  coverImage: string | null
-  images: string | null
-  isOffMarket: boolean
-  notes: string | null
-  createdAt: string
-}
-
-function mapOsLot(l: OsLot): Lot {
-  const parts = l.address.split(',')
-  const address = parts[0].trim()
-  const area = parts.length > 1 ? parts.slice(1).join(',').trim() : ''
-  const stageMap: Record<string, LotStatus> = {
-    live: 'live',
-    legal_pack: 'legal_pack',
-    sourcing: 'sourcing',
-    completed: 'sourcing',
-    unsold: 'sourcing',
-  }
-  return {
-    id: l.id,
-    address,
-    area,
-    type: l.propertyType ?? 'Residential',
-    bedrooms: l.bedrooms ?? 0,
-    guidePrice: l.guidePrice,
-    arv: l.arv ?? 0,
-    status: stageMap[l.pipelineStage] ?? 'sourcing',
-    description: l.notes ?? '',
-    features: [],
-    auctionDate: 'Contact for details',
-    auctionTime: '',
-    isOffMarket: l.isOffMarket,
-    showOnWebsite: true,
-    postcode: '',
-    imageUrl: l.coverImage ?? undefined,
-  }
-}
-
 function mapMRIProperty(p: MRIProperty): Lot {
   const parts = p.address.split(',')
   return {
@@ -98,17 +51,6 @@ export default function PropertiesPage() {
   const [mriCount, setMriCount] = useState(0)
 
   useEffect(() => {
-    const osUrl = process.env.NEXT_PUBLIC_OS_URL
-
-    const fetchOs = osUrl
-      ? fetch(`${osUrl}/api/public/lots`)
-          .then(r => r.ok ? r.json() : Promise.reject())
-          .then((data: { lots: OsLot[] }) =>
-            Array.isArray(data?.lots) ? data.lots.map(mapOsLot) : []
-          )
-          .catch(() => [] as Lot[])
-      : Promise.resolve([] as Lot[])
-
     const fetchMri = fetch('/api/mri-properties')
       .then(r => r.ok ? r.json() : Promise.reject())
       .then((data: { properties: MRIProperty[] }) =>
@@ -152,10 +94,8 @@ export default function PropertiesPage() {
       )
       .catch(() => [] as Lot[])
 
-    Promise.all([fetchOs, fetchMri, fetchLocal]).then(([osLots, mriLots, localLots]) => {
-      const localIds = new Set(localLots.map(l => l.id))
-      const uniqueOs = osLots.filter(l => !localIds.has(l.id))
-      const combined = [...localLots, ...uniqueOs, ...mriLots]
+    Promise.all([fetchMri, fetchLocal]).then(([mriLots, localLots]) => {
+      const combined = [...localLots, ...mriLots]
       if (combined.length > 0) {
         setLiveLots(combined)
         setMriCount(mriLots.length)
@@ -191,18 +131,12 @@ export default function PropertiesPage() {
           subtitle="Active lots across London and Essex. Legal packs available on request."
         />
 
-        {liveLots !== null && (
+        {liveLots !== null && mriCount > 0 && (
           <div className="mb-6 flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-xs text-green-400">Live data from Midas OS</span>
+              <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+              <span className="text-xs text-blue-400">{mriCount} from MRI CRM</span>
             </div>
-            {mriCount > 0 && (
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                <span className="text-xs text-blue-400">{mriCount} from MRI CRM</span>
-              </div>
-            )}
           </div>
         )}
 
@@ -242,8 +176,8 @@ export default function PropertiesPage() {
             className="bg-[#F8F7F4] border border-[#E0DDD4] text-[#444] text-sm px-3 py-2 rounded focus:outline-none focus:border-[#C9A84C]"
           >
             <option value="newest">Newest First</option>
-            <option value="price_asc">Guide Price ↑</option>
-            <option value="price_desc">Guide Price ↓</option>
+            <option value="price_asc">Guide Price &uarr;</option>
+            <option value="price_desc">Guide Price &darr;</option>
           </select>
         </div>
 
@@ -264,7 +198,7 @@ export default function PropertiesPage() {
             <Lock className="text-[#C9A84C] flex-shrink-0" size={32} />
             <div>
               <h3 className="text-[#1A1A1A] font-bold text-lg">
-                🔐 {offMarketCount > 0 ? `+${offMarketCount} more` : 'More'} off-market properties available
+                {offMarketCount > 0 ? `+${offMarketCount} more` : 'More'} off-market properties available
               </h3>
               <p className="text-[#666] text-sm">
                 Available to registered investors only. Not advertised publicly.
@@ -275,7 +209,7 @@ export default function PropertiesPage() {
             href="/off-market"
             className="whitespace-nowrap bg-[#C9A84C] text-[#080809] font-semibold px-6 py-3 rounded hover:bg-[#E8C96A] transition-all flex-shrink-0"
           >
-            Request Access →
+            Request Access &rarr;
           </Link>
         </div>
 

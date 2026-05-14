@@ -117,7 +117,7 @@ export async function POST() {
       if (existing.length === 0) {
         await sql`
           INSERT INTO page_builder_layouts (slug, title, meta_title, meta_desc, sections)
-          VALUES (${page.slug}, ${page.title}, ${page.metaTitle}, ${page.metaDesc}, ${JSON.stringify(page.sections)})
+          VALUES (${page.slug}, ${page.title}, ${page.metaTitle}, ${page.metaDesc}, ${sql.json(page.sections as unknown as Parameters<typeof sql.json>[0])})
         `
       }
     }

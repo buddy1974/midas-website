@@ -88,38 +88,7 @@ async function getLot(id: string): Promise<Lot | null> {
     console.error('[property detail] DB lookup failed:', err)
   }
 
-  // 3. Midas OS API
-  try {
-    const osUrl = process.env.NEXT_PUBLIC_OS_URL
-    if (!osUrl) return null
-    const res = await fetch(`${osUrl}/api/public/lots`, { next: { revalidate: 60 } })
-    if (!res.ok) return null
-    const data = await res.json()
-    const found = (data.lots ?? []).find((l: { id: string }) => l.id === id)
-    if (!found) return null
-
-    const parts = (found.address as string).split(',')
-    return {
-      id: found.id,
-      address: parts[0].trim(),
-      area: parts.length > 1 ? parts.slice(1).join(',').trim() : '',
-      type: found.propertyType ?? found.property_type ?? 'Residential',
-      bedrooms: found.bedrooms ?? 0,
-      guidePrice: found.guidePrice ?? Math.round((found.guide_price ?? 0) / 100),
-      arv: found.arv ?? Math.round((found.arv_pence ?? 0) / 100),
-      status: stageMap[found.pipelineStage ?? found.pipeline_stage ?? ''] ?? 'sourcing',
-      description: found.notes ?? 'Property details available on request.',
-      features: [],
-      auctionDate: 'Contact for details',
-      auctionTime: '',
-      isOffMarket: found.isOffMarket ?? found.is_off_market ?? false,
-      showOnWebsite: true,
-      postcode: (found.address as string).match(/[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}/i)?.[0] ?? '',
-      imageUrl: found.coverImage ?? undefined,
-    }
-  } catch {
-    return null
-  }
+  return null
 }
 
 export const dynamicParams = true
@@ -180,7 +149,7 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
         <div className="mb-6 flex items-center justify-between bg-[#F8F7F4] border border-[#E8E5DE] rounded-lg px-5 py-3">
           <p className="text-[#666] text-xs">First time buying at auction?</p>
           <Link href="/guide/buying" className="text-[#C9A84C] text-xs font-semibold hover:text-[#E8C96A] transition-colors">
-            Read our guide →
+            Read our guide &rarr;
           </Link>
         </div>
 
