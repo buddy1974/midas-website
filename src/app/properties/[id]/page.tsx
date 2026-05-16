@@ -47,6 +47,16 @@ function getYouTubeId(url: string): string | null {
   return m ? m[1] : null
 }
 
+// Safely parse JSONB fields — handles both real arrays and legacy text-stringified values
+// (Properties saved before the sql.json() fix may have images/embeds stored as text)
+function parseJsonArray<T>(val: unknown): T[] {
+  if (Array.isArray(val)) return val as T[]
+  if (typeof val === 'string') {
+    try { return JSON.parse(val) as T[] } catch { return [] }
+  }
+  return []
+}
+
 async function getLot(id: string): Promise<Lot | null> {
   // 1. Static data
   const staticLot = lots.find((l) => l.id === id)
@@ -61,7 +71,9 @@ async function getLot(id: string): Promise<Lot | null> {
       const displayAddress = row.address_visible && row.address
         ? `${row.address}, ${row.area}`
         : row.area
-      const coverImage = (row.images as {url:string;caption?:string}[])?.[0]?.url ?? row.image_url ?? undefined
+      const images = parseJsonArray<{url:string;caption?:string}>(row.images)
+      const embeds = parseJsonArray<{url:string;title?:string}>(row.embeds)
+      const coverImage = images[0]?.url ?? row.image_url ?? undefined
       return {
         id: row.id,
         address: row.address?.split(',')[0]?.trim() ?? row.title,
@@ -79,8 +91,8 @@ async function getLot(id: string): Promise<Lot | null> {
         showOnWebsite: row.show_on_website,
         postcode: displayAddress.match(/[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}/i)?.[0] ?? '',
         imageUrl: coverImage,
-        images: (row.images as {url:string;caption?:string}[]) ?? [],
-        embeds: (row.embeds as {url:string;title?:string}[]) ?? [],
+        images,
+        embeds,
         videoUrl: row.video_url ?? undefined,
       }
     }
