@@ -22,22 +22,32 @@ const inputStyle: React.CSSProperties = {
 export default function MediaGalleryEditor({ images, onChange, folder = 'uploads' }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
+  const [progress, setProgress] = useState('')
   const [error, setError] = useState('')
 
-  const upload = async (file: File) => {
-    setUploading(true); setError('')
+  const uploadMultiple = async (files: FileList | File[]) => {
+    const fileArr = Array.from(files)
+    if (fileArr.length === 0) return
+    setUploading(true); setError(''); setProgress('')
+    const newImages: GalleryImage[] = []
     try {
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('folder', folder)
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-      const data = await res.json() as { url?: string; error?: string }
-      if (!res.ok || !data.url) throw new Error(data.error ?? 'Upload failed')
-      onChange([...images, { url: data.url, caption: '' }])
+      for (let i = 0; i < fileArr.length; i++) {
+        setProgress(`Uploading ${i + 1} of ${fileArr.length}…`)
+        const fd = new FormData()
+        fd.append('file', fileArr[i])
+        fd.append('folder', folder)
+        const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+        const data = await res.json() as { url?: string; error?: string }
+        if (!res.ok || !data.url) throw new Error(data.error ?? 'Upload failed')
+        newImages.push({ url: data.url, caption: '' })
+      }
+      onChange([...images, ...newImages])
     } catch (e) {
       setError((e as Error).message)
+      if (newImages.length > 0) onChange([...images, ...newImages])
     } finally {
       setUploading(false)
+      setProgress('')
     }
   }
 
@@ -93,17 +103,23 @@ export default function MediaGalleryEditor({ images, onChange, folder = 'uploads
 
       {/* Upload zone */}
       <div
-        onClick={() => inputRef.current?.click()}
-        onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) upload(f) }}
+        onClick={() => !uploading && inputRef.current?.click()}
+        onDrop={e => { e.preventDefault(); if (!uploading) uploadMultiple(e.dataTransfer.files) }}
         onDragOver={e => e.preventDefault()}
-        style={{ border: '1px dashed #3a3a3a', borderRadius: 6, padding: '10px 16px', cursor: 'pointer', color: uploading ? '#C9A84C' : '#555', fontSize: 12, textAlign: 'center', background: '#0a0a0a', transition: 'border-color 0.15s' }}
-        onMouseEnter={e => (e.currentTarget.style.borderColor = '#C9A84C')}
+        style={{ border: '1px dashed #3a3a3a', borderRadius: 6, padding: '10px 16px', cursor: uploading ? 'default' : 'pointer', color: uploading ? '#C9A84C' : '#555', fontSize: 12, textAlign: 'center', background: '#0a0a0a', transition: 'border-color 0.15s' }}
+        onMouseEnter={e => { if (!uploading) e.currentTarget.style.borderColor = '#C9A84C' }}
         onMouseLeave={e => (e.currentTarget.style.borderColor = '#3a3a3a')}
       >
-        {uploading ? 'Uploading…' : '+ Add photo (click or drag)'}
+        {uploading ? (progress || 'Uploading…') : '+ Add photos (click or drag — select multiple)'}
       </div>
-      <input ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }}
-        onChange={e => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = '' }} />
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        style={{ display: 'none' }}
+        onChange={e => { if (e.target.files?.length) uploadMultiple(e.target.files); e.target.value = '' }}
+      />
       {error && <p style={{ color: '#ef4444', fontSize: 11, marginTop: 4 }}>{error}</p>}
     </div>
   )
