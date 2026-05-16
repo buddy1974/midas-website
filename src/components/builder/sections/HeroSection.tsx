@@ -72,7 +72,16 @@ export default function HeroSection({ data, preview }: HeroSectionProps) {
               ? <span style={{ border: '1px solid rgba(201,168,76,0.4)', color: '#C9A84C', padding: '12px 28px', borderRadius: 3, fontSize: 13, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase' }}>{data.ctaText2}</span>
               : <Link href={data.ctaUrl2 || '#'} style={{ border: '1px solid rgba(201,168,76,0.4)', color: '#C9A84C', padding: '14px 32px', borderRadius: 3, fontSize: 13, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', textDecoration: 'none' }}>{data.ctaText2}</Link>
           )}
+          {data.ctaText3 && (
+            preview
+              ? <span style={{ border: '1px solid rgba(201,168,76,0.4)', color: '#C9A84C', padding: '12px 28px', borderRadius: 3, fontSize: 13, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase' }}>{data.ctaText3}</span>
+              : <Link href={data.ctaUrl3 || '#'} style={{ border: '1px solid rgba(201,168,76,0.4)', color: '#C9A84C', padding: '14px 32px', borderRadius: 3, fontSize: 13, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', textDecoration: 'none' }}>{data.ctaText3}</Link>
+          )}
         </div>
+
+        {data.phone && (
+          <p style={{ marginTop: 24, color: '#C9A84C', fontSize: 13 }}>{data.phone}</p>
+        )}
       </div>
     </section>
   )

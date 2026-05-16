@@ -22,6 +22,8 @@ export type SectionType =
   | 'spacer'
   | 'divider'
   | 'rich-text'
+  | 'contact-bar'
+  | 'auction-types'
 
 export type BackgroundStyle = 'dark' | 'light' | 'cream' | 'white' | 'gold'
 export type PaddingSize = 'none' | 'sm' | 'md' | 'lg' | 'xl'
@@ -108,8 +110,11 @@ export const SECTION_LIBRARY: SectionLibraryItem[] = [
   // Live Data
   { type: 'properties-grid', label: 'Properties', description: 'Live property listings from database',        icon: '🏠', category: 'data' },
   // Utility
-  { type: 'spacer',      label: 'Spacer',          description: 'Blank vertical space',                        icon: '↕', category: 'utility' },
-  { type: 'divider',     label: 'Divider',         description: 'Horizontal rule / separator line',            icon: '─', category: 'utility' },
+  { type: 'spacer',        label: 'Spacer',          description: 'Blank vertical space',                      icon: '↕', category: 'utility' },
+  { type: 'divider',       label: 'Divider',         description: 'Horizontal rule / separator line',          icon: '─', category: 'utility' },
+  // Homepage-specific
+  { type: 'contact-bar',   label: 'Contact Bar',     description: 'Dark strip: phone, mobile, email, hours',   icon: '📋', category: 'layout' },
+  { type: 'auction-types', label: 'Auction Types',   description: '4 service cards: auction, timed, off-market, valuation', icon: '🏛', category: 'content' },
 ]
 
 // ── Field definitions for the Properties Panel ────────────────────────────────
@@ -154,4 +159,6 @@ export const DEFAULT_SETTINGS: Record<SectionType, SectionSettings> = {
   'spacer':          { background: 'white', paddingTop: 'none',paddingBottom: 'none',hidden: false },
   'divider':         { background: 'white', paddingTop: 'sm',  paddingBottom: 'sm',  hidden: false },
   'rich-text':       { background: 'white', paddingTop: 'lg',  paddingBottom: 'lg',  hidden: false },
+  'contact-bar':     { background: 'dark',  paddingTop: 'none',paddingBottom: 'none',hidden: false },
+  'auction-types':   { background: 'dark',  paddingTop: 'none',paddingBottom: 'none',hidden: false },
 }

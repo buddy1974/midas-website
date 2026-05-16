@@ -144,6 +144,20 @@ export const SECTION_DEFAULTS: Record<SectionType, Record<string, unknown>> = {
     columns: '1',
     alignment: 'left',
   },
+  'contact-bar': {
+    phone:  '+44 (0) 2072062691',
+    mobile: '+44 (0) 7413041372',
+    email:  'info@midaspropertyauctions.co.uk',
+    hours:  'Mon to Fri: 9.00 to 18.00',
+  },
+  'auction-types': {
+    cards: JSON.stringify([
+      { badge: 'UPCOMING', title: 'Properties Going to Auction', subtitle: 'Next Auction: Contact for Dates', body: 'Browse properties we are currently listing through our network of partner auction companies across London, Essex and nationwide.', cta1Text: 'View Lots →', cta1Url: '/current-auction', cta2Text: 'Register', cta2Url: '/register' },
+      { badge: 'ONLINE', title: 'Timed Auction', subtitle: 'Weekly Online Auctions', body: 'View all properties in our upcoming online weekly auction. Bid from anywhere, any time.', cta1Text: 'View Lots →', cta1Url: '/timed-auction' },
+      { badge: 'EXCLUSIVE', title: 'Off-Market Properties', subtitle: 'Password-Protected Access', body: 'Pre-qualified investors only. Properties never listed publicly. Access by application.', cta1Text: 'Request Access →', cta1Url: '/off-market' },
+      { badge: 'FREE', title: 'Auction Valuation', subtitle: 'No Obligation Appraisal', body: 'Request a free auction appraisal for your land or property. Response within 24 hours.', cta1Text: 'Request A Valuation →', cta1Url: '/valuation' },
+    ]),
+  },
 }
 
 // ── Properties Panel field schema for each section type ───────────────────────
@@ -347,6 +361,19 @@ export const SECTION_SCHEMAS: Record<SectionType, SectionSchema> = {
     { group: 'Layout', fields: [
       { key: 'columns',   label: 'Columns',         type: 'select', options: ['1', '2'] },
       { key: 'alignment', label: 'Text alignment',  type: 'select', options: ['left', 'center', 'right'] },
+    ]},
+  ],
+  'contact-bar': [
+    { group: 'Contact Details', fields: [
+      { key: 'phone',  label: 'Phone number',  type: 'text', placeholder: '+44 (0) 2072062691' },
+      { key: 'mobile', label: 'Mobile number', type: 'text', placeholder: '+44 (0) 7413041372' },
+      { key: 'email',  label: 'Email address', type: 'text', placeholder: 'info@midaspropertyauctions.co.uk' },
+      { key: 'hours',  label: 'Opening hours', type: 'text', placeholder: 'Mon to Fri: 9.00 to 18.00' },
+    ]},
+  ],
+  'auction-types': [
+    { group: 'Cards (JSON)', fields: [
+      { key: 'cards', label: 'Auction type cards', type: 'textarea', hint: 'JSON array of cards. Each card: badge, title, subtitle, body, cta1Text, cta1Url, cta2Text (optional), cta2Url (optional)' },
     ]},
   ],
 }

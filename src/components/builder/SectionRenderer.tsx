@@ -20,6 +20,8 @@ import PropertiesGridSection from './sections/PropertiesGridSection'
 import SpacerSection from './sections/SpacerSection'
 import DividerSection from './sections/DividerSection'
 import RichTextSection from './sections/RichTextSection'
+import ContactBarSection from './sections/ContactBarSection'
+import AuctionTypesSection from './sections/AuctionTypesSection'
 
 interface Props {
   section: BuilderSection
@@ -52,6 +54,8 @@ export default function SectionRenderer({ section, preview }: Props) {
     case 'spacer':          return <SpacerSection data={data} />
     case 'divider':         return <DividerSection data={data} bg={bg} />
     case 'rich-text':       return <RichTextSection data={data} bg={bg} />
+    case 'contact-bar':     return <ContactBarSection data={data} />
+    case 'auction-types':   return <AuctionTypesSection data={data} preview={preview} />
     default:                return null
   }
 }
