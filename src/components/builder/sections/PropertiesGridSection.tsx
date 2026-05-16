@@ -7,7 +7,6 @@ import type { Lot, LotStatus } from '@/lib/data'
 
 interface Props { data: Record<string, string>; bg?: string }
 
-// Shape returned by /api/public/properties
 interface PublicProperty {
   id: string
   address: string
@@ -25,7 +24,12 @@ interface PublicProperty {
 }
 
 function stageToStatus(stage: string): LotStatus {
-  const map: Record<string, LotStatus> = { 'Legal Pack': 'legal_pack', 'Going to Auction': 'live', 'Live': 'live', 'Sold': 'unsold' }
+  const map: Record<string, LotStatus> = {
+    'Legal Pack': 'legal_pack',
+    'Going to Auction': 'live',
+    'Live': 'live',
+    'Sold': 'unsold',
+  }
   return map[stage] ?? 'sourcing'
 }
 
@@ -86,8 +90,17 @@ export default function PropertiesGridSection({ data, bg }: Props) {
           </div>
         )}
         {data.ctaText && (
-          <div style={{ textAlign: 'center', marginTop: 36 }}>
-            <Link href={data.ctaUrl || '/current-auction'} style={{ background: '#C9A84C', color: '#000', padding: '13px 32px', borderRadius: 3, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+          <div style={{ textAlign: 'center', marginTop: 40 }}>
+            <Link
+              href={data.ctaUrl || '/properties'}
+              style={{
+                background: '#C9A84C', color: '#080809',
+                padding: '14px 36px', borderRadius: 4,
+                fontWeight: 700, fontSize: 13, letterSpacing: 1,
+                textTransform: 'uppercase', textDecoration: 'none',
+                display: 'inline-block',
+              }}
+            >
               {data.ctaText}
             </Link>
           </div>

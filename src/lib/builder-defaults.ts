@@ -373,7 +373,7 @@ export const SECTION_SCHEMAS: Record<SectionType, SectionSchema> = {
   ],
   'auction-types': [
     { group: 'Cards (JSON)', fields: [
-      { key: 'cards', label: 'Auction type cards', type: 'textarea', hint: 'JSON array of cards. Each card: badge, title, subtitle, body, cta1Text, cta1Url, cta2Text (optional), cta2Url (optional)' },
+      { key: 'cards', label: 'Auction type cards', type: 'textarea', hint: 'JSON array. Each card: badge, title, subtitle, body, cta1Text, cta1Url, cta2Text (optional), cta2Url (optional)' },
     ]},
   ],
 }

@@ -10,6 +10,7 @@ import FinanceCalculator from '@/components/lot/FinanceCalculator'
 import AILegalPack from '@/components/lot/AILegalPack'
 import MarketData from '@/components/lot/MarketData'
 import LegalPackRequestButton from '@/components/lot/LegalPackRequestButton'
+import PropertyGallery from '@/components/lot/PropertyGallery'
 
 function formatPrice(price: number): string {
   return new Intl.NumberFormat('en-GB', {
@@ -142,7 +143,13 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
   const gradient = typeGradient[lot.type] ?? 'from-gray-900 to-[#080809]'
   const status = statusConfig[lot.status]
   const coverImage = lot.images?.[0]?.url ?? lot.imageUrl ?? null
-  const galleryImages = lot.images ?? []
+  // Build a unified images array — if only imageUrl exists, wrap it
+  const galleryImages: { url: string; caption?: string }[] =
+    lot.images && lot.images.length > 0
+      ? lot.images
+      : coverImage
+        ? [{ url: coverImage }]
+        : []
   const embeds = lot.embeds ?? []
 
   return (
@@ -169,34 +176,24 @@ export default async function LotPage({ params }: { params: Promise<{ id: string
           {/* Left column */}
           <div className="lg:col-span-3">
 
-            {/* Hero image */}
-            <div className={`relative h-72 rounded-xl overflow-hidden mb-4 ${coverImage ? 'bg-[#080809]' : `bg-gradient-to-br ${gradient}`}`}>
-              {coverImage && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={coverImage} alt={lot.address} className="w-full h-full object-cover" />
-              )}
-              <span className={`absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded ${status.classes}`}>
+            {/* Status & type badges */}
+            <div className="flex items-center gap-2 mb-3">
+              <span className={`text-xs font-bold px-3 py-1.5 rounded ${status.classes}`}>
                 {status.label}
               </span>
-              <span className="absolute top-4 right-4 text-xs px-3 py-1.5 rounded bg-black/60 text-[#E8E4DC]">
+              <span className="text-xs px-3 py-1.5 rounded bg-[#F2EFE9] text-[#555] font-medium">
                 {lot.type}
               </span>
             </div>
 
-            {/* Image gallery — additional photos */}
-            {galleryImages.length > 1 && (
-              <div className="grid grid-cols-3 gap-2 mb-6">
-                {galleryImages.slice(1).map((img, i) => (
-                  <div key={i} className="relative aspect-video rounded-lg overflow-hidden bg-[#080809]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.url} alt={img.caption ?? `Photo ${i + 2}`} className="w-full h-full object-cover" />
-                    {img.caption && (
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1">
-                        <p className="text-white text-[10px] truncate">{img.caption}</p>
-                      </div>
-                    )}
-                  </div>
-                ))}
+            {/* Interactive Gallery (cover + thumbnails + lightbox) */}
+            {galleryImages.length > 0 ? (
+              <PropertyGallery images={galleryImages} address={lot.address} />
+            ) : (
+              <div className={`relative h-72 rounded-xl overflow-hidden mb-4 bg-gradient-to-br ${gradient}`}>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <p className="text-white/30 text-sm">No photos available</p>
+                </div>
               </div>
             )}
 

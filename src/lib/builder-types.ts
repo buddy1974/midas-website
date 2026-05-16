@@ -42,7 +42,7 @@ export interface BuilderSection {
   settings: SectionSettings
 }
 
-// ── Nested data types ─────────────────────────────────────────────────────────
+// \u2500\u2500 Nested data types \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
 export interface FAQItem {
   question: string
@@ -66,7 +66,7 @@ export interface StepItem {
   body: string
 }
 
-// ── Page Layout ───────────────────────────────────────────────────────────────
+// \u2500\u2500 Page Layout \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
 export interface PageBuilderLayout {
   slug: string
@@ -77,7 +77,7 @@ export interface PageBuilderLayout {
   updatedAt?: string
 }
 
-// ── Section library entry (shown in the left panel) ──────────────────────────
+// \u2500\u2500 Section library entry (shown in the left panel) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
 export interface SectionLibraryItem {
   type: SectionType
@@ -88,36 +88,30 @@ export interface SectionLibraryItem {
 }
 
 export const SECTION_LIBRARY: SectionLibraryItem[] = [
-  // Hero
-  { type: 'hero',        label: 'Hero (Dark)',     description: 'Full-width dark hero with title & CTA',      icon: '◉', category: 'hero' },
-  { type: 'hero-light',  label: 'Hero (Light)',    description: 'Light/cream background hero section',         icon: '◎', category: 'hero' },
-  { type: 'page-header', label: 'Page Header',     description: 'Compact inner-page header banner',            icon: '▬', category: 'hero' },
-  // Content
-  { type: 'text-block',  label: 'Text Block',      description: 'Single-column heading + body text',           icon: '☰', category: 'content' },
-  { type: 'text-image',  label: 'Text + Image',    description: '50/50 text and image — left or right',        icon: '⊞', category: 'content' },
-  { type: 'two-column',  label: 'Two Columns',     description: 'Two equal text columns side by side',         icon: '⊟', category: 'content' },
-  { type: 'card-grid',   label: 'Card Grid',       description: 'Grid of feature cards with icons',            icon: '⊠', category: 'content' },
-  { type: 'steps',       label: 'Steps / Process', description: 'Numbered steps or process flow',              icon: '➊', category: 'content' },
-  { type: 'faq',         label: 'FAQ',             description: 'Accordion-style questions & answers',         icon: '❓', category: 'content' },
-  { type: 'testimonials',label: 'Testimonials',    description: 'Customer quote cards',                        icon: '❝', category: 'content' },
-  { type: 'rich-text',   label: 'Rich Text',       description: 'Free-form formatted text block',              icon: '¶', category: 'content' },
-  // CTA & Forms
-  { type: 'cta-banner',  label: 'CTA Banner',      description: 'Full-width call-to-action strip',             icon: '▶', category: 'layout' },
-  { type: 'stats-bar',   label: 'Stats Bar',       description: 'Row of key stat numbers',                     icon: '📊', category: 'layout' },
-  { type: 'newsletter',  label: 'Newsletter',      description: 'Email sign-up form section',                  icon: '✉', category: 'layout' },
-  { type: 'contact-block',label:'Contact Info',    description: 'Address, phone, email, hours',                icon: '📞', category: 'layout' },
-  { type: 'image-full',  label: 'Image Banner',    description: 'Full-width image with optional caption',      icon: '🖼', category: 'layout' },
-  // Live Data
-  { type: 'properties-grid', label: 'Properties', description: 'Live property listings from database',        icon: '🏠', category: 'data' },
-  // Utility
-  { type: 'spacer',        label: 'Spacer',          description: 'Blank vertical space',                      icon: '↕', category: 'utility' },
-  { type: 'divider',       label: 'Divider',         description: 'Horizontal rule / separator line',          icon: '─', category: 'utility' },
-  // Homepage-specific
-  { type: 'contact-bar',   label: 'Contact Bar',     description: 'Dark strip: phone, mobile, email, hours',   icon: '📋', category: 'layout' },
-  { type: 'auction-types', label: 'Auction Types',   description: '4 service cards: auction, timed, off-market, valuation', icon: '🏛', category: 'content' },
+  { type: 'hero',           label: 'Hero (Dark)',     description: 'Full-width dark hero with title & CTA',      icon: '\u25c9', category: 'hero' },
+  { type: 'hero-light',     label: 'Hero (Light)',    description: 'Light/cream background hero section',         icon: '\u25ce', category: 'hero' },
+  { type: 'page-header',    label: 'Page Header',     description: 'Compact inner-page header banner',            icon: '\u25ac', category: 'hero' },
+  { type: 'text-block',     label: 'Text Block',      description: 'Single-column heading + body text',           icon: '\u2630', category: 'content' },
+  { type: 'text-image',     label: 'Text + Image',    description: '50/50 text and image left or right',          icon: '\u229e', category: 'content' },
+  { type: 'two-column',     label: 'Two Columns',     description: 'Two equal text columns side by side',         icon: '\u229f', category: 'content' },
+  { type: 'card-grid',      label: 'Card Grid',       description: 'Grid of feature cards with icons',            icon: '\u22a0', category: 'content' },
+  { type: 'steps',          label: 'Steps / Process', description: 'Numbered steps or process flow',              icon: '\u2780', category: 'content' },
+  { type: 'faq',            label: 'FAQ',             description: 'Accordion-style questions and answers',       icon: '?', category: 'content' },
+  { type: 'testimonials',   label: 'Testimonials',    description: 'Customer quote cards',                        icon: '"', category: 'content' },
+  { type: 'rich-text',      label: 'Rich Text',       description: 'Free-form formatted text block',              icon: 'P', category: 'content' },
+  { type: 'cta-banner',     label: 'CTA Banner',      description: 'Full-width call-to-action strip',             icon: '\u25b6', category: 'layout' },
+  { type: 'stats-bar',      label: 'Stats Bar',       description: 'Row of key stat numbers',                     icon: '#', category: 'layout' },
+  { type: 'newsletter',     label: 'Newsletter',      description: 'Email sign-up form section',                  icon: '@', category: 'layout' },
+  { type: 'contact-block',  label: 'Contact Info',    description: 'Address, phone, email, hours',                icon: 'T', category: 'layout' },
+  { type: 'image-full',     label: 'Image Banner',    description: 'Full-width image with optional caption',      icon: 'I', category: 'layout' },
+  { type: 'properties-grid',label: 'Properties',      description: 'Live property listings from database',        icon: 'P', category: 'data' },
+  { type: 'spacer',         label: 'Spacer',          description: 'Blank vertical space',                        icon: '-', category: 'utility' },
+  { type: 'divider',        label: 'Divider',         description: 'Horizontal rule separator line',              icon: '_', category: 'utility' },
+  { type: 'contact-bar',    label: 'Contact Bar',     description: 'Dark strip: phone, mobile, email, hours',     icon: 'C', category: 'layout' },
+  { type: 'auction-types',  label: 'Auction Types',   description: '4 service cards: auction, timed, off-market, valuation', icon: 'A', category: 'content' },
 ]
 
-// ── Field definitions for the Properties Panel ────────────────────────────────
+// \u2500\u2500 Field definitions for the Properties Panel \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
 export type FieldType = 'text' | 'textarea' | 'url' | 'number' | 'select' | 'toggle' | 'faq-list' | 'testimonial-list' | 'card-list' | 'step-list'
 
@@ -137,7 +131,7 @@ export interface SectionFieldGroup {
 
 export type SectionSchema = SectionFieldGroup[]
 
-// ── Default settings for new sections ────────────────────────────────────────
+// \u2500\u2500 Default settings for new sections \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
 export const DEFAULT_SETTINGS: Record<SectionType, SectionSettings> = {
   'hero':            { background: 'dark',  paddingTop: 'xl',  paddingBottom: 'xl',  hidden: false },
