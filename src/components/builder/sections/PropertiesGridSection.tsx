@@ -4,19 +4,52 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import LotCard from '@/components/LotCard'
 import type { Lot, LotStatus } from '@/lib/data'
-import type { PropertyRow } from '@/lib/db'
 
 interface Props { data: Record<string, string>; bg?: string }
+
+// Shape returned by /api/public/properties
+interface PublicProperty {
+  id: string
+  address: string
+  area: string
+  propertyType: string
+  bedrooms: number | null
+  guidePrice: number
+  pipelineStage: string
+  coverImage: string | null
+  images: { url: string; caption?: string }[]
+  description: string | null
+  features: string | null
+  auctionDate: string | null
+  isOffMarket: boolean
+}
 
 function stageToStatus(stage: string): LotStatus {
   const map: Record<string, LotStatus> = { 'Legal Pack': 'legal_pack', 'Going to Auction': 'live', 'Live': 'live', 'Sold': 'unsold' }
   return map[stage] ?? 'sourcing'
 }
 
-function dbToLot(p: PropertyRow): Lot {
-  let features: string[] = []
-  try { features = p.features ? (JSON.parse(p.features) as string[]) : [] } catch { features = [] }
-  return { id: p.id, address: p.title, area: p.area, type: p.property_type, bedrooms: p.bedrooms ?? 0, guidePrice: p.guide_price, arv: 0, status: stageToStatus(p.stage), description: p.description ?? '', features, auctionDate: p.auction_date ?? 'Contact for details', auctionTime: '', isOffMarket: p.is_off_market, showOnWebsite: p.show_on_website, postcode: '' }
+function publicToLot(p: PublicProperty): Lot {
+  const features = p.features ? p.features.split('\n').filter(Boolean) : []
+  return {
+    id: p.id,
+    address: p.address,
+    area: p.area,
+    type: p.propertyType,
+    bedrooms: p.bedrooms ?? 0,
+    guidePrice: p.guidePrice,
+    arv: 0,
+    status: stageToStatus(p.pipelineStage),
+    description: p.description ?? '',
+    features,
+    auctionDate: p.auctionDate ?? 'Contact for details',
+    auctionTime: '',
+    isOffMarket: p.isOffMarket,
+    showOnWebsite: true,
+    postcode: '',
+    imageUrl: p.coverImage ?? undefined,
+    images: p.images ?? [],
+  }
 }
 
 export default function PropertiesGridSection({ data, bg }: Props) {
@@ -25,11 +58,11 @@ export default function PropertiesGridSection({ data, bg }: Props) {
   const max = parseInt(data.maxItems || '6', 10)
 
   useEffect(() => {
-    fetch('/api/mri-properties')
+    fetch('/api/public/properties')
       .then(r => r.json())
-      .then((d: PropertyRow[]) => {
-        const filtered = (d || []).filter(p => p.show_on_website)
-        setLots(filtered.slice(0, max).map(dbToLot))
+      .then((d: { properties?: PublicProperty[] }) => {
+        const rows = d.properties ?? []
+        setLots(rows.slice(0, max).map(publicToLot))
       })
       .catch(() => setLots([]))
   }, [max])
