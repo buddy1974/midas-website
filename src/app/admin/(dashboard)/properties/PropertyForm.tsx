@@ -43,13 +43,32 @@ export default function PropertyForm({ initial }: { initial?: PropertyRow }) {
     stage: initial?.stage ?? 'Sourcing',
   })
 
-  const [images, setImages] = useState<GalleryImage[]>(
-    Array.isArray(initial?.images) && initial.images.length > 0
-      ? initial.images as GalleryImage[]
-      : initial?.image_url ? [{ url: initial.image_url, caption: '' }] : []
+  // Safely parse images/embeds from DB — handles both real JSONB arrays
+  // and legacy text-stringified values saved before the sql.json() fix
+  function parseGallery(val: unknown, fallbackUrl?: string | null): GalleryImage[] {
+    if (Array.isArray(val) && val.length > 0) return val as GalleryImage[]
+    if (typeof val === 'string' && val.trim().startsWith('[')) {
+      try {
+        const parsed = JSON.parse(val) as GalleryImage[]
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed
+      } catch { /* ignore */ }
+    }
+    if (fallbackUrl) return [{ url: fallbackUrl, caption: '' }]
+    return []
+  }
+  function parseEmbeds(val: unknown): Embed[] {
+    if (Array.isArray(val)) return val as Embed[]
+    if (typeof val === 'string' && val.trim().startsWith('[')) {
+      try { return JSON.parse(val) as Embed[] } catch { /* ignore */ }
+    }
+    return []
+  }
+
+  const [images, setImages] = useState<GalleryImage[]>(() =>
+    parseGallery(initial?.images, initial?.image_url)
   )
-  const [embeds, setEmbeds] = useState<Embed[]>(
-    Array.isArray(initial?.embeds) ? initial.embeds as Embed[] : []
+  const [embeds, setEmbeds] = useState<Embed[]>(() =>
+    parseEmbeds(initial?.embeds)
   )
 
   const [saving, setSaving] = useState(false)
