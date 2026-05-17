@@ -17,9 +17,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const body = await req.json() as Record<string, unknown>
   const sql = getSql()
 
-  const images = Array.isArray(body.images) ? body.images
-    : (body.image_url ? [{ url: body.image_url, caption: '' }] : undefined)
-  const embeds = Array.isArray(body.embeds) ? body.embeds : undefined
+  // Serialise to JSON strings so the ::jsonb cast is unambiguous in the query.
+  // Using plain JSON.stringify avoids postgres template-literal cast edge-cases with
+  // sql.json() + ::jsonb, which can silently fall through COALESCE on empty arrays.
+  const imagesJson = Array.isArray(body.images) ? JSON.stringify(body.images) : null
+  const embedsJson = Array.isArray(body.embeds)  ? JSON.stringify(body.embeds)  : null
 
   const [row] = await sql`
     UPDATE properties SET
@@ -34,8 +36,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       features        = ${(body.features as string) ?? null},
       image_url       = ${(body.image_url as string) ?? null},
       video_url       = ${(body.video_url as string) ?? null},
-      images          = COALESCE(${images !== undefined ? sql.json(images) : null}::jsonb, images),
-      embeds          = COALESCE(${embeds !== undefined ? sql.json(embeds) : null}::jsonb, embeds),
+      images          = CASE WHEN ${imagesJson} IS NOT NULL THEN ${imagesJson}::jsonb ELSE images END,
+      embeds          = CASE WHEN ${embedsJson} IS NOT NULL THEN ${embedsJson}::jsonb ELSE embeds END,
       auction_date    = ${(body.auction_date as string) ?? null},
       tenure          = COALESCE(${body.tenure as string ?? null}, tenure),
       is_featured     = COALESCE(${body.is_featured as boolean ?? null}, is_featured),

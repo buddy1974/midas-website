@@ -17,8 +17,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const body = await req.json() as Record<string, unknown>
   const sql = getSql()
 
-  const images = Array.isArray(body.images) ? body.images : undefined
-  const embeds = Array.isArray(body.embeds) ? body.embeds : undefined
+  const imagesJson = Array.isArray(body.images) ? JSON.stringify(body.images) : null
+  const embedsJson = Array.isArray(body.embeds)  ? JSON.stringify(body.embeds)  : null
 
   const [row] = await sql`
     UPDATE events SET
@@ -31,8 +31,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       cost_type         = COALESCE(${body.cost_type as string ?? null}, cost_type),
       cost_amount       = COALESCE(${body.cost_amount as number ?? null}, cost_amount),
       image_url         = ${(body.image_url as string) ?? null},
-      images            = COALESCE(${images !== undefined ? sql.json(images) : null}::jsonb, images),
-      embeds            = COALESCE(${embeds !== undefined ? sql.json(embeds) : null}::jsonb, embeds),
+      images            = CASE WHEN ${imagesJson} IS NOT NULL THEN ${imagesJson}::jsonb ELSE images END,
+      embeds            = CASE WHEN ${embedsJson} IS NOT NULL THEN ${embedsJson}::jsonb ELSE embeds END,
       registration_url  = ${(body.registration_url as string) ?? null},
       is_featured       = COALESCE(${body.is_featured as boolean ?? null}, is_featured)
     WHERE id = ${id}
