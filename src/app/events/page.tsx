@@ -39,6 +39,17 @@ function formatTime(iso: string) {
 }
 function isFuture(iso: string) { return new Date(iso).getTime() > Date.now() }
 
+type FilterKey = 'all' | 'webinar' | 'in-person' | 'auction-briefing'
+
+function matchesFilter(type: string, filter: FilterKey): boolean {
+  if (filter === 'all') return true
+  const t = type.toLowerCase()
+  if (filter === 'webinar') return t.includes('webinar') || t.includes('online')
+  if (filter === 'in-person') return t.includes('networking') || t.includes('person') || t === 'in-person'
+  if (filter === 'auction-briefing') return t.includes('auction') || t.includes('briefing')
+  return false
+}
+
 function typeBadgeColor(type: string) {
   if (type.toLowerCase().includes('webinar') || type.toLowerCase().includes('online')) return 'bg-blue-900/40 text-blue-300 border-blue-800'
   if (type.toLowerCase().includes('networking') || type.toLowerCase().includes('person')) return 'bg-emerald-900/40 text-emerald-300 border-emerald-800'
@@ -47,9 +58,10 @@ function typeBadgeColor(type: string) {
 }
 
 function typeLabel(type: string) {
-  if (type.toLowerCase().includes('webinar')) return '🎥 Online Webinar'
-  if (type.toLowerCase().includes('networking')) return '🤝 Networking'
-  if (type.toLowerCase().includes('auction') || type.toLowerCase().includes('briefing')) return '🏛 Pre-Auction Briefing'
+  const t = type.toLowerCase()
+  if (t.includes('webinar') || t.includes('online')) return '🎥 Online Webinar'
+  if (t.includes('networking') || t.includes('person')) return '🤝 In-Person'
+  if (t.includes('auction') || t.includes('briefing')) return '🏛 Pre-Auction Briefing'
   return type
 }
 
@@ -317,11 +329,19 @@ function EventCard({ event }: { event: OsEvent }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
+const FILTERS: { key: FilterKey; icon: string; label: string }[] = [
+  { key: 'all',             icon: '✦',  label: 'All Events' },
+  { key: 'webinar',         icon: '🎥', label: 'Online Webinars' },
+  { key: 'in-person',       icon: '🤝', label: 'In-Person' },
+  { key: 'auction-briefing',icon: '🏛', label: 'Auction Briefings' },
+]
+
 export default function EventsPage() {
   const [upcoming, setUpcoming] = useState<OsEvent[]>([])
   const [past, setPast] = useState<OsEvent[]>([])
   const [loading, setLoading] = useState(true)
   const [liveData, setLiveData] = useState(false)
+  const [activeFilter, setActiveFilter] = useState<FilterKey>('all')
 
   useEffect(() => {
     fetch('/api/public/events-db')
@@ -335,6 +355,9 @@ export default function EventsPage() {
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
+
+  const filteredUpcoming = upcoming.filter(e => matchesFilter(e.eventType, activeFilter))
+  const filteredPast     = past.filter(e => matchesFilter(e.eventType, activeFilter))
 
   return (
     <div className="min-h-screen bg-[#080809] pt-24 pb-20">
@@ -363,19 +386,20 @@ export default function EventsPage() {
             Open to investors, buyers, sellers and anyone serious about property.
           </p>
 
-          {/* Event type pills */}
+          {/* Event type filter pills */}
           <div className="flex flex-wrap justify-center gap-3">
-            {[
-              { icon: '🎥', label: 'Online Webinars' },
-              { icon: '🤝', label: 'In-Person Networking' },
-              { icon: '🏛', label: 'Pre-Auction Briefings' },
-            ].map(({ icon, label }) => (
-              <span
-                key={label}
-                className="flex items-center gap-2 border border-[rgba(201,168,76,0.3)] text-[rgba(232,228,220,0.7)] text-sm px-4 py-2 rounded-full"
+            {FILTERS.map(({ key, icon, label }) => (
+              <button
+                key={key}
+                onClick={() => setActiveFilter(key)}
+                className={`flex items-center gap-2 text-sm px-4 py-2 rounded-full border transition-all ${
+                  activeFilter === key
+                    ? 'bg-[#C9A84C] border-[#C9A84C] text-[#080809] font-bold'
+                    : 'border-[rgba(201,168,76,0.3)] text-[rgba(232,228,220,0.7)] hover:border-[#C9A84C] hover:text-[#C9A84C]'
+                }`}
               >
                 {icon} {label}
-              </span>
+              </button>
             ))}
           </div>
         </div>
@@ -384,7 +408,9 @@ export default function EventsPage() {
       {/* ── Upcoming Events ─────────────────────────────────────────────────── */}
       <section className="max-w-4xl mx-auto px-6 py-16">
         <div className="flex items-center gap-3 mb-2">
-          <h2 className="text-[#C9A84C] font-black uppercase text-xl">Upcoming Events</h2>
+          <h2 className="text-[#C9A84C] font-black uppercase text-xl">
+            {activeFilter === 'all' ? 'Upcoming Events' : `Upcoming — ${FILTERS.find(f => f.key === activeFilter)?.label}`}
+          </h2>
           {liveData && (
             <span className="flex items-center gap-1.5 text-xs text-green-400">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
@@ -400,20 +426,27 @@ export default function EventsPage() {
               <div key={i} className="h-40 bg-[#0F0F14] border border-[rgba(201,168,76,0.1)] rounded-xl animate-pulse" />
             ))}
           </div>
-        ) : upcoming.length === 0 ? (
+        ) : filteredUpcoming.length === 0 ? (
           <div className="text-center py-12 border border-[rgba(201,168,76,0.15)] rounded-xl">
-            <p className="text-[rgba(232,228,220,0.4)] mb-3">No upcoming events scheduled right now.</p>
-            <p className="text-[rgba(232,228,220,0.3)] text-sm">Check back soon or join our mailing list to be notified.</p>
-            <Link
-              href="/register"
-              className="inline-block mt-4 border border-[rgba(201,168,76,0.4)] text-[#C9A84C] text-sm px-5 py-2 rounded hover:bg-[rgba(201,168,76,0.08)] transition-colors"
-            >
-              Join Mailing List →
-            </Link>
+            <p className="text-[rgba(232,228,220,0.4)] mb-3">
+              {activeFilter === 'all' ? 'No upcoming events scheduled right now.' : `No upcoming ${FILTERS.find(f => f.key === activeFilter)?.label ?? 'events'} scheduled.`}
+            </p>
+            {activeFilter !== 'all' ? (
+              <button onClick={() => setActiveFilter('all')} className="mt-4 border border-[rgba(201,168,76,0.4)] text-[#C9A84C] text-sm px-5 py-2 rounded hover:bg-[rgba(201,168,76,0.08)] transition-colors">
+                Show All Events
+              </button>
+            ) : (
+              <>
+                <p className="text-[rgba(232,228,220,0.3)] text-sm">Check back soon or join our mailing list to be notified.</p>
+                <Link href="/register" className="inline-block mt-4 border border-[rgba(201,168,76,0.4)] text-[#C9A84C] text-sm px-5 py-2 rounded hover:bg-[rgba(201,168,76,0.08)] transition-colors">
+                  Join Mailing List →
+                </Link>
+              </>
+            )}
           </div>
         ) : (
           <div className="space-y-4">
-            {upcoming.map(event => (
+            {filteredUpcoming.map(event => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
@@ -421,16 +454,16 @@ export default function EventsPage() {
       </section>
 
       {/* ── Past Events ─────────────────────────────────────────────────────── */}
-      {past.length > 0 && (
+      {filteredPast.length > 0 && (
         <section className="max-w-4xl mx-auto px-6 pb-16">
           <h2 className="text-[#C9A84C] font-black uppercase text-xl mb-2">Past Events</h2>
           <div className="w-10 h-0.5 bg-[#C9A84C] mb-6" />
 
           <div className="border border-[rgba(201,168,76,0.15)] rounded-xl overflow-hidden">
-            {past.slice(0, 10).map((event, i) => (
+            {filteredPast.slice(0, 10).map((event, i) => (
               <div
                 key={event.id}
-                className={`flex items-center gap-4 px-5 py-4 ${i < past.length - 1 ? 'border-b border-[rgba(201,168,76,0.08)]' : ''} hover:bg-[rgba(201,168,76,0.04)] transition-colors`}
+                className={`flex items-center gap-4 px-5 py-4 ${i < filteredPast.length - 1 ? 'border-b border-[rgba(201,168,76,0.08)]' : ''} hover:bg-[rgba(201,168,76,0.04)] transition-colors`}
               >
                 <div className="text-[rgba(232,228,220,0.4)] text-xs w-24 flex-shrink-0">
                   {new Date(event.eventDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -455,11 +488,11 @@ export default function EventsPage() {
             ))}
           </div>
 
-          {past.length > 10 && (
+          {filteredPast.length > 10 && (
             <p className="text-center mt-4">
-              <Link href="/events" className="text-[rgba(232,228,220,0.4)] text-sm hover:text-[#C9A84C] transition-colors">
-                Showing 10 of {past.length} past events
-              </Link>
+              <span className="text-[rgba(232,228,220,0.4)] text-sm">
+                Showing 10 of {filteredPast.length} past events
+              </span>
             </p>
           )}
         </section>

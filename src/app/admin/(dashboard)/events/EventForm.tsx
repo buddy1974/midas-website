@@ -23,7 +23,7 @@ export default function EventForm({ initial }: { initial?: EventRow }) {
     event_time: initial?.event_time ?? '',
     location: initial?.location ?? '',
     description: initial?.description ?? '',
-    event_type: initial?.event_type ?? 'webinar',
+    event_type: initial?.event_type ?? 'in-person',
     cost_type: initial?.cost_type ?? 'free',
     cost_amount: initial?.cost_amount?.toString() ?? '0',
     registration_url: initial?.registration_url ?? '',
@@ -103,7 +103,11 @@ export default function EventForm({ initial }: { initial?: EventRow }) {
         </Field>
         <Field label="Event Type">
           <select value={form.event_type} onChange={set('event_type')} style={inputStyle}>
-            {['webinar', 'networking', 'auction', 'briefing', 'workshop', 'other'].map(t => <option key={t}>{t}</option>)}
+            <option value="in-person">🤝 In-Person / Networking</option>
+            <option value="webinar">🎥 Online Webinar</option>
+            <option value="auction-briefing">🏛 Pre-Auction Briefing</option>
+            <option value="workshop">📋 Workshop</option>
+            <option value="other">Other</option>
           </select>
         </Field>
         <Field label="Cost Type">
