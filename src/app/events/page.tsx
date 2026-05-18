@@ -198,6 +198,7 @@ function ShareButton({ event }: { event: OsEvent }) {
 // ── Event Card ────────────────────────────────────────────────────────────────
 
 function EventCard({ event }: { event: OsEvent }) {
+  const [expanded, setExpanded] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
   const regType = event.registrationType ?? (event.ticketLink ? 'external' : 'form')
@@ -205,7 +206,12 @@ function EventCard({ event }: { event: OsEvent }) {
 
   return (
     <div id={event.id} className="bg-[#0F0F14] border border-[rgba(201,168,76,0.2)] rounded-xl overflow-hidden hover:border-[rgba(201,168,76,0.4)] transition-colors">
-      <div className="flex flex-col sm:flex-row">
+      {/* Clickable summary row */}
+      <button
+        onClick={() => setExpanded(e => !e)}
+        className="w-full text-left flex flex-col sm:flex-row focus:outline-none"
+        aria-expanded={expanded}
+      >
         {/* Date block */}
         <div className="sm:w-24 flex-shrink-0 bg-[rgba(201,168,76,0.08)] border-b sm:border-b-0 sm:border-r border-[rgba(201,168,76,0.15)] flex sm:flex-col items-center justify-center gap-2 sm:gap-0 py-4 sm:py-6 px-6 sm:px-0">
           <p className="text-[#C9A84C] text-3xl sm:text-4xl font-black leading-none">{formatDay(event.eventDate)}</p>
@@ -213,7 +219,7 @@ function EventCard({ event }: { event: OsEvent }) {
           <p className="text-[rgba(232,228,220,0.3)] text-xs">{formatYear(event.eventDate)}</p>
         </div>
 
-        {/* Content */}
+        {/* Summary content */}
         <div className="p-6 flex-1">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className={`text-[10px] font-bold px-2.5 py-1 rounded border uppercase tracking-wider ${typeBadgeColor(event.eventType)}`}>
@@ -225,18 +231,21 @@ function EventCard({ event }: { event: OsEvent }) {
           </div>
 
           <h3 className="text-[#E8E4DC] font-bold text-lg mb-2">{event.title}</h3>
+
           {event.description && (
-            <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-4 line-clamp-2">{event.description}</p>
+            <p className="text-[rgba(232,228,220,0.6)] text-sm leading-relaxed mb-3 line-clamp-2">
+              {event.description}
+            </p>
           )}
 
-          <div className="flex flex-wrap gap-4 mb-4 text-xs text-[rgba(232,228,220,0.5)]">
+          <div className="flex flex-wrap gap-4 text-xs text-[rgba(232,228,220,0.5)]">
             <span className="flex items-center gap-1.5">
               <Calendar size={12} className="text-[#C9A84C]" />
               {formatDateFull(event.eventDate)}
             </span>
             <span className="flex items-center gap-1.5">
               <Clock size={12} className="text-[#C9A84C]" />
-              {formatTime(event.eventDate)}{event.endTime ? ` to ${formatTime(event.endTime)}` : ''}
+              {formatTime(event.eventDate)}{event.endTime ? ` – ${formatTime(event.endTime)}` : ''}
             </span>
             {event.location && (
               <span className="flex items-center gap-1.5">
@@ -244,61 +253,64 @@ function EventCard({ event }: { event: OsEvent }) {
                 {event.location}
               </span>
             )}
-            {event.maxCapacity && (
-              <span className="flex items-center gap-1.5">
-                <Users size={12} className="text-[#C9A84C]" />
-                {event.maxCapacity} capacity
-              </span>
-            )}
           </div>
 
+          <p className="text-[#C9A84C] text-xs mt-3 font-semibold">
+            {expanded ? '▲ Less details' : '▼ Read full details & register'}
+          </p>
+        </div>
+      </button>
+
+      {/* Expanded detail panel */}
+      {expanded && (
+        <div className="border-t border-[rgba(201,168,76,0.15)] px-6 pb-6 pt-5">
+          {event.description && (
+            <div className="mb-5">
+              <h4 className="text-[#C9A84C] text-xs font-bold uppercase tracking-wider mb-2">About this event</h4>
+              <p className="text-[rgba(232,228,220,0.75)] text-sm leading-relaxed whitespace-pre-line">{event.description}</p>
+            </div>
+          )}
+
+          {event.location && (
+            <div className="mb-5">
+              <h4 className="text-[#C9A84C] text-xs font-bold uppercase tracking-wider mb-1">Location</h4>
+              <p className="text-[rgba(232,228,220,0.65)] text-sm">{event.location}</p>
+            </div>
+          )}
+
           {/* Action buttons */}
-          <div className="flex flex-wrap gap-2">
-            {/* Primary action */}
+          <div className="flex flex-wrap gap-2 mt-4">
             {event.customButtonLabel && event.customButtonUrl ? (
-              <a
-                href={event.customButtonUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#C9A84C] text-[#080809] font-bold text-xs px-4 py-2 rounded hover:bg-[#E8C96A] transition-colors"
-              >
+              <a href={event.customButtonUrl} target="_blank" rel="noopener noreferrer"
+                className="bg-[#C9A84C] text-[#080809] font-bold text-sm px-5 py-2.5 rounded hover:bg-[#E8C96A] transition-colors">
                 {event.customButtonLabel} →
               </a>
             ) : regType === 'external' && event.ticketLink ? (
-              <a
-                href={event.ticketLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#C9A84C] text-[#080809] font-bold text-xs px-4 py-2 rounded hover:bg-[#E8C96A] transition-colors"
-              >
-                Register →
+              <a href={event.ticketLink} target="_blank" rel="noopener noreferrer"
+                className="bg-[#C9A84C] text-[#080809] font-bold text-sm px-5 py-2.5 rounded hover:bg-[#E8C96A] transition-colors">
+                Register on Eventbrite →
               </a>
             ) : regType === 'phone' ? (
-              <a
-                href="tel:07454753318"
-                className="bg-[#C9A84C] text-[#080809] font-bold text-xs px-4 py-2 rounded hover:bg-[#E8C96A] transition-colors"
-              >
+              <a href="tel:07454753318"
+                className="bg-[#C9A84C] text-[#080809] font-bold text-sm px-5 py-2.5 rounded hover:bg-[#E8C96A] transition-colors">
                 Call to Register
               </a>
             ) : regType !== 'none' ? (
-              <button
-                onClick={() => setShowForm(f => !f)}
-                className="flex items-center gap-1.5 bg-[#C9A84C] text-[#080809] font-bold text-xs px-4 py-2 rounded hover:bg-[#E8C96A] transition-colors"
-              >
+              <button onClick={() => setShowForm(f => !f)}
+                className="flex items-center gap-1.5 bg-[#C9A84C] text-[#080809] font-bold text-sm px-5 py-2.5 rounded hover:bg-[#E8C96A] transition-colors">
                 Register Now →
-                {showForm ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                {showForm ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
               </button>
             ) : null}
 
             <ShareButton event={event} />
           </div>
 
-          {/* Inline form */}
           {showForm && regType === 'form' && (
             <RegistrationForm event={event} onClose={() => setShowForm(false)} />
           )}
         </div>
-      </div>
+      )}
     </div>
   )
 }

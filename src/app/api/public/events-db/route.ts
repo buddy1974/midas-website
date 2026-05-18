@@ -6,8 +6,8 @@ const CORS = {
   'Cache-Control': 'public, s-maxage=60',
 }
 
-/** Convert "6:30pm", "6:30 PM", "18:30", "6pm" → "18:30" 24-hr */
-function parseTime(t: string): string {
+/** Parse a single time token: "6:30pm", "18:30", "6pm", "17:00" → "17:00" */
+function parseSingleTime(t: string): string {
   const m = t.trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?$/i)
   if (!m) return '00:00'
   let h = parseInt(m[1])
@@ -18,10 +18,21 @@ function parseTime(t: string): string {
   return `${h.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`
 }
 
+/** Handles "17:00 - 22:00", "6:30pm – 9pm", "18:30 to 21:00", plain "17:00" */
+function parseTimeRange(t: string): { start: string; end: string | null } {
+  // Split on dash, en-dash, or "to"
+  const parts = t.split(/\s*(?:[-–]|\bto\b)\s*/i).map(s => s.trim()).filter(Boolean)
+  return {
+    start: parseSingleTime(parts[0] ?? ''),
+    end:   parts[1] ? parseSingleTime(parts[1]) : null,
+  }
+}
+
 function toOsEvent(row: EventRow) {
-  // Combine event_date (TEXT e.g. "2026-06-15") + event_time (e.g. "6:30pm" or "18:30")
-  const time = row.event_time ? parseTime(row.event_time) : '00:00'
-  const eventDate = `${row.event_date}T${time}`
+  // Combine event_date (TEXT e.g. "2026-06-15") + event_time (e.g. "17:00 - 22:00")
+  const { start, end } = row.event_time ? parseTimeRange(row.event_time) : { start: '00:00', end: null }
+  const eventDate = `${row.event_date}T${start}`
+  const endTime   = end ? `${row.event_date}T${end}` : null
 
   return {
     id:               row.id,
@@ -29,12 +40,12 @@ function toOsEvent(row: EventRow) {
     description:      row.description,
     eventType:        row.event_type,
     eventDate,
-    endTime:          null,
+    endTime,
     location:         row.location,
-    // admin stores cost_amount in £, page expects pence
     pricePence:       row.cost_type === 'free' ? 0 : (row.cost_amount ?? 0) * 100,
     maxCapacity:      null,
     ticketLink:       row.registration_url,
+    // "external" = Register button goes to ticketLink; user reads details first on the card
     registrationType: row.registration_url ? 'external' : 'form',
     formFields:       'full',
     showInvestorOption: false,
