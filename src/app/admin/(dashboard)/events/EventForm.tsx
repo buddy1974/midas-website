@@ -68,18 +68,30 @@ export default function EventForm({ initial }: { initial?: EventRow }) {
   const handleSave = async () => {
     if (!form.name.trim() || !form.event_date.trim()) { setError('Name and date are required.'); return }
     setSaving(true); setError('')
-    const payload = {
-      ...form,
-      cost_amount: parseInt(form.cost_amount) || 0,
-      image_url: images[0]?.url ?? null,
-      images,
-      embeds,
+    try {
+      const payload = {
+        ...form,
+        cost_amount: parseInt(form.cost_amount) || 0,
+        image_url: images[0]?.url ?? null,
+        images,
+        embeds,
+      }
+      const url = isEdit ? `/api/admin/events/${initial!.id}` : '/api/admin/events'
+      const method = isEdit ? 'PATCH' : 'POST'
+      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      if (res.ok) {
+        router.push('/admin/events'); router.refresh()
+        return // keep saving=true during navigation
+      }
+      let message = 'Save failed.'
+      try { const d = await res.json() as { error?: string }; message = d.error ?? message } catch { /* non-JSON body */ }
+      setError(message)
+    } catch (err) {
+      console.error('[EventForm] save error:', err)
+      setError('Network error. Please check your connection and try again.')
+    } finally {
+      setSaving(false)
     }
-    const url = isEdit ? `/api/admin/events/${initial!.id}` : '/api/admin/events'
-    const method = isEdit ? 'PATCH' : 'POST'
-    const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    if (res.ok) { router.push('/admin/events'); router.refresh() }
-    else { const d = await res.json() as { error?: string }; setError(d.error ?? 'Save failed.'); setSaving(false) }
   }
 
   const handleDelete = async () => {

@@ -14,8 +14,6 @@ import {
   type LotStatus,
 } from '@/lib/data'
 import { getSql, type PropertyRow, type EventRow } from '@/lib/db'
-import { getBuilderLayout } from '@/lib/builder-render'
-import { PageRenderer } from '@/components/builder/SectionRenderer'
 
 export const revalidate = 60
 
@@ -139,7 +137,7 @@ function UpcomingEventsSection({ events }: { events: EventRow[] }) {
 export default async function HomePage() {
   const today = new Date().toISOString().split('T')[0]
 
-  // ── Always fetch upcoming events — must run even when builder is active ───
+  // ── Fetch all data needed for the homepage ────────────────────────────────
   let upcomingEvents: EventRow[] = []
   try {
     const sql = getSql()
@@ -148,16 +146,9 @@ export default async function HomePage() {
     `
   } catch { /* DB not yet configured */ }
 
-  // ── Builder override: if a layout exists in the Page Builder, use it ─────
-  const builderLayout = await getBuilderLayout('home')
-  if (builderLayout) {
-    return (
-      <main>
-        <PageRenderer sections={builderLayout.sections} />
-        <UpcomingEventsSection events={upcomingEvents} />
-      </main>
-    )
-  }
+  // NOTE: The homepage is code-driven. The Page Builder is for /pages/[slug] only.
+  // Removing the builder override here fixes event section positioning and ensures
+  // dynamic DB content (events, properties) always renders correctly.
 
   let publicLots: Lot[] = lots.filter(l => l.showOnWebsite && !l.isOffMarket)
   let cfg: Record<string, string> = {}
@@ -710,7 +701,6 @@ export default async function HomePage() {
         <NewsletterForm />
       </section>
 
-      {/* ══════════════════════════════════════════════════════════════════════ */}
       {/* SECTION 10 — GOLD CTA BANNER                                          */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       <section style={{ backgroundColor: '#C9A84C' }} className="py-16 px-6 text-center">
