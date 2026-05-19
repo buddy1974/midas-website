@@ -53,22 +53,118 @@ function dbPropertyToLot(p: PropertyRow): Lot {
   }
 }
 
+// ── Upcoming Events section (rendered in BOTH builder and custom code paths) ──
+
+function UpcomingEventsSection({ events }: { events: EventRow[] }) {
+  if (events.length === 0) return null
+  return (
+    <section className="bg-[#080809] border-t border-[rgba(201,168,76,0.1)] py-14 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-[#C9A84C] font-black uppercase text-xl">UPCOMING EVENTS</h2>
+            <div className="w-10 h-0.5 bg-[#C9A84C] mt-2" />
+            <p className="text-[rgba(232,228,220,0.5)] text-sm mt-3">
+              In-person networking, webinars and auction briefings.
+            </p>
+          </div>
+          <Link href="/events" className="flex-shrink-0 text-[#C9A84C] text-sm font-semibold hover:text-[#E8C96A] transition-colors">
+            All Events →
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {events.map(ev => {
+            const dateObj = new Date(ev.event_date)
+            const day   = dateObj.getDate().toString()
+            const month = dateObj.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase()
+            const year  = dateObj.getFullYear().toString()
+            const t = ev.event_type.toLowerCase()
+            const badgeClass = t.includes('webinar') || t.includes('online')
+              ? 'bg-blue-900/40 text-blue-300 border-blue-800'
+              : t.includes('auction') || t.includes('briefing')
+              ? 'bg-amber-900/40 text-amber-300 border-amber-800'
+              : 'bg-emerald-900/40 text-emerald-300 border-emerald-800'
+            const typeIcon = t.includes('webinar') || t.includes('online') ? '🎥'
+              : t.includes('auction') || t.includes('briefing') ? '🏛' : '🤝'
+            return (
+              <Link
+                key={ev.id}
+                href="/events"
+                className="bg-[#0F0F14] border border-[rgba(201,168,76,0.18)] rounded-xl overflow-hidden hover:border-[rgba(201,168,76,0.45)] transition-all flex gap-0"
+              >
+                {/* Date block */}
+                <div className="w-20 flex-shrink-0 bg-[rgba(201,168,76,0.07)] border-r border-[rgba(201,168,76,0.12)] flex flex-col items-center justify-center py-5">
+                  <p className="text-[#C9A84C] text-3xl font-black leading-none">{day}</p>
+                  <p className="text-[#C9A84C] text-xs font-bold mt-0.5">{month}</p>
+                  <p className="text-[rgba(232,228,220,0.3)] text-[10px]">{year}</p>
+                </div>
+                {/* Content */}
+                <div className="p-4 flex flex-col justify-between flex-1 min-w-0">
+                  <div>
+                    <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider mb-2 ${badgeClass}`}>
+                      {typeIcon} {ev.event_type}
+                    </span>
+                    <p className="text-[#E8E4DC] font-bold text-sm leading-snug line-clamp-2">{ev.name}</p>
+                  </div>
+                  <div className="mt-2 space-y-0.5">
+                    {ev.event_time && (
+                      <p className="text-[rgba(232,228,220,0.45)] text-xs">🕐 {ev.event_time}</p>
+                    )}
+                    {ev.location && (
+                      <p className="text-[rgba(232,228,220,0.45)] text-xs truncate">📍 {ev.location}</p>
+                    )}
+                    <p className={`text-xs font-semibold mt-1 ${ev.cost_type === 'free' ? 'text-green-400' : 'text-[#C9A84C]'}`}>
+                      {ev.cost_type === 'free' ? 'FREE' : `£${ev.cost_amount}`}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+
+        <div className="mt-6 text-center">
+          <Link href="/events" className="inline-block border border-[rgba(201,168,76,0.4)] text-[#C9A84C] text-sm font-semibold px-6 py-3 rounded hover:bg-[rgba(201,168,76,0.08)] transition-colors">
+            View All Events &amp; Register →
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // ── Page component ────────────────────────────────────────────────────────────
 
 export default async function HomePage() {
+  const today = new Date().toISOString().split('T')[0]
+
+  // ── Always fetch upcoming events — must run even when builder is active ───
+  let upcomingEvents: EventRow[] = []
+  try {
+    const sql = getSql()
+    upcomingEvents = await sql<EventRow[]>`
+      SELECT * FROM events WHERE event_date >= ${today} ORDER BY event_date ASC LIMIT 3
+    `
+  } catch { /* DB not yet configured */ }
+
   // ── Builder override: if a layout exists in the Page Builder, use it ─────
   const builderLayout = await getBuilderLayout('home')
   if (builderLayout) {
-    return <main><PageRenderer sections={builderLayout.sections} /></main>
+    return (
+      <main>
+        <PageRenderer sections={builderLayout.sections} />
+        <UpcomingEventsSection events={upcomingEvents} />
+      </main>
+    )
   }
+
   let publicLots: Lot[] = lots.filter(l => l.showOnWebsite && !l.isOffMarket)
   let cfg: Record<string, string> = {}
   let pc: Record<string, string> = {}
-  let upcomingEvents: EventRow[] = []
 
   try {
     const sql = getSql()
-    const today = new Date().toISOString().split('T')[0]
     const [dbProps, content, pageContent] = await Promise.all([
       sql<PropertyRow[]>`SELECT * FROM properties WHERE show_on_website = true AND is_off_market = false ORDER BY is_featured DESC, created_at DESC LIMIT 4`,
       sql<{ key: string; value: string }[]>`SELECT key, value FROM site_content`,
@@ -77,9 +173,6 @@ export default async function HomePage() {
     if (dbProps.length > 0) publicLots = dbProps.map(dbPropertyToLot)
     cfg = Object.fromEntries(content.map(r => [r.key, r.value]))
     pc = Object.fromEntries(pageContent.map(r => [`${r.section}.${r.field}`, r.value]))
-    try {
-      upcomingEvents = await sql<EventRow[]>`SELECT * FROM events WHERE event_date >= ${today} ORDER BY event_date ASC LIMIT 3`
-    } catch { upcomingEvents = [] }
   } catch { /* DB not yet configured — static fallback */ }
 
   // page_content takes priority over site_content, then static fallback
@@ -460,81 +553,7 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════════════════════════════════ */}
       {/* SECTION 5C — UPCOMING EVENTS                                          */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
-      {upcomingEvents.length > 0 && (
-        <section className="bg-[#080809] border-t border-[rgba(201,168,76,0.1)] py-14 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-[#C9A84C] font-black uppercase text-xl">UPCOMING EVENTS</h2>
-                <div className="w-10 h-0.5 bg-[#C9A84C] mt-2" />
-                <p className="text-[rgba(232,228,220,0.5)] text-sm mt-3">
-                  In-person networking, webinars and auction briefings.
-                </p>
-              </div>
-              <Link href="/events" className="flex-shrink-0 text-[#C9A84C] text-sm font-semibold hover:text-[#E8C96A] transition-colors">
-                All Events →
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {upcomingEvents.map(ev => {
-                const dateObj = new Date(ev.event_date)
-                const day   = dateObj.getDate().toString()
-                const month = dateObj.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase()
-                const year  = dateObj.getFullYear().toString()
-                const t = ev.event_type.toLowerCase()
-                const badgeClass = t.includes('webinar') || t.includes('online')
-                  ? 'bg-blue-900/40 text-blue-300 border-blue-800'
-                  : t.includes('auction') || t.includes('briefing')
-                  ? 'bg-amber-900/40 text-amber-300 border-amber-800'
-                  : 'bg-emerald-900/40 text-emerald-300 border-emerald-800'
-                const typeIcon = t.includes('webinar') || t.includes('online') ? '🎥'
-                  : t.includes('auction') || t.includes('briefing') ? '🏛' : '🤝'
-                return (
-                  <Link
-                    key={ev.id}
-                    href="/events"
-                    className="bg-[#0F0F14] border border-[rgba(201,168,76,0.18)] rounded-xl overflow-hidden hover:border-[rgba(201,168,76,0.45)] transition-all flex gap-0"
-                  >
-                    {/* Date block */}
-                    <div className="w-20 flex-shrink-0 bg-[rgba(201,168,76,0.07)] border-r border-[rgba(201,168,76,0.12)] flex flex-col items-center justify-center py-5">
-                      <p className="text-[#C9A84C] text-3xl font-black leading-none">{day}</p>
-                      <p className="text-[#C9A84C] text-xs font-bold mt-0.5">{month}</p>
-                      <p className="text-[rgba(232,228,220,0.3)] text-[10px]">{year}</p>
-                    </div>
-                    {/* Content */}
-                    <div className="p-4 flex flex-col justify-between flex-1 min-w-0">
-                      <div>
-                        <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider mb-2 ${badgeClass}`}>
-                          {typeIcon} {ev.event_type}
-                        </span>
-                        <p className="text-[#E8E4DC] font-bold text-sm leading-snug line-clamp-2">{ev.name}</p>
-                      </div>
-                      <div className="mt-2 space-y-0.5">
-                        {ev.event_time && (
-                          <p className="text-[rgba(232,228,220,0.45)] text-xs">🕐 {ev.event_time}</p>
-                        )}
-                        {ev.location && (
-                          <p className="text-[rgba(232,228,220,0.45)] text-xs truncate">📍 {ev.location}</p>
-                        )}
-                        <p className={`text-xs font-semibold mt-1 ${ev.cost_type === 'free' ? 'text-green-400' : 'text-[#C9A84C]'}`}>
-                          {ev.cost_type === 'free' ? 'FREE' : `£${ev.cost_amount}`}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-
-            <div className="mt-6 text-center">
-              <Link href="/events" className="inline-block border border-[rgba(201,168,76,0.4)] text-[#C9A84C] text-sm font-semibold px-6 py-3 rounded hover:bg-[rgba(201,168,76,0.08)] transition-colors">
-                View All Events & Register →
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
+      <UpcomingEventsSection events={upcomingEvents} />
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
       {/* SECTION 6 — THREE COLUMN SECTION                                      */}

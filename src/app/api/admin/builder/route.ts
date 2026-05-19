@@ -3,9 +3,11 @@
 
 import { NextResponse, NextRequest } from 'next/server'
 import { getSql } from '@/lib/db'
+import { isAdminLoggedIn } from '@/lib/admin-auth'
 import { DEFAULT_SETTINGS } from '@/lib/builder-types'
 
 export async function GET() {
+  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   try {
     const sql = getSql()
     const rows = await sql`
@@ -29,6 +31,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   try {
     const body = await req.json() as { slug: string; title: string }
     const { slug, title } = body

@@ -11,7 +11,9 @@ export async function getAdminPassword(): Promise<string> {
       SELECT value FROM site_content WHERE key = 'admin_password' LIMIT 1`
     if (row?.value) return row.value
   } catch { /* DB not ready */ }
-  return process.env.ADMIN_PASSWORD ?? 'MidasAdmin2026!'
+  const envPassword = process.env.ADMIN_PASSWORD
+  if (!envPassword) throw new Error('ADMIN_PASSWORD environment variable is not set')
+  return envPassword
 }
 
 export async function getSessionToken(): Promise<string> {

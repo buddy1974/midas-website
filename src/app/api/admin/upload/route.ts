@@ -26,11 +26,15 @@ export async function POST(req: NextRequest) {
   const folder = (form.get('folder') as string | null) ?? 'uploads'
   const filename = `images/${folder}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}.${ext}`
 
-  const blob = await put(filename, file, {
-    access: 'public',
-    contentType: file.type,
-    addRandomSuffix: false,
-  })
-
-  return NextResponse.json({ url: blob.url })
+  try {
+    const blob = await put(filename, file, {
+      access: 'public',
+      contentType: file.type,
+      addRandomSuffix: false,
+    })
+    return NextResponse.json({ url: blob.url })
+  } catch (err) {
+    console.error('[upload] Vercel Blob error:', err)
+    return NextResponse.json({ error: 'Upload failed. Please try again.' }, { status: 500 })
+  }
 }
