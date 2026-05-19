@@ -24,6 +24,8 @@ interface OsEvent {
   customButtonUrl?: string
   recapUrl?: string | null
   registrantCount?: number
+  imageUrl?: string | null
+  images?: { url: string; caption?: string }[]
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -216,23 +218,35 @@ function EventCard({ event }: { event: OsEvent }) {
   const regType = event.registrationType ?? (event.ticketLink ? 'external' : 'form')
   const isFree = !event.pricePence || event.pricePence === 0
 
+  const coverImage = event.imageUrl ?? null
+  const gallery    = (event.images ?? []).slice(1) // skip first — it's the cover
+
   return (
     <div id={event.id} className="bg-[#0F0F14] border border-[rgba(201,168,76,0.2)] rounded-xl overflow-hidden hover:border-[rgba(201,168,76,0.4)] transition-colors">
       {/* Clickable summary row */}
       <button
         onClick={() => setExpanded(e => !e)}
-        className="w-full text-left flex flex-col sm:flex-row focus:outline-none"
+        className="w-full text-left flex flex-col focus:outline-none"
         aria-expanded={expanded}
       >
-        {/* Date block */}
-        <div className="sm:w-24 flex-shrink-0 bg-[rgba(201,168,76,0.08)] border-b sm:border-b-0 sm:border-r border-[rgba(201,168,76,0.15)] flex sm:flex-col items-center justify-center gap-2 sm:gap-0 py-4 sm:py-6 px-6 sm:px-0">
-          <p className="text-[#C9A84C] text-3xl sm:text-4xl font-black leading-none">{formatDay(event.eventDate)}</p>
-          <p className="text-[#C9A84C] text-sm font-bold sm:mt-1">{formatMonth(event.eventDate)}</p>
-          <p className="text-[rgba(232,228,220,0.3)] text-xs">{formatYear(event.eventDate)}</p>
-        </div>
+        {/* Cover image */}
+        {coverImage && (
+          <div className="relative w-full h-52 overflow-hidden">
+            <img src={coverImage} alt={event.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F14] via-[rgba(15,15,20,0.3)] to-transparent" />
+          </div>
+        )}
 
-        {/* Summary content */}
-        <div className="p-6 flex-1">
+        <div className="flex flex-col sm:flex-row">
+          {/* Date block */}
+          <div className="sm:w-24 flex-shrink-0 bg-[rgba(201,168,76,0.08)] border-b sm:border-b-0 sm:border-r border-[rgba(201,168,76,0.15)] flex sm:flex-col items-center justify-center gap-2 sm:gap-0 py-4 sm:py-6 px-6 sm:px-0">
+            <p className="text-[#C9A84C] text-3xl sm:text-4xl font-black leading-none">{formatDay(event.eventDate)}</p>
+            <p className="text-[#C9A84C] text-sm font-bold sm:mt-1">{formatMonth(event.eventDate)}</p>
+            <p className="text-[rgba(232,228,220,0.3)] text-xs">{formatYear(event.eventDate)}</p>
+          </div>
+
+          {/* Summary content */}
+          <div className="p-6 flex-1">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className={`text-[10px] font-bold px-2.5 py-1 rounded border uppercase tracking-wider ${typeBadgeColor(event.eventType)}`}>
               {typeLabel(event.eventType)}
@@ -270,6 +284,7 @@ function EventCard({ event }: { event: OsEvent }) {
           <p className="text-[#C9A84C] text-xs mt-3 font-semibold">
             {expanded ? '▲ Less details' : '▼ Read full details & register'}
           </p>
+          </div>
         </div>
       </button>
 
@@ -280,6 +295,24 @@ function EventCard({ event }: { event: OsEvent }) {
             <div className="mb-5">
               <h4 className="text-[#C9A84C] text-xs font-bold uppercase tracking-wider mb-2">About this event</h4>
               <p className="text-[rgba(232,228,220,0.75)] text-sm leading-relaxed whitespace-pre-line">{event.description}</p>
+            </div>
+          )}
+
+          {/* Additional gallery images (cover already shown above) */}
+          {gallery.length > 0 && (
+            <div className="mb-5">
+              <h4 className="text-[#C9A84C] text-xs font-bold uppercase tracking-wider mb-3">Photos</h4>
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {gallery.map((img, i) => (
+                  <a key={i} href={img.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+                    <img
+                      src={img.url}
+                      alt={img.caption ?? event.title}
+                      className="h-36 w-56 object-cover rounded-lg border border-[rgba(201,168,76,0.2)] hover:border-[#C9A84C] transition-colors"
+                    />
+                  </a>
+                ))}
+              </div>
             </div>
           )}
 

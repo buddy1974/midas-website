@@ -34,6 +34,10 @@ function toOsEvent(row: EventRow) {
   const eventDate = `${row.event_date}T${start}`
   const endTime   = end ? `${row.event_date}T${end}` : null
 
+  // Resolve cover image: prefer first entry in images array, fall back to image_url
+  const imagesArray = Array.isArray(row.images) ? row.images : []
+  const coverImage  = imagesArray[0]?.url ?? row.image_url ?? null
+
   return {
     id:               row.id,
     title:            row.name,
@@ -45,11 +49,11 @@ function toOsEvent(row: EventRow) {
     pricePence:       row.cost_type === 'free' ? 0 : (row.cost_amount ?? 0) * 100,
     maxCapacity:      null,
     ticketLink:       row.registration_url,
-    // "external" = Register button goes to ticketLink; user reads details first on the card
     registrationType: row.registration_url ? 'external' : 'form',
     formFields:       'full',
     showInvestorOption: false,
-    imageUrl:         row.image_url,
+    imageUrl:         coverImage,
+    images:           imagesArray,
     isFeatured:       row.is_featured,
   }
 }
