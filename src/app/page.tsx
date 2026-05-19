@@ -85,36 +85,51 @@ function UpcomingEventsSection({ events }: { events: EventRow[] }) {
               : 'bg-emerald-900/40 text-emerald-300 border-emerald-800'
             const typeIcon = t.includes('webinar') || t.includes('online') ? '🎥'
               : t.includes('auction') || t.includes('briefing') ? '🏛' : '🤝'
+            const coverImage = ev.image_url ?? (Array.isArray(ev.images) && ev.images.length > 0 ? ev.images[0].url : null)
             return (
               <Link
                 key={ev.id}
                 href="/events"
-                className="bg-[#0F0F14] border border-[rgba(201,168,76,0.18)] rounded-xl overflow-hidden hover:border-[rgba(201,168,76,0.45)] transition-all flex gap-0"
+                className="bg-[#0F0F14] border border-[rgba(201,168,76,0.18)] rounded-xl overflow-hidden hover:border-[rgba(201,168,76,0.45)] transition-all flex flex-col"
               >
-                {/* Date block */}
-                <div className="w-20 flex-shrink-0 bg-[rgba(201,168,76,0.07)] border-r border-[rgba(201,168,76,0.12)] flex flex-col items-center justify-center py-5">
-                  <p className="text-[#C9A84C] text-3xl font-black leading-none">{day}</p>
-                  <p className="text-[#C9A84C] text-xs font-bold mt-0.5">{month}</p>
-                  <p className="text-[rgba(232,228,220,0.3)] text-[10px]">{year}</p>
-                </div>
-                {/* Content */}
-                <div className="p-4 flex flex-col justify-between flex-1 min-w-0">
-                  <div>
-                    <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider mb-2 ${badgeClass}`}>
-                      {typeIcon} {ev.event_type}
-                    </span>
-                    <p className="text-[#E8E4DC] font-bold text-sm leading-snug line-clamp-2">{ev.name}</p>
+                {/* Cover image */}
+                {coverImage ? (
+                  <div className="h-44 w-full overflow-hidden flex-shrink-0 relative">
+                    <img src={coverImage} alt={ev.name} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F14] via-transparent to-transparent" />
                   </div>
-                  <div className="mt-2 space-y-0.5">
-                    {ev.event_time && (
-                      <p className="text-[rgba(232,228,220,0.45)] text-xs">🕐 {ev.event_time}</p>
-                    )}
-                    {ev.location && (
-                      <p className="text-[rgba(232,228,220,0.45)] text-xs truncate">📍 {ev.location}</p>
-                    )}
-                    <p className={`text-xs font-semibold mt-1 ${ev.cost_type === 'free' ? 'text-green-400' : 'text-[#C9A84C]'}`}>
-                      {ev.cost_type === 'free' ? 'FREE' : `£${ev.cost_amount}`}
-                    </p>
+                ) : (
+                  <div className="h-32 w-full bg-gradient-to-br from-[#1a1a2e] to-[#0d0d14] flex items-center justify-center flex-shrink-0">
+                    <span className="text-4xl opacity-30">{typeIcon}</span>
+                  </div>
+                )}
+                {/* Date + content row */}
+                <div className="flex flex-1 gap-0">
+                  {/* Date block */}
+                  <div className="w-20 flex-shrink-0 bg-[rgba(201,168,76,0.07)] border-r border-[rgba(201,168,76,0.12)] flex flex-col items-center justify-center py-4">
+                    <p className="text-[#C9A84C] text-3xl font-black leading-none">{day}</p>
+                    <p className="text-[#C9A84C] text-xs font-bold mt-0.5">{month}</p>
+                    <p className="text-[rgba(232,228,220,0.3)] text-[10px]">{year}</p>
+                  </div>
+                  {/* Content */}
+                  <div className="p-4 flex flex-col justify-between flex-1 min-w-0">
+                    <div>
+                      <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider mb-2 ${badgeClass}`}>
+                        {typeIcon} {ev.event_type}
+                      </span>
+                      <p className="text-[#E8E4DC] font-bold text-sm leading-snug line-clamp-2">{ev.name}</p>
+                    </div>
+                    <div className="mt-2 space-y-0.5">
+                      {ev.event_time && (
+                        <p className="text-[rgba(232,228,220,0.45)] text-xs">🕐 {ev.event_time}</p>
+                      )}
+                      {ev.location && (
+                        <p className="text-[rgba(232,228,220,0.45)] text-xs truncate">📍 {ev.location}</p>
+                      )}
+                      <p className={`text-xs font-semibold mt-1 ${ev.cost_type === 'free' ? 'text-green-400' : 'text-[#C9A84C]'}`}>
+                        {ev.cost_type === 'free' ? 'FREE' : `£${ev.cost_amount}`}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </Link>
