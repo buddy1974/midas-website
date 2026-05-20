@@ -15,12 +15,14 @@ export default function WishlistPage() {
   const [savedIds, setSavedIds] = useState<string[]>([])
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(WISHLIST_KEY)
-      setSavedIds(stored ? (JSON.parse(stored) as string[]) : [])
-    } catch {
-      setSavedIds([])
-    }
+    queueMicrotask(() => {
+      try {
+        const stored = localStorage.getItem(WISHLIST_KEY)
+        setSavedIds(stored ? (JSON.parse(stored) as string[]) : [])
+      } catch {
+        setSavedIds([])
+      }
+    })
   }, [])
 
   const removeFromWishlist = (id: string) => {

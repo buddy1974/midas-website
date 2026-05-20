@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
-import { isAdminLoggedIn } from '@/lib/admin-auth'
+import { requireAdminApiAuth } from '@/lib/admin-auth'
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth()
+  if (authError) return authError
+
   const { id } = await params
   const sql = getSql()
   const [row] = await sql`SELECT * FROM blog_posts WHERE id = ${id}`
@@ -12,7 +14,9 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth(req, { mutation: true })
+  if (authError) return authError
+
   const { id } = await params
   const body = await req.json() as Record<string, unknown>
   const sql = getSql()
@@ -39,7 +43,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 }
 
 export async function DELETE(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth(_, { mutation: true })
+  if (authError) return authError
+
   const { id } = await params
   const sql = getSql()
   await sql`DELETE FROM blog_posts WHERE id = ${id}`

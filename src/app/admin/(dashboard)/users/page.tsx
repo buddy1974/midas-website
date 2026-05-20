@@ -42,7 +42,9 @@ export default function UsersPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    queueMicrotask(load)
+  }, [load])
 
   const handleCreate = async () => {
     if (!username.trim() || !password.trim()) return

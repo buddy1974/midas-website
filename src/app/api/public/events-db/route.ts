@@ -38,6 +38,8 @@ function toOsEvent(row: EventRow) {
   const imagesArray = Array.isArray(row.images) ? row.images : []
   const coverImage  = imagesArray[0]?.url ?? row.image_url ?? null
 
+  const recurrenceDates = Array.isArray(row.recurrence_dates) ? row.recurrence_dates : []
+
   return {
     id:               row.id,
     title:            row.name,
@@ -55,6 +57,8 @@ function toOsEvent(row: EventRow) {
     imageUrl:         coverImage,
     images:           imagesArray,
     isFeatured:       row.is_featured,
+    isRecurring:      row.is_recurring ?? false,
+    recurrenceDates,
   }
 }
 

@@ -15,11 +15,13 @@ export default function LegalPackRequestButton({ lotId, lotAddress }: Props) {
   const [phone, setPhone] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    await fetch('/api/register-interest', {
+    setError('')
+    const res = await fetch('/api/register-interest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -27,11 +29,17 @@ export default function LegalPackRequestButton({ lotId, lotAddress }: Props) {
         email,
         phone,
         source: 'legal_pack_request',
-        lot_id: lotId,
+        lotId,
+        lotAddress,
         interest: `Legal Pack Request for ${lotAddress}`,
       }),
     })
     setLoading(false)
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({ error: 'Request failed. Please try again.' })) as { error?: string }
+      setError(data.error ?? 'Request failed. Please try again.')
+      return
+    }
     setSubmitted(true)
   }
 
@@ -120,6 +128,7 @@ export default function LegalPackRequestButton({ lotId, lotAddress }: Props) {
                 >
                   {loading ? 'Sending...' : 'Send Request'}
                 </button>
+                {error && <p className="text-red-400 text-sm text-center">{error}</p>}
               </form>
             )}
           </div>

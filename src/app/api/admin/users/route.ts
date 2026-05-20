@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
-import { isAdminLoggedIn } from '@/lib/admin-auth'
+import { requireAdminApiAuth } from '@/lib/admin-auth'
 
 async function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder()
@@ -22,7 +22,9 @@ async function ensureTable(sql: ReturnType<typeof getSql>) {
 }
 
 export async function GET() {
-  if (!(await isAdminLoggedIn())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authError = await requireAdminApiAuth()
+  if (authError) return authError
+
   try {
     const sql = getSql()
     await ensureTable(sql)
@@ -36,7 +38,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  if (!(await isAdminLoggedIn())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authError = await requireAdminApiAuth(req, { mutation: true })
+  if (authError) return authError
+
   try {
     const { username, password, role } = await req.json() as { username: string; password: string; role?: string }
     if (!username || !password) return NextResponse.json({ error: 'username and password required' }, { status: 400 })

@@ -5,10 +5,14 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { getSql } from '@/lib/db'
+import { requireAdminApiAuth } from '@/lib/admin-auth'
 
 const SYSTEM_PAGES = ['home', 'about', 'sell', 'buy', 'contact', 'register']
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+  const authError = await requireAdminApiAuth()
+  if (authError) return authError
+
   try {
     const { slug } = await params
     const sql = getSql()
@@ -31,6 +35,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ slu
 }
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+  const authError = await requireAdminApiAuth(req, { mutation: true })
+  if (authError) return authError
+
   try {
     const { slug } = await params
     const body = await req.json() as {
@@ -64,6 +71,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ slug
 }
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+  const authError = await requireAdminApiAuth(_req, { mutation: true })
+  if (authError) return authError
+
   try {
     const { slug } = await params
 

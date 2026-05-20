@@ -66,6 +66,12 @@ export interface BlogPostRow {
   updated_at: string
 }
 
+export interface RecurrenceDate {
+  date: string        // ISO "2026-07-10"
+  startTime: string   // "18:00"
+  endTime: string     // "21:00" — empty string means no end time
+}
+
 export interface EventRow {
   id: string
   name: string
@@ -81,6 +87,8 @@ export interface EventRow {
   embeds: MediaEmbed[]
   registration_url: string | null
   is_featured: boolean
+  is_recurring: boolean
+  recurrence_dates: RecurrenceDate[]
   created_at: string
 }
 

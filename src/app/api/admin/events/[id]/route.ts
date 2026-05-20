@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
-import { isAdminLoggedIn } from '@/lib/admin-auth'
+import { requireAdminApiAuth } from '@/lib/admin-auth'
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth()
+  if (authError) return authError
+
   const { id } = await params
   const sql = getSql()
   const [row] = await sql`SELECT * FROM events WHERE id = ${id}`
@@ -12,7 +14,9 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth(req, { mutation: true })
+  if (authError) return authError
+
   const { id } = await params
 
   let body: Record<string, unknown>
@@ -28,6 +32,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   // JSON.stringify + ::jsonb inline cast is incompatible with postgres v3 prepared statements.
   const images = Array.isArray(body.images) ? body.images : null
   const embeds = Array.isArray(body.embeds)  ? body.embeds  : null
+  const isRecurring = (body.is_recurring as boolean) ?? false
+  const recurrenceDates = isRecurring && Array.isArray(body.recurrence_dates) ? body.recurrence_dates : []
 
   try {
     const [row] = await sql`
@@ -44,7 +50,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         images            = ${images !== null ? sql.json(images) : sql`images`},
         embeds            = ${embeds !== null ? sql.json(embeds) : sql`embeds`},
         registration_url  = ${(body.registration_url as string) ?? null},
-        is_featured       = COALESCE(${body.is_featured as boolean ?? null}, is_featured)
+        is_featured       = COALESCE(${body.is_featured as boolean ?? null}, is_featured),
+        is_recurring      = ${isRecurring},
+        recurrence_dates  = ${sql.json(recurrenceDates)}
       WHERE id = ${id}
       RETURNING *`
     if (!row) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -56,7 +64,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 }
 
 export async function DELETE(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth(_, { mutation: true })
+  if (authError) return authError
+
   const { id } = await params
   const sql = getSql()
   await sql`DELETE FROM events WHERE id = ${id}`

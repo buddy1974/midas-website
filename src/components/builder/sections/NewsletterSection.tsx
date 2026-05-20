@@ -12,7 +12,12 @@ export default function NewsletterSection({ data, bg }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await fetch('/api/register-investor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) })
+      const res = await fetch('/api/register-investor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'Newsletter subscriber', email, source: 'builder_newsletter' }),
+      })
+      if (!res.ok) throw new Error('Subscription failed')
       setStatus('ok')
     } catch { setStatus('err') }
   }

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -66,7 +65,12 @@ export default function InstantOfferPage() {
       const res = await fetch('/api/finance-enquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, source: 'instant_offer' }),
+        body: JSON.stringify({
+          ...form,
+          source: 'instant_offer',
+          loanAmount: 'Instant offer request',
+          propertyValue: 'Not provided',
+        }),
       })
       if (!res.ok) throw new Error('Submission failed')
       setSubmitted(true)

@@ -47,7 +47,6 @@ export default function AuctionCountdown({
   }, [targetDate])
 
   const isLive =
-    new Date(targetDate).getTime() - Date.now() <= 0 &&
     timeLeft.days === 0 &&
     timeLeft.hours === 0 &&
     timeLeft.minutes === 0 &&

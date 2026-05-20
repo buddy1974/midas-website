@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
+import { hasSafeMutationOrigin, verifyAdminSessionToken } from '@/lib/admin-session'
 
 // ── Active password: DB overrides env var ─────────────────────────────────────
 
@@ -16,18 +18,12 @@ export async function getAdminPassword(): Promise<string> {
   return envPassword
 }
 
-export async function getSessionToken(): Promise<string> {
-  const password = await getAdminPassword()
-  return Buffer.from(password + 'midas-admin-2026').toString('base64')
-}
-
 // ── Auth checks ───────────────────────────────────────────────────────────────
 
 export async function requireAdminAuth(): Promise<void> {
   const cookieStore = await cookies()
   const session = cookieStore.get('admin_session')
-  const token = await getSessionToken()
-  if (session?.value !== token) {
+  if (!await verifyAdminSessionToken(session?.value)) {
     redirect('/admin/login')
   }
 }
@@ -35,6 +31,20 @@ export async function requireAdminAuth(): Promise<void> {
 export async function isAdminLoggedIn(): Promise<boolean> {
   const cookieStore = await cookies()
   const session = cookieStore.get('admin_session')
-  const token = await getSessionToken()
-  return session?.value === token
+  return verifyAdminSessionToken(session?.value)
+}
+
+export async function requireAdminApiAuth(
+  req?: Request,
+  options: { mutation?: boolean } = {},
+): Promise<NextResponse | null> {
+  if (!await isAdminLoggedIn()) {
+    return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  }
+
+  if (options.mutation && req && !hasSafeMutationOrigin(req)) {
+    return NextResponse.json({ error: 'Invalid request origin' }, { status: 403 })
+  }
+
+  return null
 }

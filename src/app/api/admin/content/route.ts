@@ -1,17 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { getSql } from '@/lib/db'
-import { isAdminLoggedIn } from '@/lib/admin-auth'
+import { requireAdminApiAuth } from '@/lib/admin-auth'
 
 export async function GET() {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth()
+  if (authError) return authError
+
   const sql = getSql()
   const rows = await sql`SELECT key, value, updated_at FROM site_content ORDER BY key`
   return NextResponse.json(rows)
 }
 
 export async function PATCH(req: NextRequest) {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth(req, { mutation: true })
+  if (authError) return authError
+
   const updates = await req.json() as Record<string, string>
   const sql = getSql()
 

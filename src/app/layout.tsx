@@ -1,14 +1,8 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import ConditionalNavbar from '@/components/ConditionalNavbar'
 import ConditionalFooter from '@/components/ConditionalFooter'
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.midaspropertyauctions.co.uk'),
@@ -106,7 +100,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full`}>
+    <html lang="en" className="h-full">
       <body className="min-h-full flex flex-col antialiased overflow-x-hidden">
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-QHFW6H6W5H"

@@ -14,6 +14,7 @@ export default function RegisterYieldForm() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm(f => ({ ...f, [key]: e.target.value }))
@@ -21,15 +22,24 @@ export default function RegisterYieldForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError('')
     try {
-      await fetch('/api/register-interest', {
+      const res = await fetch('/api/register-interest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, source: 'yielding_investment_alert' }),
       })
-    } catch { /* silent */ }
-    setSubmitted(true)
-    setLoading(false)
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ error: 'Registration failed. Please try again.' })) as { error?: string }
+        setError(data.error ?? 'Registration failed. Please try again.')
+        return
+      }
+      setSubmitted(true)
+    } catch {
+      setError('Network error. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -71,6 +81,7 @@ export default function RegisterYieldForm() {
       >
         {loading ? 'Registering…' : 'Register for Alerts →'}
       </button>
+      {error && <p className="text-red-400 text-sm text-center">{error}</p>}
     </form>
   )
 }

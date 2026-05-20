@@ -39,17 +39,23 @@ export function useBuilderState() {
   // ── Load active page ───────────────────────────────────────────────────────
   useEffect(() => {
     if (!setupDone) return
-    setLayout(null); setSelected(null); setUndoStack([]); setRedoStack([])
-    fetch(`/api/admin/builder/${activeSlug}`)
-      .then(r => r.json())
-      .then((d: PageBuilderLayout & { error?: string }) => {
-        if (d.error) { console.error('[builder] load error:', d.error); return }
-        const sections = Array.isArray(d.sections)
-          ? d.sections
-          : typeof d.sections === 'string' ? JSON.parse(d.sections) : []
-        setLayout({ ...d, sections })
-      })
-      .catch(console.error)
+    let cancelled = false
+    queueMicrotask(() => {
+      if (cancelled) return
+      setLayout(null); setSelected(null); setUndoStack([]); setRedoStack([])
+      fetch(`/api/admin/builder/${activeSlug}`)
+        .then(r => r.json())
+        .then((d: PageBuilderLayout & { error?: string }) => {
+          if (cancelled) return
+          if (d.error) { console.error('[builder] load error:', d.error); return }
+          const sections = Array.isArray(d.sections)
+            ? d.sections
+            : typeof d.sections === 'string' ? JSON.parse(d.sections) : []
+          setLayout({ ...d, sections })
+        })
+        .catch(console.error)
+    })
+    return () => { cancelled = true }
   }, [activeSlug, setupDone])
 
   // ── Close page dropdown on outside click ──────────────────────────────────

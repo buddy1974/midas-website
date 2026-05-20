@@ -47,13 +47,15 @@ export default function LotCard({ lot, lotNumber }: LotCardProps) {
     : null
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('midas_wishlist')
-      const items: unknown = stored ? JSON.parse(stored) : []
-      setWishlisted(Array.isArray(items) && (items as string[]).includes(lot.id))
-    } catch {
-      setWishlisted(false)
-    }
+    queueMicrotask(() => {
+      try {
+        const stored = localStorage.getItem('midas_wishlist')
+        const items: unknown = stored ? JSON.parse(stored) : []
+        setWishlisted(Array.isArray(items) && (items as string[]).includes(lot.id))
+      } catch {
+        setWishlisted(false)
+      }
+    })
   }, [lot.id])
 
   const toggleWishlist = (e: React.MouseEvent) => {

@@ -14,14 +14,21 @@ export default function RegisterInterestForm({ lotId, lotAddress }: Props) {
   const [phone, setPhone] = useState('')
   const [interest, setInterest] = useState('Buyer')
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await fetch('/api/register-interest', {
+    setError('')
+    const res = await fetch('/api/register-interest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lotId, lotAddress, name, email, phone, interest }),
     })
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({ error: 'Submission failed. Please try again.' })) as { error?: string }
+      setError(data.error ?? 'Submission failed. Please try again.')
+      return
+    }
     setSubmitted(true)
   }
 
@@ -74,6 +81,7 @@ export default function RegisterInterestForm({ lotId, lotAddress }: Props) {
           <GoldButton variant="filled" type="submit" className="w-full">
             Register Interest
           </GoldButton>
+          {error && <p className="text-red-500 text-xs text-center">{error}</p>}
           <p className="text-[#999] text-xs text-center">
             We will contact you within 24 hours.
           </p>

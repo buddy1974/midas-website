@@ -21,6 +21,7 @@ export default function RegisterPage() {
     contactPreference: [] as string[],
     whatsappOptIn: false,
   })
+  const [error, setError] = useState('')
 
   const toggle = (key: 'lookingFor' | 'preferredAreas' | 'contactPreference', value: string) => {
     setForm((f) => ({
@@ -30,11 +31,17 @@ export default function RegisterPage() {
   }
 
   const handleSubmit = async () => {
-    await fetch('/api/register-investor', {
+    setError('')
+    const res = await fetch('/api/register-investor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     })
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({ error: 'Registration failed. Please try again.' })) as { error?: string }
+      setError(data.error ?? 'Registration failed. Please try again.')
+      return
+    }
     setStep(3)
   }
 
@@ -184,6 +191,7 @@ export default function RegisterPage() {
                   Register →
                 </GoldButton>
               </div>
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
               <p className="text-center text-[#999] text-[10px] mt-2">
                 Protected by reCAPTCHA.{' '}
                 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C9A84C]">Privacy</a>

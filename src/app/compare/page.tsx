@@ -19,6 +19,7 @@ export default function ComparePage() {
   const [lotBId, setLotBId] = useState(lots[1].id)
   const [result, setResult] = useState<CompareResult | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const lotA = lots.find((l) => l.id === lotAId)!
   const lotB = lots.find((l) => l.id === lotBId)!
@@ -29,15 +30,21 @@ export default function ComparePage() {
   const runComparison = async () => {
     setLoading(true)
     setResult(null)
+    setError('')
     try {
       const res = await fetch('/api/ai-compare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ lotAId, lotBId }),
       })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ error: 'ARIA comparison is unavailable.' })) as { error?: string }
+        setError(data.error ?? 'ARIA comparison is unavailable.')
+        return
+      }
       setResult(await res.json())
     } catch {
-      //
+      setError('ARIA comparison is unavailable. Please try again later.')
     } finally {
       setLoading(false)
     }
@@ -114,6 +121,10 @@ export default function ComparePage() {
             {loading ? 'ARIA is comparing...' : 'Run AI Comparison'}
           </GoldButton>
         </div>
+
+        {error && (
+          <p className="text-center text-red-500 text-sm mb-6">{error}</p>
+        )}
 
         {result && (
           <div className="bg-white border border-[#C9A84C]/30 rounded-xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">

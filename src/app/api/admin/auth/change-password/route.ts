@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAdminPassword, getSessionToken } from '@/lib/admin-auth'
+import { getAdminPassword, requireAdminApiAuth } from '@/lib/admin-auth'
 import { getSql } from '@/lib/db'
+import { createAdminSessionToken, getAdminSessionMaxAge } from '@/lib/admin-session'
 
 export async function POST(req: NextRequest) {
+  const authError = await requireAdminApiAuth(req, { mutation: true })
+  if (authError) return authError
+
   const { currentPassword, newPassword } = await req.json() as {
     currentPassword: string
     newPassword: string
@@ -28,15 +32,14 @@ export async function POST(req: NextRequest) {
     ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()`
 
   // Return new session token so login page can set fresh cookie
-  const newToken = Buffer.from(newPassword + 'midas-admin-2026').toString('base64')
+  const newToken = await createAdminSessionToken()
   const res = NextResponse.json({ ok: true })
   res.cookies.set('admin_session', newToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: getAdminSessionMaxAge(),
     path: '/',
   })
-  // Also update the getSessionToken used by auth so current session stays valid
   return res
 }

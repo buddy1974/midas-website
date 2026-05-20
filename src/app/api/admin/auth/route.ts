@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAdminPassword, getSessionToken } from '@/lib/admin-auth'
+import { getAdminPassword } from '@/lib/admin-auth'
+import { createAdminSessionToken, getAdminSessionMaxAge } from '@/lib/admin-session'
 
 // ── In-memory rate limiter (5 attempts / 15 min per IP) ───────────────────────
 const attempts = new Map<string, { count: number; resetAt: number }>()
@@ -57,13 +58,13 @@ export async function POST(req: NextRequest) {
   // Successful login — clear the counter so the admin can log out and back in
   clearRateLimit(ip)
 
-  const token = await getSessionToken()
+  const token = await createAdminSessionToken()
   const res = NextResponse.json({ ok: true })
   res.cookies.set('admin_session', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: getAdminSessionMaxAge(),
     path: '/',
   })
   return res

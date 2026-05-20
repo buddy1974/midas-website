@@ -36,6 +36,7 @@ export default function ValuationPage() {
   })
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
 
   function set(field: keyof FormState) {
     return (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
@@ -45,7 +46,8 @@ export default function ValuationPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    await fetch('/api/finance-enquiry', {
+    setError('')
+    const res = await fetch('/api/finance-enquiry', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -57,8 +59,16 @@ export default function ValuationPage() {
         situation: form.situation,
         notes: form.whySelling,
         source: 'valuation_request',
+        loanAmount: 'Valuation request',
+        propertyValue: form.approxValue || 'Not provided',
       }),
     })
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({ error: 'Request failed. Please try again.' })) as { error?: string }
+      setError(data.error ?? 'Request failed. Please try again.')
+      setLoading(false)
+      return
+    }
     setSubmitted(true)
     setLoading(false)
   }
@@ -280,6 +290,7 @@ export default function ValuationPage() {
                   >
                     {loading ? 'Sending…' : 'Request Free Valuation →'}
                   </button>
+                  {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                 </form>
               )}
             </div>

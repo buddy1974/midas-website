@@ -10,14 +10,21 @@ export default function FinancePage() {
     name: '', email: '', phone: '', loanAmount: '', propertyValue: '', purpose: '', term: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await fetch('/api/finance-enquiry', {
+    setError('')
+    const res = await fetch('/api/finance-enquiry', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     })
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({ error: 'Submission failed. Please try again.' })) as { error?: string }
+      setError(data.error ?? 'Submission failed. Please try again.')
+      return
+    }
     setSubmitted(true)
   }
 
@@ -176,6 +183,7 @@ export default function FinancePage() {
               <GoldButton variant="filled" type="submit" size="lg" className="w-full mt-2">
                 Submit Finance Enquiry
               </GoldButton>
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
               <p className="text-[#999] text-xs text-center">
                 All enquiries handled directly by Midas and treated in strict confidence.
               </p>

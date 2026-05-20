@@ -27,9 +27,11 @@ const scoreColor = (score: number) => {
 export default function AIAnalysisCard({ lot }: { lot: Lot }) {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<AnalysisResult | null>(null)
+  const [error, setError] = useState('')
 
   const runAnalysis = async () => {
     setLoading(true)
+    setError('')
     try {
       const res = await fetch('/api/ai-analyse', {
         method: 'POST',
@@ -42,9 +44,14 @@ export default function AIAnalysisCard({ lot }: { lot: Lot }) {
           arv: lot.arv,
         }),
       })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ error: 'ARIA is unavailable. Please try again later.' })) as { error?: string }
+        setError(data.error ?? 'ARIA is unavailable. Please try again later.')
+        return
+      }
       setResult(await res.json())
     } catch {
-      // silent
+      setError('ARIA is unavailable. Please try again later.')
     } finally {
       setLoading(false)
     }
@@ -65,6 +72,10 @@ export default function AIAnalysisCard({ lot }: { lot: Lot }) {
         >
           Run Analysis
         </button>
+      )}
+
+      {error && (
+        <p className="text-red-500 text-xs leading-relaxed">{error}</p>
       )}
 
       {loading && (

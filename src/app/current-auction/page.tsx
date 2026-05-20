@@ -192,12 +192,14 @@ function CatalogueModal({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
+    setError('')
     try {
-      await fetch('/api/register-interest', {
+      const res = await fetch('/api/register-interest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -207,9 +209,14 @@ function CatalogueModal({ onClose }: { onClose: () => void }) {
           source: 'catalogue_request',
         }),
       })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ error: 'Request failed. Please try again.' })) as { error?: string }
+        setError(data.error ?? 'Request failed. Please try again.')
+        return
+      }
       setSent(true)
     } catch {
-      setSent(true)
+      setError('Network error. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -278,6 +285,7 @@ function CatalogueModal({ onClose }: { onClose: () => void }) {
               >
                 {loading ? 'Sending…' : 'Send Catalogue →'}
               </button>
+              {error && <p className="text-red-400 text-sm text-center">{error}</p>}
             </form>
           </>
         )}
@@ -298,12 +306,14 @@ export default function CurrentAuctionPage() {
   const [wishlist, setWishlist] = useState<string[]>([])
 
   useEffect(() => {
-    try {
-      const s = localStorage.getItem('midas_wishlist')
-      setWishlist(s ? (JSON.parse(s) as string[]) : [])
-    } catch {
-      setWishlist([])
-    }
+    queueMicrotask(() => {
+      try {
+        const s = localStorage.getItem('midas_wishlist')
+        setWishlist(s ? (JSON.parse(s) as string[]) : [])
+      } catch {
+        setWishlist([])
+      }
+    })
   }, [])
 
   const toggleWishlist = (id: string) => {

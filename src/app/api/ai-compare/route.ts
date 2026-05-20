@@ -16,10 +16,7 @@ export async function POST(req: NextRequest) {
   const roiB = lotB.arv > 0 ? (((lotB.arv - lotB.guidePrice) / lotB.guidePrice) * 100).toFixed(1) : 'N/A'
 
   if (!hasOpenAI()) {
-    return NextResponse.json({
-      recommendation: `ARIA recommends Lot A (${lotA.address}) for its stronger ROI profile (${roiA}% vs ${roiB}%). Both are solid London assets, but ${lotA.type} properties in ${lotA.area} typically see faster capital appreciation.`,
-      winner: 'A',
-    })
+    return NextResponse.json({ error: 'ARIA comparison is not available because OpenAI is not configured.' }, { status: 503 })
   }
 
   try {
@@ -55,10 +52,8 @@ Which is the better investment and why?`,
 
     const text = completion.choices[0].message.content ?? ''
     return NextResponse.json(JSON.parse(text.trim()))
-  } catch {
-    return NextResponse.json({
-      recommendation: `ARIA recommends Lot A (${lotA.address}) based on ROI potential of ${roiA}% vs ${roiB}% for Lot B. Both are viable investments in strong London locations.`,
-      winner: 'A',
-    })
+  } catch (err) {
+    console.error('[ai-compare] error:', err)
+    return NextResponse.json({ error: 'ARIA could not complete this comparison. Please try again later.' }, { status: 502 })
   }
 }

@@ -21,6 +21,7 @@ export default function NewsletterForm() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const set = (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm(f => ({ ...f, [field]: e.target.value }))
@@ -28,17 +29,24 @@ export default function NewsletterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError('')
     try {
-      await fetch('/api/whatsapp-signup', {
+      const res = await fetch('/api/whatsapp-signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, source: 'newsletter_homepage' }),
       })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ error: 'Subscription failed. Please try again.' })) as { error?: string }
+        setError(data.error ?? 'Subscription failed. Please try again.')
+        return
+      }
+      setSubmitted(true)
     } catch {
-      // silent — still mark subscribed
+      setError('Network error. Please try again.')
+    } finally {
+      setLoading(false)
     }
-    setSubmitted(true)
-    setLoading(false)
   }
 
   if (submitted) {
@@ -116,6 +124,7 @@ export default function NewsletterForm() {
           {loading ? 'Subscribing...' : 'Subscribe'}
         </button>
       </div>
+      {error && <p className="text-red-400 text-sm text-center mt-3">{error}</p>}
     </form>
   )
 }

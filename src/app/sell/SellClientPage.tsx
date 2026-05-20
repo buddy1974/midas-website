@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import SectionHeader from '@/components/SectionHeader'
 import GoldButton from '@/components/GoldButton'
 import { testimonials } from '@/lib/data'
-import { Zap, Shield, TrendingUp, Link as LinkIcon, Star, Users, CheckCircle, ClipboardList, ChevronDown, ChevronUp } from 'lucide-react'
+import { Zap, Shield, TrendingUp, Link as LinkIcon, Users, CheckCircle, ClipboardList, ChevronDown, ChevronUp } from 'lucide-react'
 
 const sellerFaqs = [
   {
@@ -70,6 +70,7 @@ export default function SellPage() {
     name: '', email: '', phone: '', address: '', type: '', value: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
   const [pc, setPc] = useState<Record<string, string>>({})
 
   useEffect(() => {
@@ -84,11 +85,17 @@ export default function SellPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await fetch('/api/register-interest', {
+    setError('')
+    const res = await fetch('/api/register-interest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...form, interest: 'Seller - Valuation Request' }),
     })
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({ error: 'Request failed. Please try again.' })) as { error?: string }
+      setError(data.error ?? 'Request failed. Please try again.')
+      return
+    }
     setSubmitted(true)
   }
 
@@ -120,7 +127,7 @@ export default function SellPage() {
             { icon: Zap,         claim: '28-day completion from hammer fall', detail: 'On auction day contracts exchange immediately. You receive a 10% deposit on the day. Completion in 28 days.' },
             { icon: Shield,      claim: 'Free to list. No Midas fees.', detail: 'Listing with Midas costs nothing. We submit your property to our partner auction companies at no charge to you.' },
             { icon: LinkIcon,    claim: 'No chain. Clean transaction.', detail: 'Auction sales are chain-free by design. No mortgage delays, no gazundering, no fall-throughs.' },
-          ].map(({ icon: Icon, claim, detail }) => (
+          ].map(({ claim, detail }) => (
             <div key={claim} className="bg-white border border-[#E8E5DE] rounded-xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
               <div className="flex items-start gap-3 mb-3">
                 <CheckCircle className="text-[#C9A84C] flex-shrink-0 mt-0.5" size={18} />
@@ -404,6 +411,7 @@ export default function SellPage() {
               <GoldButton variant="filled" type="submit" size="lg" className="w-full mt-2">
                 Book Free Valuation
               </GoldButton>
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
             </form>
           )}
         </div>

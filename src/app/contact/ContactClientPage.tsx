@@ -22,26 +22,35 @@ export default function ContactPage() {
     pc[`${section}.${field}`] ?? fallback
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const subject = params.get('subject')
-    const lot = params.get('lot')
-    if (subject === 'Viewing Request') {
-      setForm((f) => ({
-        ...f,
-        subject: 'Viewing a property',
-        message: lot ? `I would like to book a viewing for: ${lot}` : f.message,
-      }))
-    }
+    queueMicrotask(() => {
+      const params = new URLSearchParams(window.location.search)
+      const subject = params.get('subject')
+      const lot = params.get('lot')
+      if (subject === 'Viewing Request') {
+        setForm((f) => ({
+          ...f,
+          subject: 'Viewing a property',
+          message: lot ? `I would like to book a viewing for: ${lot}` : f.message,
+        }))
+      }
+    })
   }, [])
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await fetch('/api/register-interest', {
+    setError('')
+    const res = await fetch('/api/register-interest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...form, interest: `Contact: ${form.subject}` }),
     })
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({ error: 'Message failed. Please try again.' })) as { error?: string }
+      setError(data.error ?? 'Message failed. Please try again.')
+      return
+    }
     setSubmitted(true)
   }
 
@@ -124,6 +133,7 @@ export default function ContactPage() {
                   <GoldButton variant="filled" type="submit" size="lg" className="w-full">
                     Send Message
                   </GoldButton>
+                  {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                   <p className="text-center text-[#AAA] text-xs">
                     Protected by reCAPTCHA. Google{' '}
                     <a href="https://policies.google.com/privacy" className="underline hover:text-[#C9A84C]" target="_blank" rel="noopener noreferrer">Privacy</a>

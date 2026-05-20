@@ -93,18 +93,22 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    setMobileOpen(false)
-    setMobileExpanded(null)
+    queueMicrotask(() => {
+      setMobileOpen(false)
+      setMobileExpanded(null)
+    })
   }, [pathname])
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('midas_wishlist')
-      const items: unknown = stored ? JSON.parse(stored) : []
-      setWishlistCount(Array.isArray(items) ? items.length : 0)
-    } catch {
-      setWishlistCount(0)
-    }
+    queueMicrotask(() => {
+      try {
+        const stored = localStorage.getItem('midas_wishlist')
+        const items: unknown = stored ? JSON.parse(stored) : []
+        setWishlistCount(Array.isArray(items) ? items.length : 0)
+      } catch {
+        setWishlistCount(0)
+      }
+    })
   }, [pathname])
 
   return (

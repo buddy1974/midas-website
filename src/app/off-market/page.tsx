@@ -14,6 +14,7 @@ export default function OffMarketPage() {
   const [reqName, setReqName] = useState('')
   const [reqEmail, setReqEmail] = useState('')
   const [reqSent, setReqSent] = useState(false)
+  const [reqError, setReqError] = useState('')
 
   const offMarketLots = lots.filter((l) => l.isOffMarket)
 
@@ -86,11 +87,17 @@ export default function OffMarketPage() {
               <form
                 onSubmit={async (e) => {
                   e.preventDefault()
-                  await fetch('/api/offmarket-request', {
+                  setReqError('')
+                  const res = await fetch('/api/offmarket-request', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: reqName, email: reqEmail }),
                   })
+                  if (!res.ok) {
+                    const data = await res.json().catch(() => ({ error: 'Request failed. Please try again.' })) as { error?: string }
+                    setReqError(data.error ?? 'Request failed. Please try again.')
+                    return
+                  }
                   setReqSent(true)
                 }}
                 className="space-y-3"
@@ -114,6 +121,7 @@ export default function OffMarketPage() {
                 <GoldButton variant="outline" type="submit" className="w-full">
                   Request Access
                 </GoldButton>
+                {reqError && <p className="text-red-500 text-sm text-center">{reqError}</p>}
               </form>
             )}
           </div>

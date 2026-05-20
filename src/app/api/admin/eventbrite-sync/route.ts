@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
-import { isAdminLoggedIn } from '@/lib/admin-auth'
+import { requireAdminApiAuth } from '@/lib/admin-auth'
 
 interface EbEvent {
   id: string
@@ -109,15 +109,18 @@ async function runSync() {
 }
 
 // POST: triggered manually from admin dashboard
-export async function POST() {
-  if (!await isAdminLoggedIn()) {
-    return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-  }
+export async function POST(req: Request) {
+  const authError = await requireAdminApiAuth(req, { mutation: true })
+  if (authError) return authError
+
   return runSync()
 }
 
 // GET: called by Vercel Cron every hour
 export async function GET(req: Request) {
+  if (!process.env.CRON_SECRET) {
+    return NextResponse.json({ error: 'CRON_SECRET is not configured' }, { status: 503 })
+  }
   const auth = req.headers.get('authorization')
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })

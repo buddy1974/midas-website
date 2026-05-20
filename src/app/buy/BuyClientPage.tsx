@@ -72,6 +72,7 @@ export default function BuyPage() {
     name: '', email: '', phone: '', budget: '', lookingFor: [] as string[],
   })
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
   const [pc, setPc] = useState<Record<string, string>>({})
 
   useEffect(() => {
@@ -98,11 +99,17 @@ export default function BuyPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await fetch('/api/register-interest', {
+    setError('')
+    const res = await fetch('/api/register-interest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...form, interest: 'Buyer Registration' }),
     })
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({ error: 'Registration failed. Please try again.' })) as { error?: string }
+      setError(data.error ?? 'Registration failed. Please try again.')
+      return
+    }
     setSubmitted(true)
   }
 
@@ -237,6 +244,7 @@ export default function BuyPage() {
               <GoldButton variant="filled" type="submit" size="lg" className="w-full mt-2">
                 Register as a Bidder
               </GoldButton>
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
             </form>
           )}
         </div>

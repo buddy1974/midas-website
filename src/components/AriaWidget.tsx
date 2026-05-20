@@ -24,9 +24,16 @@ export default function AriaWidget() {
         body: JSON.stringify({ message: userMsg, source: 'website_widget' })
       })
       const data = await res.json()
+      if (!res.ok) {
+        setMessages(prev => [...prev, {
+          role: 'aria',
+          text: data.error || 'ARIA is currently unavailable. Please contact Midas directly for help.'
+        }])
+        return
+      }
       setMessages(prev => [...prev, {
         role: 'aria',
-        text: data.reply || data.summary ||
+        text: data.reply ||
           'Thank you for your enquiry. Please call Sam on 07454 753318 or email info@midaspropertyauctions.co.uk for a personal response.'
       }])
     } catch {

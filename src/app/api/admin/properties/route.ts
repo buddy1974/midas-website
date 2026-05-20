@@ -1,16 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
-import { isAdminLoggedIn } from '@/lib/admin-auth'
+import { requireAdminApiAuth } from '@/lib/admin-auth'
 
 export async function GET() {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth()
+  if (authError) return authError
+
   const sql = getSql()
   const rows = await sql`SELECT * FROM properties ORDER BY created_at DESC`
   return NextResponse.json(rows)
 }
 
 export async function POST(req: NextRequest) {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth(req, { mutation: true })
+  if (authError) return authError
+
   const body = await req.json() as Record<string, unknown>
   const sql = getSql()
 

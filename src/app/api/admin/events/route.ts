@@ -1,16 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
-import { isAdminLoggedIn } from '@/lib/admin-auth'
+import { requireAdminApiAuth } from '@/lib/admin-auth'
 
 export async function GET() {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth()
+  if (authError) return authError
+
   const sql = getSql()
   const rows = await sql`SELECT * FROM events ORDER BY event_date ASC`
   return NextResponse.json(rows)
 }
 
 export async function POST(req: NextRequest) {
-  if (!await isAdminLoggedIn()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  const authError = await requireAdminApiAuth(req, { mutation: true })
+  if (authError) return authError
+
   const body = await req.json() as Record<string, unknown>
   const sql = getSql()
 
@@ -18,11 +22,15 @@ export async function POST(req: NextRequest) {
     : (body.image_url ? [{ url: body.image_url, caption: '' }] : [])
   const embeds = Array.isArray(body.embeds) ? body.embeds : []
 
+  const isRecurring = (body.is_recurring as boolean) ?? false
+  const recurrenceDates = isRecurring && Array.isArray(body.recurrence_dates) ? body.recurrence_dates : []
+
   const [row] = await sql`
     INSERT INTO events (
       name, event_date, event_time, location, description,
       event_type, cost_type, cost_amount, image_url,
-      images, embeds, registration_url, is_featured
+      images, embeds, registration_url, is_featured,
+      is_recurring, recurrence_dates
     ) VALUES (
       ${body.name as string},
       ${body.event_date as string},
@@ -36,7 +44,9 @@ export async function POST(req: NextRequest) {
       ${sql.json(images)},
       ${sql.json(embeds)},
       ${(body.registration_url as string) ?? null},
-      ${(body.is_featured as boolean) ?? false}
+      ${(body.is_featured as boolean) ?? false},
+      ${isRecurring},
+      ${sql.json(recurrenceDates)}
     )
     RETURNING *`
   return NextResponse.json(row, { status: 201 })

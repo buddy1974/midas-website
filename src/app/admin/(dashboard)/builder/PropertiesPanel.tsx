@@ -1,11 +1,20 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import type { BuilderSection } from '@/lib/builder-types'
 import { SECTION_SCHEMAS } from '@/lib/builder-defaults'
 import { SECTION_LIBRARY } from '@/lib/builder-types'
 
 const C = { bg: '#0d0d0d', border: '#1a1a1a', gold: '#C9A84C', text: '#e0e0e0', muted: '#666', input: '#111' }
+
+function parseListValue<T>(value: string): T[] {
+  try {
+    const parsed = JSON.parse(value) as unknown
+    return Array.isArray(parsed) ? parsed as T[] : []
+  } catch {
+    return []
+  }
+}
 
 interface Props {
   section: BuilderSection
@@ -205,10 +214,9 @@ function SectionSettings({ section, onChange }: { section: BuilderSection; onCha
 
 function FAQListEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   interface Item { question: string; answer: string }
-  const [items, setItems] = useState<Item[]>([])
-  useEffect(() => { try { setItems(JSON.parse(value) as Item[]) } catch { setItems([]) } }, [value])
+  const items = parseListValue<Item>(value)
 
-  const update = (newItems: Item[]) => { setItems(newItems); onChange(JSON.stringify(newItems)) }
+  const update = (newItems: Item[]) => { onChange(JSON.stringify(newItems)) }
   const add = () => update([...items, { question: 'New question?', answer: 'Your answer here.' }])
   const del = (i: number) => update(items.filter((_, j) => j !== i))
   const set = (i: number, k: keyof Item, v: string) => { const arr = [...items]; arr[i] = { ...arr[i], [k]: v }; update(arr) }
@@ -234,10 +242,9 @@ function FAQListEditor({ value, onChange }: { value: string; onChange: (v: strin
 
 function TestimonialListEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   interface Item { quote: string; author: string; role: string }
-  const [items, setItems] = useState<Item[]>([])
-  useEffect(() => { try { setItems(JSON.parse(value) as Item[]) } catch { setItems([]) } }, [value])
+  const items = parseListValue<Item>(value)
 
-  const update = (newItems: Item[]) => { setItems(newItems); onChange(JSON.stringify(newItems)) }
+  const update = (newItems: Item[]) => { onChange(JSON.stringify(newItems)) }
   const add = () => update([...items, { quote: 'Add your testimonial quote here.', author: 'Client Name', role: 'Role / Location' }])
   const del = (i: number) => update(items.filter((_, j) => j !== i))
   const set = (i: number, k: keyof Item, v: string) => { const arr = [...items]; arr[i] = { ...arr[i], [k]: v }; update(arr) }
@@ -265,10 +272,9 @@ function TestimonialListEditor({ value, onChange }: { value: string; onChange: (
 
 function CardListEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   interface Item { icon: string; title: string; body: string }
-  const [items, setItems] = useState<Item[]>([])
-  useEffect(() => { try { setItems(JSON.parse(value) as Item[]) } catch { setItems([]) } }, [value])
+  const items = parseListValue<Item>(value)
 
-  const update = (newItems: Item[]) => { setItems(newItems); onChange(JSON.stringify(newItems)) }
+  const update = (newItems: Item[]) => { onChange(JSON.stringify(newItems)) }
   const add = () => update([...items, { icon: '⭐', title: 'Card Title', body: 'Card description goes here.' }])
   const del = (i: number) => update(items.filter((_, j) => j !== i))
   const set = (i: number, k: keyof Item, v: string) => { const arr = [...items]; arr[i] = { ...arr[i], [k]: v }; update(arr) }
@@ -298,10 +304,9 @@ function CardListEditor({ value, onChange }: { value: string; onChange: (v: stri
 
 function StepListEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   interface Item { title: string; body: string }
-  const [items, setItems] = useState<Item[]>([])
-  useEffect(() => { try { setItems(JSON.parse(value) as Item[]) } catch { setItems([]) } }, [value])
+  const items = parseListValue<Item>(value)
 
-  const update = (newItems: Item[]) => { setItems(newItems); onChange(JSON.stringify(newItems)) }
+  const update = (newItems: Item[]) => { onChange(JSON.stringify(newItems)) }
   const add = () => update([...items, { title: 'Step Title', body: 'Step description.' }])
   const del = (i: number) => update(items.filter((_, j) => j !== i))
   const set = (i: number, k: keyof Item, v: string) => { const arr = [...items]; arr[i] = { ...arr[i], [k]: v }; update(arr) }

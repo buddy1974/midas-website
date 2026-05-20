@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Calendar, Clock, MapPin, Users, Share2, ChevronDown, ChevronUp } from 'lucide-react'
+import { Calendar, Clock, MapPin, Share2, ChevronDown, ChevronUp } from 'lucide-react'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -90,7 +90,7 @@ function RegistrationForm({ event, onClose }: RegFormProps) {
     setSubmitting(true)
     setError('')
     try {
-      const res = await fetch(`/api/admin/events/${event.id}/register`, {
+      const res = await fetch(`/api/events/${event.id}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

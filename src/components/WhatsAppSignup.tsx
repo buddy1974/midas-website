@@ -8,6 +8,7 @@ export default function WhatsAppSignup() {
   const [waType, setWaType] = useState('')
   const [waBudget, setWaBudget] = useState('')
   const [waDone, setWaDone] = useState(false)
+  const [waError, setWaError] = useState('')
 
   return (
     <section className="py-12 bg-[#080809]">
@@ -29,11 +30,17 @@ export default function WhatsAppSignup() {
               <form
                 onSubmit={async (e) => {
                   e.preventDefault()
-                  await fetch('/api/whatsapp-signup', {
+                  setWaError('')
+                  const res = await fetch('/api/whatsapp-signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ number: waNumber, type: waType, budget: waBudget }),
+                    body: JSON.stringify({ phone: waNumber, userType: waType, budget: waBudget }),
                   })
+                  if (!res.ok) {
+                    const data = await res.json().catch(() => ({ error: 'Subscription failed. Please try again.' })) as { error?: string }
+                    setWaError(data.error ?? 'Subscription failed. Please try again.')
+                    return
+                  }
                   setWaDone(true)
                 }}
                 className="flex flex-wrap gap-2"
@@ -73,6 +80,7 @@ export default function WhatsAppSignup() {
                 >
                   Subscribe
                 </button>
+                {waError && <p className="w-full text-red-400 text-sm">{waError}</p>}
               </form>
             )}
           </div>

@@ -35,7 +35,9 @@ export default function ContentAdminPage() {
     setLoading(false)
   }, [])
 
-  useEffect(() => { void fetchContent() }, [fetchContent])
+  useEffect(() => {
+    queueMicrotask(() => { void fetchContent() })
+  }, [fetchContent])
 
   const handleSave = async () => {
     setSaving(true)
