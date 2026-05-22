@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
+import { syncToKeap } from '@/lib/infusionsoft'
 import {
   checkRateLimit,
   emailField,
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
         'website_offmarket',
         ${sql.json({ captchaConfigured: captcha.configured })}
       )`
+    await syncToKeap({ name, email })
   } catch (err) {
     console.error('[offmarket-request]', err)
     return NextResponse.json({ error: 'Submission failed. Please try again.' }, { status: 500 })

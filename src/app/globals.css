@@ -50,3 +50,22 @@ html { scroll-behavior: smooth; }
 .animate-fade-up {
   animation: fadeUp 0.6s ease-out forwards;
 }
+
+/* Newsletter body — reset email table styles for clean web display */
+.newsletter-body {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1a1a1a;
+}
+.newsletter-body table {
+  max-width: 100%;
+  border-collapse: collapse;
+}
+.newsletter-body img {
+  max-width: 100%;
+  height: auto;
+}
+.newsletter-body a {
+  color: #C9A84C;
+}

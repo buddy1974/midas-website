@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
+import { syncToKeap } from '@/lib/infusionsoft'
 import {
   checkRateLimit,
   emailField,
@@ -55,6 +56,7 @@ export async function POST(req: NextRequest) {
           captchaConfigured: captcha.configured,
         })}
       )`
+    await syncToKeap({ name, email, phone })
   } catch (err) {
     console.error('[register-interest]', err)
     return NextResponse.json({ error: 'Submission failed. Please try again.' }, { status: 500 })

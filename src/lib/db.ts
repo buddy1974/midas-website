@@ -92,6 +92,17 @@ export interface EventRow {
   created_at: string
 }
 
+export interface NewsletterRow {
+  id: string
+  external_id: string | null
+  subject: string
+  preview: string | null
+  html_body: string | null
+  sent_at: string | null
+  is_published: boolean
+  created_at: string
+}
+
 export interface SiteContentRow {
   key: string
   value: string

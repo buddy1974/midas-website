@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
+import { syncToKeap } from '@/lib/infusionsoft'
 import {
   checkRateLimit,
   emailField,
@@ -43,6 +44,7 @@ export async function POST(req: NextRequest) {
         ${source},
         ${sql.json({ userType, budget, captchaConfigured: captcha.configured })}
       )`
+    await syncToKeap({ firstName, lastName, name, email, phone })
   } catch (err) {
     console.error('[whatsapp-signup]', err)
     return NextResponse.json({ error: 'Submission failed. Please try again.' }, { status: 500 })
