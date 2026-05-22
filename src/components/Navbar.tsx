@@ -58,6 +58,7 @@ const navItems: NavItem[] = [
     dropdown: [
       { label: 'About Us', href: '/about' },
       { label: 'Blog', href: '/blog' },
+      { label: 'Newsletter', href: '/newsletter' },
       { label: 'Testimonials', href: '/testimonials' },
       { label: 'FAQs', href: '/faqs' },
       { label: 'Contact Us', href: '/contact' },
