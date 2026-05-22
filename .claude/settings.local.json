@@ -34,7 +34,8 @@
       "Bash(Get-Content \"C:\\\\Users\\\\loneb\\\\Documents\\\\ai-software-dev\\\\projects\\\\midas-website\\\\.env.local\" -ErrorAction SilentlyContinue)",
       "Bash(Select-Object -First 15)",
       "Bash(npm list *)",
-      "Bash(Remove-Item \"C:\\\\Users\\\\loneb\\\\Documents\\\\ai-software-dev\\\\projects\\\\midas-website\\\\.git\\\\index.lock\" -Force)"
+      "Bash(Remove-Item \"C:\\\\Users\\\\loneb\\\\Documents\\\\ai-software-dev\\\\projects\\\\midas-website\\\\.git\\\\index.lock\" -Force)",
+      "Bash(git diff *)"
     ]
   }
 }
