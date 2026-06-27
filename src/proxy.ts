@@ -7,6 +7,24 @@ const PUBLIC_ADMIN_API = ['/api/admin/auth']
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
+  // 1. Maintenance mode — public site only. /admin and /api stay reachable so
+  //    the site can still be managed while maintenance is on.
+  if (process.env.MAINTENANCE_MODE === 'true') {
+    const exempt =
+      pathname.startsWith('/admin') ||
+      pathname.startsWith('/api') ||
+      pathname.startsWith('/_next') ||
+      pathname === '/maintenance' ||
+      pathname === '/favicon.ico'
+
+    if (!exempt) {
+      const url = req.nextUrl.clone()
+      url.pathname = '/maintenance'
+      return NextResponse.rewrite(url)
+    }
+  }
+
+  // 2. Admin authentication (unchanged behaviour).
   if (PUBLIC_ADMIN.includes(pathname) || PUBLIC_ADMIN_API.includes(pathname)) {
     return NextResponse.next()
   }
@@ -29,5 +47,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }
